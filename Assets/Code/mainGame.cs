@@ -23,7 +23,7 @@ public class mainGame
     private GameEventSystem m_GameEventSystem = null;    // 遊戲事件系統
     // private CampSystem m_CampSystem = null;              // 兵營系統
     // private StageSystem m_StageSystem = null;            // 關卡系統
-    private CharacterSystem m_CharacterSystem = null;    // 角色管理系統
+    // private CharacterSystem m_CharacterSystem = null;    // 角色管理系統
     // private APSystem m_ApSystem = null;                  // 行動力系統
     // private AchievementSystem m_AchievementSystem = null;// 成就系統
     //                                                      // 界面
@@ -44,7 +44,7 @@ public class mainGame
         m_GameEventSystem = new GameEventSystem(this);  // 遊戲事件系統
         // m_CampSystem = new CampSystem(this);            // 兵營系統
         // m_StageSystem = new StageSystem(this);          // 關卡系統
-        m_CharacterSystem = new CharacterSystem(this);  // 角色管理系統
+        // m_CharacterSystem = new CharacterSystem(this);  // 角色管理系統
         // m_ApSystem = new APSystem(this);                // 行動力系統
         // m_AchievementSystem = new AchievementSystem(this); // 成就系統
         // 界面
@@ -83,7 +83,7 @@ public class mainGame
         m_GameEventSystem.Release();
         // m_CampSystem.Release();
         // m_StageSystem.Release();
-        m_CharacterSystem.Release();
+        // m_CharacterSystem.Release();
         // m_ApSystem.Release();
         // m_AchievementSystem.Release();
         // 界面
@@ -107,7 +107,7 @@ public class mainGame
         m_GameEventSystem.Update();
         // m_CampSystem.Update();
         // m_StageSystem.Update();
-        m_CharacterSystem.Update();
+        // m_CharacterSystem.Update();
         // m_ApSystem.Update();
         // m_AchievementSystem.Update();
 
