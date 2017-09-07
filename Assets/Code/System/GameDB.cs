@@ -16,6 +16,5 @@ public class GameDB
     {
         biologyDB = JsonParse.LoadBiologyDB();
         biologyDraw = JsonParse.LoadBiologyDraw();
-        Debug.Log("DB Loading Complete");
     }
 }

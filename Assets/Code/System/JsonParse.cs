@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
-public class JsonParse : MonoBehaviour
+public class JsonParse
 {
-    string Biology = "Biology";
-    string BiologyDraw = "BiologyDraw";
+    string Biology;
+    string BiologyDraw;
+
+    public JsonParse()
+    {
+        Biology = "Biology";
+        BiologyDraw = "BiologyDraw";
+    }
 
     // Use this for initialization
 
@@ -55,6 +61,10 @@ public class JsonParse : MonoBehaviour
 
     private class JsonClass
     {
-        public string[] Index;
+        public string[] Index = null;
+
+        public JsonClass()
+        {
+        }
     }
 }

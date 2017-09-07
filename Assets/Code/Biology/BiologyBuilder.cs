@@ -22,7 +22,6 @@ public class BiologyBuilder//fixme:名字怪怪的
         //如果無此資料
         if (GameDB.biologyDB.ContainsKey(BiologyNum) == false)
         {
-            Debug.LogError("查無此生物編號:" + BiologyNum.ToString());
             return;
         }
         this.BiologyNum = BiologyNum;
@@ -39,13 +38,13 @@ public class BiologyBuilder//fixme:名字怪怪的
 
     private int GetBioAi()
     {
-        int result = int.Parse(GameDB.biologyDB[BiologyNum][_Lv]);
+        int result = int.Parse(GameDB.biologyDB[BiologyNum][_Ai]);
         return result;
     }
 
     private int GetBioLv()
     {
-        int result = int.Parse(GameDB.biologyDB[BiologyNum][_Ai]);
+        int result = int.Parse(GameDB.biologyDB[BiologyNum][_Lv]);
         return result;
     }
 

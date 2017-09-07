@@ -15,9 +15,10 @@ public class BiologyDraw
         //如果無此資料
         if (GameDB.biologyDraw.ContainsKey(DrawNum) == false)
         {
-            Debug.LogError("查無此生物圖號:" + DrawNum.ToString());
             return;
         }
+        Debug.ClearDeveloperConsole();
+
         this.DrawNum = DrawNum;
         Mesh = GetDrawMesh();
         Texture = GetDrawTexture();

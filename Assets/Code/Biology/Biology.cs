@@ -15,25 +15,6 @@ public class Biology : MonoBehaviour
     [Header("AI編號")] public int Ai;
     private Dictionary<int, string[]> BiologyDB;
 
-    //建構式
-    public Biology(
-        int biologyNum,
-        string name,
-        int drawNum,
-        uFantasy.Enum.BiologyType type,
-        int lv,
-        int ai)
-    {
-        BiologyNum = biologyNum;
-        Name = name;
-        DrawNum = drawNum;
-        Type = type;
-        Lv = lv;
-        Ai = ai;
-
-        // GameObject = new BiologyDraw();
-
-    }
 
     // Use this for initialization
     private void Start()

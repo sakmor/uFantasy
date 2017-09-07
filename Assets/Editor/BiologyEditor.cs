@@ -9,11 +9,15 @@ public class BiologyEditor : Editor
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-
         Biology Biology = (Biology)target;
-        if (GUILayout.Button("載入資訊"))
+        if (GUI.changed)
         {
             Biology.LoadDB();
         }
+
+        // if (GUILayout.Button("載入資訊"))
+        // {
+        //     Biology.LoadDB();
+        // }
     }
 }
