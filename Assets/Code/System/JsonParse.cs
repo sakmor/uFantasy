@@ -5,12 +5,13 @@ using System.IO;
 using System;
 public class JsonParse : MonoBehaviour
 {
+    string Biology = "Biology";
 
     // Use this for initialization
 
     public Dictionary<int, string[]> LoadBiologyDB()
     {
-        string[] jsonData = Load_DB_Json("biologyDB");
+        string[] jsonData = Load_DB_Json(Biology);
         Dictionary<int, string[]> Dictionary = new Dictionary<int, string[]>();
         string[] rowData = new string[jsonData.Length];
         for (var i = 0; i < rowData.Length; i++)
