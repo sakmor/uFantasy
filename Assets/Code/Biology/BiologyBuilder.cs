@@ -4,51 +4,66 @@ using UnityEngine;
 using uFantasy.Enum;
 using System;
 
-public class BiologyBuilder
+public class BiologyBuilder//fixme:名字怪怪的
 {
     public GameDB GameDB = new GameDB(); //fixme:暫代
 
-    private int _Name = 2;
-    private int _DrawNum = 3;
-    private int _Tpye = 4;
-    private int _Lv = 5;
-    private int _Ai = 6;
-    public void CreateBiology(int biologyNum, Vector3 pos)
+    private int _Name = 1, _DrawNum = 2, _Tpye = 3, _Lv = 4, _Ai = 5;
+
+    public string Name;
+    public int DrawNum;
+    public uFantasy.Enum.BiologyType Type;
+    public int Lv;
+    public int Ai;
+    private int BiologyNum;
+
+    public BiologyBuilder(int BiologyNum)
     {
-        string name = GetBioName(biologyNum);
-        int DrawNum = GetBioDrawNum(biologyNum);
-        int Type = GetBioType(biologyNum);
-        int Lv = GetBioLv(biologyNum);
-        int Ai = GetBioAi(biologyNum);
+        //如果無此資料
+        if (GameDB.biologyDB.ContainsKey(BiologyNum) == false)
+        {
+            Debug.LogError("查無此生物編號:" + BiologyNum.ToString());
+            return;
+        }
+        this.BiologyNum = BiologyNum;
+        //轉換Biology資料
+        Name = GetBioName();
+        DrawNum = GetBioDrawNum();
+        Type = GetBioType();
+        Lv = GetBioLv();
+        Ai = GetBioAi();
     }
 
-    private int GetBioAi(int biologyNum)
+    // 創造生物時必須提供 [圖號]
+
+
+    private int GetBioAi()
     {
-        int result = int.Parse(GameDB.biologyDB[biologyNum][_Lv]);
+        int result = int.Parse(GameDB.biologyDB[BiologyNum][_Lv]);
         return result;
     }
 
-    private int GetBioLv(int biologyNum)
+    private int GetBioLv()
     {
-        int result = int.Parse(GameDB.biologyDB[biologyNum][_Ai]);
+        int result = int.Parse(GameDB.biologyDB[BiologyNum][_Ai]);
         return result;
     }
 
-    private int GetBioType(int biologyNum)
+    private uFantasy.Enum.BiologyType GetBioType()
     {
-        int result = int.Parse(GameDB.biologyDB[biologyNum][_Tpye]);
+        var result = int.Parse(GameDB.biologyDB[BiologyNum][_Tpye]);
+        return (uFantasy.Enum.BiologyType)result;
+    }
+
+    private int GetBioDrawNum()
+    {
+        var result = int.Parse(GameDB.biologyDB[BiologyNum][_DrawNum]);
         return result;
     }
 
-    private int GetBioDrawNum(int biologyNum)
+    private string GetBioName()
     {
-        int result = int.Parse(GameDB.biologyDB[biologyNum][_DrawNum]);
-        return result;
-    }
-
-    private string GetBioName(int biologyNum)
-    {
-        string result = GameDB.biologyDB[biologyNum][_Name];
+        string result = GameDB.biologyDB[BiologyNum][_Name];
         return result;
     }
 

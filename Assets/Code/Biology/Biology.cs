@@ -1,30 +1,74 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Biology : MonoBehaviour
 {
-    public readonly int BiologyNum = 1001;
+
+
+    [Header("生物編號")] public int BiologyNum = 1001;
+    [Header("生物名稱")] public string Name;
+    [Header("生物圖號")] public int DrawNum;
+    [Header("生物類型")] public uFantasy.Enum.BiologyType Type;
+    [Header("生物等級")] public int Lv;
+    [Header("AI編號")] public int Ai;
+    private Dictionary<int, string[]> BiologyDB;
+
+    //建構式
+    public Biology(
+        int biologyNum,
+        string name,
+        int drawNum,
+        uFantasy.Enum.BiologyType type,
+        int lv,
+        int ai)
+    {
+        BiologyNum = biologyNum;
+        Name = name;
+        DrawNum = drawNum;
+        Type = type;
+        Lv = lv;
+        Ai = ai;
+
+        // GameObject = new BiologyDraw();
+
+    }
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
-        readBiologyNumJson();
+        LoadDB();
+
     }
+
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 
     }
 
-    void readBiologyNumJson()
+
+    public void LoadDB()
     {
+        BiologyBuilder BiologyBuilder = new BiologyBuilder(BiologyNum);
+        Name = BiologyBuilder.Name;
+        DrawNum = BiologyBuilder.DrawNum;
+        Type = BiologyBuilder.Type;
+        Lv = BiologyBuilder.Lv;
+        Ai = BiologyBuilder.Ai;
+
+        SetModeTexture();
 
     }
 
-    void JsonReader()
+    private void SetModeTexture()
     {
-
+        BiologyDraw BiologyDraw = new BiologyDraw(DrawNum);
+        GetComponent<MeshFilter>().mesh = BiologyDraw.Mesh;
+        GetComponent<MeshRenderer>().sharedMaterial = new Material(Shader.Find("Unlit/Texture"));
+        GetComponent<MeshRenderer>().sharedMaterial.mainTexture = BiologyDraw.Texture;
+        transform.localScale = Vector3.one * BiologyDraw.Scale;
     }
 }

@@ -6,6 +6,7 @@ using System;
 public class JsonParse : MonoBehaviour
 {
     string Biology = "Biology";
+    string BiologyDraw = "BiologyDraw";
 
     // Use this for initialization
 
@@ -16,8 +17,22 @@ public class JsonParse : MonoBehaviour
         string[] rowData = new string[jsonData.Length];
         for (var i = 0; i < rowData.Length; i++)
         {
-            int index = int.Parse((jsonData[i].Trim()).Split(","[0])[0]);
-            Dictionary.Add(index, (jsonData[i].Trim()).Split(","[0]));
+            int index = 0;
+            try { index = int.Parse(jsonData[i].Trim().Split(","[0])[0]); } catch { break; }
+            Dictionary.Add(index, jsonData[i].Trim().Split(","[0]));
+        }
+        return Dictionary;
+    }
+    public Dictionary<int, string[]> LoadBiologyDraw()
+    {
+        string[] jsonData = Load_DB_Json(BiologyDraw);
+        Dictionary<int, string[]> Dictionary = new Dictionary<int, string[]>();
+        string[] rowData = new string[jsonData.Length];
+        for (var i = 0; i < rowData.Length; i++)
+        {
+            int index = 0;
+            try { index = int.Parse(jsonData[i].Trim().Split(","[0])[0]); } catch { break; }
+            Dictionary.Add(index, jsonData[i].Trim().Split(","[0]));
         }
         return Dictionary;
     }
