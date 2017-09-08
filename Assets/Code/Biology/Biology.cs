@@ -37,7 +37,14 @@ public class Biology : MonoBehaviour
         SetBiology();
         SetBiologyDraw();
         SetBiologyModel();
+        SetBiologyAnimator();
 
+        ReNameByDB();
+    }
+
+    private void SetBiologyAnimator()
+    {
+        GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Biology/Controller/" + ModelName) as RuntimeAnimatorController;
     }
 
     private void SetBiologyModel()
@@ -51,7 +58,6 @@ public class Biology : MonoBehaviour
         BiologyBuilder BiologyBuilder = new BiologyBuilder(BiologyNum);
         Name = BiologyBuilder.Name;
         DrawNum = BiologyBuilder.DrawNum;
-
         Type = BiologyBuilder.Type;
         Lv = BiologyBuilder.Lv;
         Ai = BiologyBuilder.Ai;
@@ -66,5 +72,11 @@ public class Biology : MonoBehaviour
         GetComponent<MeshRenderer>().sharedMaterial.mainTexture = BiologyDraw.Texture;
         transform.localScale = Vector3.one * BiologyDraw.Scale;
 
+    }
+
+    private void ReNameByDB()
+    {
+        transform.name = Name;
+        transform.Find("NameText").GetComponent<TextMesh>().text = Name;
     }
 }
