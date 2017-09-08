@@ -11,13 +11,13 @@ public class BiologyBuilder//fixme:名字怪怪的
     private int _Name = 1, _DrawNum = 2, _Tpye = 3, _Lv = 4, _Ai = 5;
 
     public string Name;
-    public int DrawNum;
+    public string DrawNum;
     public uFantasy.Enum.BiologyType Type;
     public int Lv;
     public int Ai;
-    private int BiologyNum;
+    private string BiologyNum;
 
-    public BiologyBuilder(int BiologyNum)
+    public BiologyBuilder(string BiologyNum)
     {
         //如果無此資料
         if (GameDB.biologyDB.ContainsKey(BiologyNum) == false)
@@ -54,9 +54,9 @@ public class BiologyBuilder//fixme:名字怪怪的
         return (uFantasy.Enum.BiologyType)result;
     }
 
-    private int GetBioDrawNum()
+    private string GetBioDrawNum()
     {
-        var result = int.Parse(GameDB.biologyDB[BiologyNum][_DrawNum]);
+        var result = GameDB.biologyDB[BiologyNum][_DrawNum];
         return result;
     }
 

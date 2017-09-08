@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 public class GameDB
 {
-    public Dictionary<int, string[]> biologyDB;
-    public Dictionary<int, string[]> biologyDraw;
+    public Dictionary<string, string[]> biologyDB;
+    public Dictionary<string, string[]> biologyDraw;
+    public Dictionary<string, string[]> biologyModel;
     private JsonParse JsonParse;
 
     public GameDB()
@@ -16,5 +17,6 @@ public class GameDB
     {
         biologyDB = JsonParse.LoadBiologyDB();
         biologyDraw = JsonParse.LoadBiologyDraw();
+        biologyModel = JsonParse.LoadBiologyModel();
     }
 }

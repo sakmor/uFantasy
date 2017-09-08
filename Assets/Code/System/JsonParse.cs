@@ -7,37 +7,37 @@ public class JsonParse
 {
     string Biology;
     string BiologyDraw;
+    string BiologyModel;
 
     public JsonParse()
     {
         Biology = "Biology";
         BiologyDraw = "BiologyDraw";
+        BiologyModel = "BiologyModel";
     }
 
-    // Use this for initialization
 
-    public Dictionary<int, string[]> LoadBiologyDB()
+    public Dictionary<string, string[]> LoadBiologyDB()
     {
-        string[] jsonData = Load_DB_Json(Biology);
-        Dictionary<int, string[]> Dictionary = new Dictionary<int, string[]>();
+        return LoadDB(Biology);
+    }
+    public Dictionary<string, string[]> LoadBiologyModel()
+    {
+        return LoadDB(BiologyModel);
+    }
+    public Dictionary<string, string[]> LoadBiologyDraw()
+    {
+        return LoadDB(BiologyDraw);
+    }
+    private Dictionary<string, string[]> LoadDB(string name)
+    {
+        string[] jsonData = Load_DB_Json(name);
+        Dictionary<string, string[]> Dictionary = new Dictionary<string, string[]>();
         string[] rowData = new string[jsonData.Length];
         for (var i = 0; i < rowData.Length; i++)
         {
-            int index = 0;
-            try { index = int.Parse(jsonData[i].Trim().Split(","[0])[0]); } catch { break; }
-            Dictionary.Add(index, jsonData[i].Trim().Split(","[0]));
-        }
-        return Dictionary;
-    }
-    public Dictionary<int, string[]> LoadBiologyDraw()
-    {
-        string[] jsonData = Load_DB_Json(BiologyDraw);
-        Dictionary<int, string[]> Dictionary = new Dictionary<int, string[]>();
-        string[] rowData = new string[jsonData.Length];
-        for (var i = 0; i < rowData.Length; i++)
-        {
-            int index = 0;
-            try { index = int.Parse(jsonData[i].Trim().Split(","[0])[0]); } catch { break; }
+            string index = "";
+            try { index = jsonData[i].Trim().Split(","[0])[0]; } catch { break; }
             Dictionary.Add(index, jsonData[i].Trim().Split(","[0]));
         }
         return Dictionary;

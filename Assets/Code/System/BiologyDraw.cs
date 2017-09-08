@@ -5,12 +5,15 @@ using UnityEngine;
 public class BiologyDraw
 {
     public GameDB GameDB = new GameDB(); //fixme:暫代
-    private int _Mesh = 1, _Texture = 2, _Scale = 3;
     public Mesh Mesh;
+    public string ModelName;
     public Texture Texture;
     public float Scale;
-    private int DrawNum;
-    public BiologyDraw(int DrawNum)
+
+    private int _Mesh = 1, _Texture = 2, _Scale = 3, _CollisionPostionY = 4;
+    private string DrawNum;
+
+    public BiologyDraw(string DrawNum)
     {
         //如果無此資料
         if (GameDB.biologyDraw.ContainsKey(DrawNum) == false)
@@ -23,9 +26,14 @@ public class BiologyDraw
         Mesh = GetDrawMesh();
         Texture = GetDrawTexture();
         Scale = GetDrawScale();
+        ModelName = GetModelName();
+
 
     }
-
+    private string GetModelName()
+    {
+        return GameDB.biologyDraw[DrawNum][_Mesh];
+    }
     private Mesh GetDrawMesh()
     {
         string MeshName = GameDB.biologyDraw[DrawNum][_Mesh];
@@ -41,4 +49,5 @@ public class BiologyDraw
     {
         return float.Parse(GameDB.biologyDraw[DrawNum][_Scale]);
     }
+
 }
