@@ -67,6 +67,7 @@ public class Biology : MonoBehaviour
     {
         BiologyModel BiologyModel = new BiologyModel(ModelName);
         GetComponent<BoxCollider>().center = Vector3.up * BiologyModel.CollisionPostionY;
+        GetComponent<BoxCollider>().size = new Vector3(BiologyModel.CollisionSizeXZ, 1, BiologyModel.CollisionSizeXZ);
     }
 
     private void SetBiology()

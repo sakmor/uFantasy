@@ -6,10 +6,10 @@ class BiologyModel
 {
     public GameDB GameDB = new GameDB(); //fixme:暫代
     public float WalkStep;
-    public float CollisionPostionXZ;
+    public float CollisionSizeXZ;
     public float CollisionPostionY;
     private int _WalkStep = 1;
-    private int _CollisionPostionXZ = 2;
+    private int _CollisionSizeXZ = 2;
     private int _CollisionPostionY = 3;
 
     private string ModelName;
@@ -22,7 +22,7 @@ class BiologyModel
         }
         this.ModelName = ModelName;
         WalkStep = GetWalkStep();
-        CollisionPostionXZ = GetCollisionPostionXZ();
+        CollisionSizeXZ = GetCollisionPostionXZ();
         CollisionPostionY = GetCollisionPostionY();
     }
 
@@ -32,7 +32,7 @@ class BiologyModel
     }
     private float GetCollisionPostionXZ()
     {
-        return float.Parse(GameDB.biologyModel[ModelName][_CollisionPostionXZ]);
+        return float.Parse(GameDB.biologyModel[ModelName][_CollisionSizeXZ]);
     }
     private float GetCollisionPostionY()
     {
