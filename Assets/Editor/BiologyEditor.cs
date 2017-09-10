@@ -15,9 +15,9 @@ public class BiologyEditor : Editor
             Biology.LoadDB();
         }
 
-        // if (GUILayout.Button("載入資訊"))
-        // {
-        //     Biology.LoadDB();
-        // }
+        if (GUILayout.Button("載入資訊"))
+        {
+            Biology.LoadDB();
+        }
     }
 }

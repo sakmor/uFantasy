@@ -37,13 +37,14 @@ public class BiologyDraw
     private Mesh GetDrawMesh()
     {
         string MeshName = GameDB.biologyDraw[DrawNum][_Mesh];
-        return (Mesh)Resources.Load("Biology/" + MeshName, typeof(Mesh)); //fixme: 不該限制b開頭
+        return (Mesh)Resources.Load("Biology/" + MeshName, typeof(Mesh));
     }
 
     private Texture GetDrawTexture()
     {
         string textureName = GameDB.biologyDraw[DrawNum][_Texture];
-        return (Texture)Resources.Load("Biology/Texture/" + textureName, typeof(Texture)); //fixme: 不該限制b開頭
+        Texture textrue = (Texture)Resources.Load("Biology/Texture/" + textureName, typeof(Texture));
+        return textureName == "" ? null : textrue;
     }
     private float GetDrawScale()
     {
