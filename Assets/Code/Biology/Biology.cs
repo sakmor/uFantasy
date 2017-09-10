@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Reflection;
 
 public class Biology : MonoBehaviour
 {
@@ -44,12 +45,21 @@ public class Biology : MonoBehaviour
         SetBiologyAnimator();
 
 
+        rename();
+
+
+    }
+
+    private void rename()
+    {
+        name = "bio_" + Name;
     }
 
     private void SetBiologyAnimator()
     {
         Animator = _model.GetComponent<Animator>();
         Animator.runtimeAnimatorController = Resources.Load("Biology/Controller/" + ModelName) as RuntimeAnimatorController;
+        if (Animator.runtimeAnimatorController == null) Debug.Log("Controller is Missing !");
     }
 
     private void SetBiologyModel()
