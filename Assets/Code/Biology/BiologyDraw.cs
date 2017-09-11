@@ -9,7 +9,7 @@ public class BiologyDraw
     public Texture Texture;
     public float Scale;
 
-    private int _Mesh = 1, _Texture = 2, _Scale = 3, _CollisionPostionY = 4;
+    private int _Mesh = 1, _Texture = 2, _Scale = 3;
     private string DrawNum;
 
     public BiologyDraw(string DrawNum)

@@ -6,7 +6,6 @@ using System;
 
 public class BiologyBuilder//fixme:名字怪怪的
 {
-    // public GameDB GameDB = new GameDB(); //fixme:暫代
 
     private int _Name = 1, _DrawNum = 2, _Tpye = 3, _Lv = 4, _Ai = 5;
 

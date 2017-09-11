@@ -27,14 +27,14 @@ class BiologyModel
 
     private float GetWalkStep()
     {
-        return float.Parse(GameDB.biologyModel[ModelName][_WalkStep]);
+        return float.Parse(GameDB.Instance.biologyModel[ModelName][_WalkStep]);
     }
     private float GetCollisionPostionXZ()
     {
-        return float.Parse(GameDB.biologyModel[ModelName][_CollisionSizeXZ]);
+        return float.Parse(GameDB.Instance.biologyModel[ModelName][_CollisionSizeXZ]);
     }
     private float GetCollisionPostionY()
     {
-        return float.Parse(GameDB.biologyModel[ModelName][_CollisionPostionY]);
+        return float.Parse(GameDB.Instance.biologyModel[ModelName][_CollisionPostionY]);
     }
 }

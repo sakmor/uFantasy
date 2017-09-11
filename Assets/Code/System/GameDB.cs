@@ -7,22 +7,13 @@ public class GameDB
     public Dictionary<string, string[]> biologyModel;
     private JsonParse JsonParse;
 
-    private static GameDB _Instance;
+    private static readonly GameDB _instance = new GameDB();
+    public static GameDB Instance { get { return _instance; } }
 
     private GameDB()
     {
         JsonParse = new JsonParse();
         LoadDB();
-    }
-
-    public static GameDB Instance
-    {
-        get
-        {
-            if (_Instance == null)
-                _Instance = new GameDB();
-            return _Instance;
-        }
     }
 
     public void LoadDB()
