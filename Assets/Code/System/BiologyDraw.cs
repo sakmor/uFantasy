@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 public class BiologyDraw
 {
-    public GameDB GameDB = new GameDB(); //fixme:暫代
     public Mesh Mesh;
     public string ModelName;
     public Texture Texture;
@@ -16,7 +15,7 @@ public class BiologyDraw
     public BiologyDraw(string DrawNum)
     {
         //如果無此資料
-        if (GameDB.biologyDraw.ContainsKey(DrawNum) == false)
+        if (GameDB.Instance.biologyDraw.ContainsKey(DrawNum) == false)
         {
             return;
         }
@@ -32,23 +31,23 @@ public class BiologyDraw
     }
     private string GetModelName()
     {
-        return GameDB.biologyDraw[DrawNum][_Mesh];
+        return GameDB.Instance.biologyDraw[DrawNum][_Mesh];
     }
     private Mesh GetDrawMesh()
     {
-        string MeshName = GameDB.biologyDraw[DrawNum][_Mesh];
+        string MeshName = GameDB.Instance.biologyDraw[DrawNum][_Mesh];
         return (Mesh)Resources.Load("Biology/" + MeshName, typeof(Mesh));
     }
 
     private Texture GetDrawTexture()
     {
-        string textureName = GameDB.biologyDraw[DrawNum][_Texture];
+        string textureName = GameDB.Instance.biologyDraw[DrawNum][_Texture];
         Texture textrue = (Texture)Resources.Load("Biology/Texture/" + textureName, typeof(Texture));
         return textureName == "" ? null : textrue;
     }
     private float GetDrawScale()
     {
-        return float.Parse(GameDB.biologyDraw[DrawNum][_Scale]);
+        return float.Parse(GameDB.Instance.biologyDraw[DrawNum][_Scale]);
     }
 
 }

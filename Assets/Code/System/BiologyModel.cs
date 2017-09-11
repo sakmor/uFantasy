@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 class BiologyModel
 {
-    public GameDB GameDB = new GameDB(); //fixme:暫代
     public float WalkStep;
     public float CollisionSizeXZ;
     public float CollisionPostionY;
@@ -16,7 +15,7 @@ class BiologyModel
     public BiologyModel(string ModelName)
     {
         //如果無此資料
-        if (GameDB.biologyModel.ContainsKey(ModelName) == false)
+        if (GameDB.Instance.biologyModel.ContainsKey(ModelName) == false)
         {
             return;
         }

@@ -5,8 +5,6 @@ using UnityEngine;
 using UnityEditor;
 public class Biology : MonoBehaviour
 {
-
-
     [Header("生物編號")] public string BiologyNum = null;
     [Header("生物名稱")] public string Name;
     [Header("生物圖號")] public string DrawNum;
@@ -18,6 +16,8 @@ public class Biology : MonoBehaviour
 
     private GameObject _model; //fixme:這個有點壞設計
     private Animator Animator;
+
+    public Animation Animation;
 
 
 
@@ -56,6 +56,7 @@ public class Biology : MonoBehaviour
 
     private void SetBiologyAnimator()
     {
+        if (_model == null) return;
         Animator = _model.GetComponent<Animator>();
         if (Animator == null) Animator = _model.AddComponent<Animator>();
         DestroyImmediate(_model.GetComponent<Animation>());
@@ -82,11 +83,12 @@ public class Biology : MonoBehaviour
 
     private void SetBiologyDraw()
     {
-        //DrawNum 資料未指定時跳出
-        if (DrawNum == null) return;
 
         //清空所有子物件
         foreach (Transform child in transform) { DestroyImmediate(child.gameObject); }
+
+        //DrawNum 資料未指定時跳出
+        if (DrawNum == null) return;
 
         //讀取圖號資料
         BiologyDraw BiologyDraw = new BiologyDraw(DrawNum);

@@ -6,7 +6,7 @@ using System;
 
 public class BiologyBuilder//fixme:名字怪怪的
 {
-    public GameDB GameDB = new GameDB(); //fixme:暫代
+    // public GameDB GameDB = new GameDB(); //fixme:暫代
 
     private int _Name = 1, _DrawNum = 2, _Tpye = 3, _Lv = 4, _Ai = 5;
 
@@ -20,7 +20,7 @@ public class BiologyBuilder//fixme:名字怪怪的
     public BiologyBuilder(string BiologyNum)
     {
         //如果無此資料
-        if (GameDB.biologyDB.ContainsKey(BiologyNum) == false)
+        if (GameDB.Instance.biologyDB.ContainsKey(BiologyNum) == false)
         {
             return;
         }
@@ -38,31 +38,31 @@ public class BiologyBuilder//fixme:名字怪怪的
 
     private int GetBioAi()
     {
-        int result = int.Parse(GameDB.biologyDB[BiologyNum][_Ai]);
+        int result = int.Parse(GameDB.Instance.biologyDB[BiologyNum][_Ai]);
         return result;
     }
 
     private int GetBioLv()
     {
-        int result = int.Parse(GameDB.biologyDB[BiologyNum][_Lv]);
+        int result = int.Parse(GameDB.Instance.biologyDB[BiologyNum][_Lv]);
         return result;
     }
 
     private uFantasy.Enum.BiologyType GetBioType()
     {
-        var result = int.Parse(GameDB.biologyDB[BiologyNum][_Tpye]);
+        var result = int.Parse(GameDB.Instance.biologyDB[BiologyNum][_Tpye]);
         return (uFantasy.Enum.BiologyType)result;
     }
 
     private string GetBioDrawNum()
     {
-        var result = GameDB.biologyDB[BiologyNum][_DrawNum];
+        var result = GameDB.Instance.biologyDB[BiologyNum][_DrawNum];
         return result;
     }
 
     private string GetBioName()
     {
-        string result = GameDB.biologyDB[BiologyNum][_Name];
+        string result = GameDB.Instance.biologyDB[BiologyNum][_Name];
         return result;
     }
 
