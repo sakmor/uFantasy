@@ -60,7 +60,7 @@ public class Biology : MonoBehaviour
         Animator = _model.GetComponent<Animator>();
         if (Animator == null) Animator = _model.AddComponent<Animator>();
         DestroyImmediate(_model.GetComponent<Animation>());
-        Animator.runtimeAnimatorController = Resources.Load("Biology/Controller/" + ModelName) as RuntimeAnimatorController;
+        Animator.runtimeAnimatorController = Resources.Load("Biology/Motions/" + ModelName) as RuntimeAnimatorController;
         if (Animator.runtimeAnimatorController == null) Debug.Log("Controller is Missing !");
     }
 
