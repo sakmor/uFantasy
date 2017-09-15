@@ -54,11 +54,10 @@ public class Biology : MonoBehaviour
     private void SetBiologyWeaponModel()
     {
         if (this.Weapon == null) return;
-        GameObject weapn = Instantiate(this.Weapon);
-        //fixme:這樣太複雜，綁點應該落在第一層
-        weapn.transform.SetParent(transform.Find(ModelName + "/Armature/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:RightShoulder/mixamorig:RightArm/mixamorig:RightForeArm/mixamorig:RightHand").transform);
-        weapn.transform.localEulerAngles = Vector3.zero;
-        weapn.transform.localPosition = Vector3.zero;
+        GameObject Weapon = Instantiate(this.Weapon);
+        Weapon.transform.SetParent(FindChild("mixamorig:RightHand"));
+        Weapon.transform.localEulerAngles = Vector3.zero;
+        Weapon.transform.localPosition = Vector3.zero;
     }
 
     private void rename()
@@ -121,6 +120,17 @@ public class Biology : MonoBehaviour
         SkinnedMeshRenderer.sharedMaterial = new Material(Shader.Find("Unlit/Texture")); // fixme:不確定這樣的做法是否會造成記憶體浪費？
         SkinnedMeshRenderer.sharedMaterial.mainTexture = BiologyDraw.Texture;
 
+    }
+
+    private Transform FindChild(string childName)
+    {
+        Transform[] allChildren = GetComponentsInChildren<Transform>();
+
+        foreach (Transform child in allChildren)
+            if (child.name == childName) return child;
+
+        Debug.Log(" Find Nothing ! ");
+        return null;
     }
 
 
