@@ -13,6 +13,7 @@ public class Biology : MonoBehaviour
     [Header("AI編號")] public int Ai;
     private Dictionary<int, string[]> BiologyDB;
     [Header("生物模型")] public string ModelName;
+    [Header("武器模型")] public GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
 
     private GameObject _model; //fixme:這個有點壞設計
     private Animator Animator;
@@ -41,12 +42,23 @@ public class Biology : MonoBehaviour
         SetBiology();
         SetBiologyDraw();
         SetBiologyModel();
+        SetBiologyWeaponModel();
         SetBiologyAnimator();
 
 
         rename();
 
 
+    }
+
+    private void SetBiologyWeaponModel()
+    {
+        if (this.Weapon == null) return;
+        GameObject weapn = Instantiate(this.Weapon);
+        //fixme:這樣太複雜，綁點應該落在第一層
+        weapn.transform.SetParent(transform.Find(ModelName + "/Armature/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:RightShoulder/mixamorig:RightArm/mixamorig:RightForeArm/mixamorig:RightHand").transform);
+        weapn.transform.localEulerAngles = Vector3.zero;
+        weapn.transform.localPosition = Vector3.zero;
     }
 
     private void rename()
