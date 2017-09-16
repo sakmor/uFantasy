@@ -226,6 +226,12 @@ ModelImporter:
     4300004: Shadow
     4300006: Model
     7400000: Default Take
+    7400002: Battle
+    7400004: Run
+    7400006: Run_01
+    7400008: Tpose
+    7400010: Run2
+    7400012: Attack01
     9500000: //RootNode
     13700000: Model
   materials:
@@ -237,11 +243,28 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName: 
+    motionNodeName: <Root Transform>
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Default Take' has import animation warnings
+      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'mixamorig_Head' has translation animation
+      that will be discarded.\n\t'mixamorig_LeftArm' has translation animation that
+      will be discarded.\n\nClip 'Attack01' has import animation warnings that might
+      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
+      retargeting quality.\n\t'mixamorig_Head' has translation animation that will
+      be discarded.\n\t'mixamorig_LeftArm' has translation animation that will be
+      discarded.\n\nClip 'Battle' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'mixamorig_Neck'
+      has translation animation that will be discarded.\n\t'mixamorig_Head' has translation
+      animation that will be discarded.\n\t'mixamorig_LeftShoulder' has translation
+      animation that will be discarded.\n\t'mixamorig_RightShoulder' has translation
+      animation that will be discarded.\n\t'mixamorig_RightArm' has translation animation
+      that will be discarded.\n\nClip 'Run' has import animation warnings that might
+      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
+      retargeting quality.\n\t'mixamorig_Head' has translation animation that will
+      be discarded.\n\t'mixamorig_LeftUpLeg' has scale animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     animationCompression: 3
