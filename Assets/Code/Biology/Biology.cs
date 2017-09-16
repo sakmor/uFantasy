@@ -53,12 +53,9 @@ public class Biology : MonoBehaviour
 
     private void SetBiologyWeaponModel()
     {
-        if (this.Weapon == null || FindChild("R01") == null)
-        {
-            return;
-        }
+        if (this.Weapon == null || FindChild("mixamorig_RightHand") == null) return;
         GameObject Weapon = Instantiate(this.Weapon);
-        Weapon.transform.SetParent(FindChild("R01"));
+        Weapon.transform.SetParent(FindChild("mixamorig_RightHand"));
         Weapon.transform.localEulerAngles = Vector3.zero;
         Weapon.transform.localPosition = Vector3.zero;
     }

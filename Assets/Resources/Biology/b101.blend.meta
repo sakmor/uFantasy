@@ -110,6 +110,7 @@ ModelImporter:
     100204: mixamorig_Spine2
     100206: Model
     100208: R01
+    100210: mixamorig_RightForeArm_001
     400000: //RootNode
     400002: chest
     400004: f_index_01_L
@@ -215,6 +216,7 @@ ModelImporter:
     400204: mixamorig_Spine2
     400206: Model
     400208: R01
+    400210: mixamorig_RightForeArm_001
     2300000: Knight
     2300002: Shadow
     2300004: Sword02
@@ -247,24 +249,21 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Default Take' has import animation warnings
-      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'mixamorig_Head' has translation animation
-      that will be discarded.\n\t'mixamorig_LeftArm' has translation animation that
-      will be discarded.\n\nClip 'Attack01' has import animation warnings that might
-      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
-      retargeting quality.\n\t'mixamorig_Head' has translation animation that will
-      be discarded.\n\t'mixamorig_LeftArm' has translation animation that will be
-      discarded.\n\nClip 'Battle' has import animation warnings that might lower retargeting
-      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'mixamorig_Neck'
-      has translation animation that will be discarded.\n\t'mixamorig_Head' has translation
-      animation that will be discarded.\n\t'mixamorig_LeftShoulder' has translation
-      animation that will be discarded.\n\t'mixamorig_RightShoulder' has translation
-      animation that will be discarded.\n\t'mixamorig_RightArm' has translation animation
-      that will be discarded.\n\nClip 'Run' has import animation warnings that might
-      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
-      retargeting quality.\n\t'mixamorig_Head' has translation animation that will
-      be discarded.\n\t'mixamorig_LeftUpLeg' has scale animation that will be discarded.\n"
+    animationImportWarnings: "\nClip 'Attack01' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
+      improve retargeting quality.\n\t'mixamorig_Head' has translation animation that
+      will be discarded.\n\t'mixamorig_LeftArm' has translation animation that will
+      be discarded.\n\nClip 'Battle' has import animation warnings that might lower
+      retargeting quality:\nNote: Activate translation DOF on avatar to improve retargeting
+      quality.\n\t'mixamorig_Neck' has translation animation that will be discarded.\n\t'mixamorig_Head'
+      has translation animation that will be discarded.\n\t'mixamorig_LeftShoulder'
+      has translation animation that will be discarded.\n\t'mixamorig_RightShoulder'
+      has translation animation that will be discarded.\n\t'mixamorig_RightArm' has
+      translation animation that will be discarded.\n\nClip 'Run' has import animation
+      warnings that might lower retargeting quality:\nNote: Activate translation DOF
+      on avatar to improve retargeting quality.\n\t'mixamorig_Head' has translation
+      animation that will be discarded.\n\t'mixamorig_LeftUpLeg' has scale animation
+      that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     animationCompression: 3
