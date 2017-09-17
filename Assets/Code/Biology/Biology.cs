@@ -12,6 +12,9 @@ public class Biology : MonoBehaviour
     [Header("生物等級")] public int Lv;
     [Header("AI編號")] public int Ai;
     private Dictionary<int, string[]> BiologyDB;
+
+
+
     [Header("生物模型")] public string ModelName;
     [Header("武器模型")] public GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
 
@@ -132,6 +135,9 @@ public class Biology : MonoBehaviour
         Debug.Log(" Find Nothing !: " + childName);
         return null;
     }
-
+    public void DestroyGameObject()
+    {
+        DestroyImmediate(gameObject);
+    }
 
 }

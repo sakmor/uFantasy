@@ -14,10 +14,16 @@ public class BiologyEditor : Editor
         {
             Biology.LoadDB();
         }
-
+        if (GUILayout.Button("移除生物"))
+        {
+            Selection.activeGameObject = GameObject.Find("生物清單").gameObject;
+            Biology.DestroyGameObject();
+        }
         if (GUILayout.Button("載入資訊"))
         {
             Biology.LoadDB();
         }
     }
+
+
 }

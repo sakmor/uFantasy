@@ -15,7 +15,7 @@ class BiologyModel
     public BiologyModel(string ModelName)
     {
         //如果無此資料
-        if (GameDB.Instance.biologyModel.ContainsKey(ModelName) == false)
+        if (ModelName == "" || GameDB.Instance.biologyModel.ContainsKey(ModelName) == false)
         {
             return;
         }

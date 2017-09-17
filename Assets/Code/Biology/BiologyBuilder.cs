@@ -19,7 +19,7 @@ public class BiologyBuilder//fixme:名字怪怪的
     public BiologyBuilder(string BiologyNum)
     {
         //如果無此資料
-        if (GameDB.Instance.biologyDB.ContainsKey(BiologyNum) == false)
+        if (BiologyNum == "" || GameDB.Instance.biologyDB.ContainsKey(BiologyNum) == false)
         {
             return;
         }

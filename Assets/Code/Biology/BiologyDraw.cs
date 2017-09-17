@@ -15,7 +15,7 @@ public class BiologyDraw
     public BiologyDraw(string DrawNum)
     {
         //如果無此資料
-        if (GameDB.Instance.biologyDraw.ContainsKey(DrawNum) == false)
+        if (DrawNum == "" || GameDB.Instance.biologyDraw.ContainsKey(DrawNum) == false)
         {
             return;
         }
