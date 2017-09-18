@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 
 public class ExampleWindow : EditorWindow
 {
     bool FrameSelected = true;
     private string biologyName;
+    private BiologysMenu BiologysMenu;
     public string stringToEdit = "";
     private Vector2 scrollPos;
     bool BiologyNUMisRight = false;
@@ -21,25 +23,14 @@ public class ExampleWindow : EditorWindow
 
     void OnGUI()
     {
+        UpdateBiologysList();
+        DrawBiologysList();
+        DrawAddBiologyLayout();
 
-        BiologysMenu BiologysMenu = GameObject.Find("生物清單").GetComponent<BiologysMenu>();
-        BiologysMenu.UpdateBiologysList();
+    }
 
-        if (BiologysMenu.Biologys.Length == 0) return;
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-        GUILayout.Label(new GUIContent(" 生物清單", AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/List.png")));
-        FrameSelected = EditorGUI.Toggle(new Rect(100, 3, position.width, 10), "追蹤選取", FrameSelected);
-        foreach (var i in BiologysMenu.Biologys)
-        {
-            if (GUILayout.Button(i.name))
-            {
-                Selection.activeGameObject = i.gameObject;
-                stringToEdit = i.GetComponent<Biology>().BiologyNum;
-                if (FrameSelected) SceneView.lastActiveSceneView.FrameSelected();
-            }
-        }
-        EditorGUILayout.EndScrollView();
-        //==========================================
+    private void DrawAddBiologyLayout()
+    {
         GUILayout.Label(new GUIContent(" 輸入生物圖號 :" + biologyName, AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/Dice.png")));
         GUILayout.BeginHorizontal("box");
         stringToEdit = GUILayout.TextField(stringToEdit, 5);
@@ -61,13 +52,40 @@ public class ExampleWindow : EditorWindow
         {
             GameObject newBio = Instantiate(Resources.Load("Prefab/Biology", typeof(GameObject))) as GameObject;
             newBio.transform.SetParent(GameObject.Find("生物清單").transform);
+            newBio.transform.position = Vector3.up * 0.5f;
             newBio.GetComponent<Biology>().BiologyNum = stringToEdit;
             newBio.GetComponent<Biology>().LoadDB();
+            Selection.activeGameObject = newBio.gameObject;
+            SceneView.lastActiveSceneView.FrameSelected();
         }
         EditorGUI.EndDisabledGroup();
         GUILayout.EndHorizontal();
-
     }
+
+    private void DrawBiologysList()
+    {
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+        GUILayout.Label(new GUIContent(" 生物清單", AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/List.png")));
+        FrameSelected = EditorGUI.Toggle(new Rect(100, 3, position.width, 10), "追蹤選取", FrameSelected);
+        foreach (var i in BiologysMenu.Biologys)
+        {
+            if (GUILayout.Button(i.name))
+            {
+                Selection.activeGameObject = i.gameObject;
+                stringToEdit = i.GetComponent<Biology>().BiologyNum;
+                if (FrameSelected) SceneView.lastActiveSceneView.FrameSelected();
+            }
+        }
+        EditorGUILayout.EndScrollView();
+    }
+
+    private void UpdateBiologysList()
+    {
+        BiologysMenu = GameObject.Find("生物清單").GetComponent<BiologysMenu>();
+        BiologysMenu.UpdateBiologysList();
+        if (BiologysMenu.Biologys.Length == 0) return;
+    }
+
     public void OnInspectorUpdate()
     {
         this.Repaint();
