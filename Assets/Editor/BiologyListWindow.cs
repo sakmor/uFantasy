@@ -8,7 +8,7 @@ public class BiologyListWindow : EditorWindow
     private string biologyName;
     private BiologysMenu BiologysMenu;
     public string stringToEdit = "";
-    private Vector2 scrollPos;
+    private Vector2 DrawBiologysListScrollPos, DrawSelectedBiologyScrollPos;
     bool BiologyNUMisRight = false;
 
     [MenuItem("Window/自製編輯器/生物清單")]
@@ -26,7 +26,36 @@ public class BiologyListWindow : EditorWindow
     {
         UpdateBiologysList();
         DrawBiologysList();
+        DrawSelectedBiologyLayout();
         DrawAddBiologyLayout();
+    }
+
+    private void DrawSelectedBiologyLayout()
+    {
+
+        if (Selection.activeGameObject == null || Selection.activeGameObject.GetComponent<Biology>() == null) return;
+        GUILayout.Label(new GUIContent(" 選取生物 :" + Selection.activeGameObject.GetComponent<Biology>().name, AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/Target.png")));
+        GUILayout.BeginHorizontal("box");
+        stringToEdit = GUILayout.TextField(stringToEdit, 5);
+        if (GUILayout.Button("恢復編號"))
+        {
+
+        }
+        if (GUILayout.Button("替換編號"))
+        {
+
+        }
+        GUILayout.EndHorizontal();
+        DrawSelectedBiologyScrollPos = EditorGUILayout.BeginScrollView(DrawSelectedBiologyScrollPos);
+
+        GUILayout.BeginHorizontal("box");
+        Texture texture = AssetPreview.GetAssetPreview(Resources.Load("Biology/" + Selection.activeGameObject.GetComponent<Biology>().ModelName, typeof(GameObject))); //fixme:應該顯示生物編號轉圖號結果
+        GUILayout.Label(new GUIContent("", texture));
+        if (GUILayout.Button("移除生物")) Selection.activeGameObject.GetComponent<Biology>().DestroyGameObject();
+        if (GUILayout.Button("複製生物")) Instantiate(Selection.activeGameObject).transform.SetParent(Selection.activeGameObject.transform.parent);
+        EditorGUILayout.EndScrollView();
+        GUILayout.EndHorizontal();
+
 
     }
 
@@ -76,7 +105,7 @@ public class BiologyListWindow : EditorWindow
 
     private void DrawBiologysList()
     {
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+        DrawBiologysListScrollPos = EditorGUILayout.BeginScrollView(DrawBiologysListScrollPos);
         GUILayout.Label(new GUIContent(" 生物清單", AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/List.png")));
         FrameSelected = EditorGUI.Toggle(new Rect(100, 3, position.width, 10), "追蹤選取", FrameSelected);
         foreach (var i in BiologysMenu.Biologys)

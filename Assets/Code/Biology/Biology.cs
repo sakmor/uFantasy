@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEditor;
 [SelectionBaseAttribute]
 [DisallowMultipleComponent]
+[ExecuteInEditMode]
 public class Biology : MonoBehaviour
 {
 
@@ -30,10 +31,9 @@ public class Biology : MonoBehaviour
 
 
     // Use this for initialization
-    private void Start()
+    private void Awake()
     {
         LoadDB();
-
     }
 
 
