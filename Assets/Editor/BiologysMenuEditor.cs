@@ -19,6 +19,7 @@ public class BiologysMenuEditor : Editor
             if (GUILayout.Button(i.name))
             {
                 Selection.activeGameObject = i.gameObject;
+                SceneView.lastActiveSceneView.FrameSelected();
             }
         }
 

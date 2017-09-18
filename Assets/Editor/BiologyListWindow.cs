@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
-public class ExampleWindow : EditorWindow
+public class BiologyListWindow : EditorWindow
 {
     bool FrameSelected = true;
     private string biologyName;
@@ -12,9 +12,10 @@ public class ExampleWindow : EditorWindow
     bool BiologyNUMisRight = false;
 
     [MenuItem("Window/自製編輯器/生物清單")]
+
     public static void ShowWindow()
     {
-        ExampleWindow window = GetWindow<ExampleWindow>();
+        BiologyListWindow window = GetWindow<BiologyListWindow>();
         Texture icon = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/Biologys.png");
         GUIContent titleContent = new GUIContent(" 生物清單", icon);
         window.titleContent = titleContent;
@@ -28,6 +29,12 @@ public class ExampleWindow : EditorWindow
         DrawAddBiologyLayout();
 
     }
+
+    private bool JumpOutIfNotScene(string v)
+    { //fixme:現在這個視窗在StartScene會有問題
+        return true;
+    }
+
 
     private void DrawAddBiologyLayout()
     {
@@ -88,7 +95,6 @@ public class ExampleWindow : EditorWindow
     {
         BiologysMenu = GameObject.Find("生物清單").GetComponent<BiologysMenu>();
         BiologysMenu.UpdateBiologysList();
-        if (BiologysMenu.Biologys.Length == 0) return;
     }
 
     public void OnInspectorUpdate()

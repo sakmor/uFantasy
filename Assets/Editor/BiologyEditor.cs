@@ -25,6 +25,10 @@ public class BiologyEditor : Editor
         {
             Biology.LoadDB();
         }
+        if (GUILayout.Button("返回清單"))
+        {
+            Selection.activeGameObject = GameObject.Find("生物清單").gameObject;
+        }
     }
 
 
