@@ -3,14 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+[SelectionBaseAttribute]
+[DisallowMultipleComponent]
 public class Biology : MonoBehaviour
 {
-    [Header("生物編號")] public string BiologyNum = null;
-    [Header("生物名稱")] public string Name;
-    [Header("生物圖號")] public string DrawNum;
-    [Header("生物類型")] public uFantasy.Enum.BiologyType Type;
-    [Header("生物等級")] public int Lv;
-    [Header("AI編號")] public int Ai;
+
+    public string BiologyNum = null;
+    [Header("生物名稱")] private string Nname;
+    [Header("生物名稱")] private string Name;
+    [Header("生物圖號")] private string DrawNum;
+    [Header("生物類型")] private uFantasy.Enum.BiologyType Type;
+    [Header("生物等級")] private int Lv;
+    [Header("AI編號")] private int Ai;
     private Dictionary<int, string[]> BiologyDB;
 
 

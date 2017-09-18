@@ -3,7 +3,7 @@ using UnityEditor;
 
 public class ExampleWindow : EditorWindow
 {
-
+    bool FrameSelected = true;
     private string biologyName;
     public string stringToEdit = "";
     private Vector2 scrollPos;
@@ -28,12 +28,14 @@ public class ExampleWindow : EditorWindow
         if (BiologysMenu.Biologys.Length == 0) return;
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
         GUILayout.Label(new GUIContent(" 生物清單", AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/List.png")));
+        FrameSelected = EditorGUI.Toggle(new Rect(100, 3, position.width, 10), "追蹤選取", FrameSelected);
         foreach (var i in BiologysMenu.Biologys)
         {
             if (GUILayout.Button(i.name))
             {
                 Selection.activeGameObject = i.gameObject;
-                SceneView.lastActiveSceneView.FrameSelected();
+                stringToEdit = i.GetComponent<Biology>().BiologyNum;
+                if (FrameSelected) SceneView.lastActiveSceneView.FrameSelected();
             }
         }
         EditorGUILayout.EndScrollView();
@@ -66,6 +68,9 @@ public class ExampleWindow : EditorWindow
         GUILayout.EndHorizontal();
 
     }
-
+    public void OnInspectorUpdate()
+    {
+        this.Repaint();
+    }
 
 }
