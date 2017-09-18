@@ -31,6 +31,7 @@ public class ExampleWindow : EditorWindow
 
     private void DrawAddBiologyLayout()
     {
+        GameObject newBio = null;
         GUILayout.Label(new GUIContent(" 輸入生物圖號 :" + biologyName, AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/Dice.png")));
         GUILayout.BeginHorizontal("box");
         stringToEdit = GUILayout.TextField(stringToEdit, 5);
@@ -50,16 +51,20 @@ public class ExampleWindow : EditorWindow
         EditorGUI.BeginDisabledGroup(BiologyNUMisRight == false);
         if (GUILayout.Button("新增生物"))
         {
-            GameObject newBio = Instantiate(Resources.Load("Prefab/Biology", typeof(GameObject))) as GameObject;
+            newBio = Instantiate(Resources.Load("Prefab/Biology", typeof(GameObject))) as GameObject;
             newBio.transform.SetParent(GameObject.Find("生物清單").transform);
             newBio.transform.position = Vector3.up * 0.5f;
             newBio.GetComponent<Biology>().BiologyNum = stringToEdit;
             newBio.GetComponent<Biology>().LoadDB();
             Selection.activeGameObject = newBio.gameObject;
             SceneView.lastActiveSceneView.FrameSelected();
+
         }
         EditorGUI.EndDisabledGroup();
         GUILayout.EndHorizontal();
+        if (Selection.gameObjects.Length < 1) return;
+        Texture texture = AssetPreview.GetAssetPreview(Resources.Load("Biology/b101", typeof(GameObject))); //fixme:應該顯示生物編號轉圖號結果
+        GUILayout.Label(new GUIContent("", texture));
     }
 
     private void DrawBiologysList()

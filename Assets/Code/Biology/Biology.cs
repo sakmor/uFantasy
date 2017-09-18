@@ -46,13 +46,12 @@ public class Biology : MonoBehaviour
 
     public void LoadDB()
     {
+        transform.localScale = Vector3.one;
         SetBiology();
         SetBiologyDraw();
         SetBiologyModel();
         SetBiologyWeaponModel();
         SetBiologyAnimator();
-
-
         rename();
 
 
@@ -69,7 +68,7 @@ public class Biology : MonoBehaviour
 
     private void rename()
     {
-        name = "bio_" + Name;
+        name = BiologyNum + " " + Name;
     }
 
     private void SetBiologyAnimator()

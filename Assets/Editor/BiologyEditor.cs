@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEditor;
 
+[CanEditMultipleObjects]
 [CustomEditor(typeof(Biology))]
 public class BiologyEditor : Editor
 {
