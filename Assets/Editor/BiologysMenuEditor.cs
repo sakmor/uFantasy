@@ -13,19 +13,24 @@ public class BiologysMenuEditor : Editor
         BiologysMenu.UpdateBiologysList();
 
         if (BiologysMenu.Biologys.Length == 0) return;
-
-        foreach (var i in BiologysMenu.Biologys)
-        {
-            if (GUILayout.Button(i.name))
-            {
-                Selection.activeGameObject = i.gameObject;
-                SceneView.lastActiveSceneView.FrameSelected();
-            }
-        }
-
+        /*
+                foreach (var i in BiologysMenu.Biologys)
+                {
+                    if (GUILayout.Button(i.name))
+                    {
+                        Selection.activeGameObject = i.gameObject;
+                        SceneView.lastActiveSceneView.FrameSelected();
+                    }
+                }
+         */
         if (GUI.changed)
         {
             // Biology.LoadDB();
+        }
+        if (GUILayout.Button("開啟介面生物清單介面"))
+        {
+            BiologyListWindow.ShowWindow();
+
         }
 
     }

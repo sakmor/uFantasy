@@ -11,6 +11,8 @@ public class BiologyListWindow : EditorWindow
     private Vector2 DrawBiologysListScrollPos, DrawSelectedBiologyScrollPos;
     bool BiologyNUMisRight = false;
 
+    public string DrawSelectedBiologyLayout_Input { get; private set; }
+
     [MenuItem("Window/自製編輯器/生物清單")]
 
     public static void ShowWindow()
@@ -32,16 +34,21 @@ public class BiologyListWindow : EditorWindow
 
     private void DrawSelectedBiologyLayout()
     {
-
         if (Selection.activeGameObject == null || Selection.activeGameObject.GetComponent<Biology>() == null) return;
+
         GUILayout.Label(new GUIContent(" 選取生物 :" + Selection.activeGameObject.GetComponent<Biology>().name, AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/Target.png")));
         GUILayout.BeginHorizontal("box");
-        stringToEdit = GUILayout.TextField(stringToEdit, 5);
-        if (GUILayout.Button("恢復編號"))
+        DrawSelectedBiologyLayout_Input = Selection.activeGameObject.GetComponent<Biology>().BiologyNum;
+        DrawSelectedBiologyLayout_Input = GUILayout.TextField(DrawSelectedBiologyLayout_Input, 5);
+        if (DrawSelectedBiologyLayout_Input != "" && GameDB.Instance.biologyDB.ContainsKey(DrawSelectedBiologyLayout_Input))
+        { }
+        Selection.activeGameObject.GetComponent<Biology>().BiologyNum = DrawSelectedBiologyLayout_Input;
+
+        if (GUILayout.Button("上一項"))
         {
 
         }
-        if (GUILayout.Button("替換編號"))
+        if (GUILayout.Button("下一項"))
         {
 
         }
@@ -99,8 +106,11 @@ public class BiologyListWindow : EditorWindow
         EditorGUI.EndDisabledGroup();
         GUILayout.EndHorizontal();
         if (Selection.gameObjects.Length < 1) return;
-        Texture texture = AssetPreview.GetAssetPreview(Resources.Load("Biology/b101", typeof(GameObject))); //fixme:應該顯示生物編號轉圖號結果
-        GUILayout.Label(new GUIContent("", texture));
+        if (BiologyNUMisRight)
+        {
+            Texture texture = AssetPreview.GetAssetPreview(Resources.Load("Biology/b101", typeof(GameObject))); //fixme:應該顯示生物編號轉圖號結果
+            GUILayout.Label(new GUIContent("", texture));
+        }
     }
 
     private void DrawBiologysList()

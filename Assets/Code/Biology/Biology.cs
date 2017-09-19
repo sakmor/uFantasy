@@ -9,7 +9,7 @@ using UnityEditor;
 public class Biology : MonoBehaviour
 {
 
-    public string BiologyNum = null;
+    [Header("生物編號")] public string BiologyNum = null;
     [Header("生物名稱")] private string Nname;
     [Header("生物名稱")] private string Name;
     [Header("生物圖號")] private string DrawNum;
@@ -18,15 +18,11 @@ public class Biology : MonoBehaviour
     [Header("AI編號")] private int Ai;
     private Dictionary<int, string[]> BiologyDB;
 
-
-
     [Header("生物模型")] public string ModelName;
     [Header("武器模型")] public GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
 
     private GameObject _model; //fixme:這個有點壞設計
     private Animator Animator;
-
-    public Animation Animation;
 
 
 
