@@ -29,7 +29,7 @@ public class Biology : MonoBehaviour
     // Use this for initialization
     private void Awake()
     {
-        // LoadDB();
+        LoadDB();
     }
 
 
@@ -80,7 +80,7 @@ public class Biology : MonoBehaviour
         if (Animator == null) Animator = _model.AddComponent<Animator>();
         DestroyImmediate(_model.GetComponent<Animation>());
         Animator.runtimeAnimatorController = Resources.Load("Biology/Motions/" + ModelName) as RuntimeAnimatorController;
-        if (Animator.runtimeAnimatorController == null) Debug.Log("Controller is Missing !");
+        if (Animator.runtimeAnimatorController == null && BiologyNum != "99999") Debug.Log("Controller is Missing !");
     }
 
     private void SetBiologyModel()
@@ -102,12 +102,21 @@ public class Biology : MonoBehaviour
 
     private void SetBiologyDraw()
     {
+        //預設使用空生物
+        _model = Instantiate(Resources.Load("Biology/Empty") as GameObject);
+        _model.transform.SetParent(transform);
+        _model.transform.localPosition = Vector3.zero;
+        _model.name = "空生物";
 
         //清空所有子物件
         foreach (Transform child in transform) { DestroyImmediate(child.gameObject); }
 
         //DrawNum 資料未指定時跳出
-        if (DrawNum == null) return;
+        if (DrawNum == null)
+        {
+
+            return;
+        }
 
         //讀取圖號資料
         BiologyDraw BiologyDraw = new BiologyDraw(DrawNum);

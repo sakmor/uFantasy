@@ -7,7 +7,7 @@ public class BiologyListWindow : EditorWindow
     bool FrameSelected = true;
     private string biologyName;
     private BiologysMenu BiologysMenu;
-    public string stringToEdit = "";
+
     private Vector2 DrawBiologysListScrollPos, DrawSelectedBiologyScrollPos;
     bool BiologyNUMisRight = false;
 
@@ -40,24 +40,35 @@ public class BiologyListWindow : EditorWindow
         GUILayout.BeginHorizontal("box");
         DrawSelectedBiologyLayout_Input = Selection.activeGameObject.GetComponent<Biology>().BiologyNum;
         DrawSelectedBiologyLayout_Input = GUILayout.TextField(DrawSelectedBiologyLayout_Input, 5);
-        if (DrawSelectedBiologyLayout_Input != "" && GameDB.Instance.biologyDB.ContainsKey(DrawSelectedBiologyLayout_Input))
-        { }
-        Selection.activeGameObject.GetComponent<Biology>().BiologyNum = DrawSelectedBiologyLayout_Input;
-
         if (GUILayout.Button("上一項"))
         {
-
+            if (DrawSelectedBiologyLayout_Input == "99999") { DrawSelectedBiologyLayout_Input = "10001"; }
+            DrawSelectedBiologyLayout_Input = (int.Parse(DrawSelectedBiologyLayout_Input) + 1).ToString();
+            while (GameDB.Instance.biologyDB.ContainsKey(DrawSelectedBiologyLayout_Input) == false)
+            {
+                DrawSelectedBiologyLayout_Input = (int.Parse(DrawSelectedBiologyLayout_Input) + 1).ToString();
+                if (DrawSelectedBiologyLayout_Input == "99999") break;
+            }
         }
         if (GUILayout.Button("下一項"))
         {
-
+            if (DrawSelectedBiologyLayout_Input == "10001") { DrawSelectedBiologyLayout_Input = "99999"; }
+            DrawSelectedBiologyLayout_Input = (int.Parse(DrawSelectedBiologyLayout_Input) - 1).ToString();
+            while (GameDB.Instance.biologyDB.ContainsKey(DrawSelectedBiologyLayout_Input) == false)
+            {
+                DrawSelectedBiologyLayout_Input = (int.Parse(DrawSelectedBiologyLayout_Input) - 1).ToString();
+                if (DrawSelectedBiologyLayout_Input == "10001") break;
+            }
         }
+        Selection.activeGameObject.GetComponent<Biology>().BiologyNum = DrawSelectedBiologyLayout_Input;
+        Selection.activeGameObject.GetComponent<Biology>().LoadDB();
+
+
+
         GUILayout.EndHorizontal();
         DrawSelectedBiologyScrollPos = EditorGUILayout.BeginScrollView(DrawSelectedBiologyScrollPos);
 
         GUILayout.BeginHorizontal("box");
-        Texture texture = AssetPreview.GetAssetPreview(Resources.Load("Biology/" + Selection.activeGameObject.GetComponent<Biology>().ModelName, typeof(GameObject))); //fixme:應該顯示生物編號轉圖號結果
-        GUILayout.Label(new GUIContent("", texture));
         if (GUILayout.Button("移除生物")) Selection.activeGameObject.GetComponent<Biology>().DestroyGameObject();
         if (GUILayout.Button("複製生物"))
         {
@@ -84,28 +95,16 @@ public class BiologyListWindow : EditorWindow
         GameObject newBio = null;
         GUILayout.Label(new GUIContent(" 輸入生物圖號 :" + biologyName, AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/Dice.png")));
         GUILayout.BeginHorizontal("box");
-        stringToEdit = GUILayout.TextField(stringToEdit, 5);
-        if (GUI.changed)
-        {
-            Selection.activeGameObject.GetComponent<Biology>().LoadDB();
-            BiologyNUMisRight = GameDB.Instance.biologyDB.ContainsKey(stringToEdit) && stringToEdit != "";
-            if (BiologyNUMisRight == false) { biologyName = ""; return; }
-            biologyName = new BiologyBuilder(stringToEdit).Name;
-        }
 
-        if (GUILayout.Button("清除"))
-        {
-            stringToEdit = "";
-            BiologyNUMisRight = false;
 
-        }
+
         EditorGUI.BeginDisabledGroup(BiologyNUMisRight == false);
-        if (GUILayout.Button("新增生物"))
+        if (GUILayout.Button("新增空白生物"))
         {
             newBio = Instantiate(Resources.Load("Prefab/Biology", typeof(GameObject))) as GameObject;
             newBio.transform.SetParent(GameObject.Find("生物清單").transform);
             newBio.transform.position = Vector3.up * 0.5f;
-            newBio.GetComponent<Biology>().BiologyNum = stringToEdit;
+            newBio.GetComponent<Biology>().BiologyNum = "99999";
             newBio.GetComponent<Biology>().LoadDB();
             Selection.activeGameObject = newBio.gameObject;
             SceneView.lastActiveSceneView.FrameSelected();
@@ -113,12 +112,7 @@ public class BiologyListWindow : EditorWindow
         }
         EditorGUI.EndDisabledGroup();
         GUILayout.EndHorizontal();
-        if (Selection.gameObjects.Length < 1) return;
-        if (BiologyNUMisRight)
-        {
-            Texture texture = AssetPreview.GetAssetPreview(Resources.Load("Biology/b101", typeof(GameObject))); //fixme:應該顯示生物編號轉圖號結果
-            GUILayout.Label(new GUIContent("", texture));
-        }
+
     }
 
     private void DrawBiologysList()
@@ -131,7 +125,7 @@ public class BiologyListWindow : EditorWindow
             if (GUILayout.Button(i.name))
             {
                 Selection.activeGameObject = i.gameObject;
-                stringToEdit = i.GetComponent<Biology>().BiologyNum;
+                DrawSelectedBiologyLayout_Input = i.GetComponent<Biology>().BiologyNum;
                 if (FrameSelected) SceneView.lastActiveSceneView.FrameSelected();
             }
         }
