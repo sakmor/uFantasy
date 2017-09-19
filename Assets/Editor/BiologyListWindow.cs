@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Text.RegularExpressions;
 
 public class BiologyListWindow : EditorWindow
 {
@@ -40,6 +41,7 @@ public class BiologyListWindow : EditorWindow
         GUILayout.BeginHorizontal("box");
         DrawSelectedBiologyLayout_Input = Selection.activeGameObject.GetComponent<Biology>().BiologyNum;
         DrawSelectedBiologyLayout_Input = GUILayout.TextField(DrawSelectedBiologyLayout_Input, 5);
+        DrawSelectedBiologyLayout_Input = Regex.Replace(DrawSelectedBiologyLayout_Input, "[^0-9]", "");
         if (GUILayout.Button("上一項"))
         {
             if (DrawSelectedBiologyLayout_Input == "99999") { DrawSelectedBiologyLayout_Input = "10001"; }
@@ -47,7 +49,7 @@ public class BiologyListWindow : EditorWindow
             while (GameDB.Instance.biologyDB.ContainsKey(DrawSelectedBiologyLayout_Input) == false)
             {
                 DrawSelectedBiologyLayout_Input = (int.Parse(DrawSelectedBiologyLayout_Input) + 1).ToString();
-                if (DrawSelectedBiologyLayout_Input == "99999") break;
+                if (DrawSelectedBiologyLayout_Input == "99999") { DrawSelectedBiologyLayout_Input = "10001"; break; }
             }
         }
         if (GUILayout.Button("下一項"))
@@ -96,9 +98,6 @@ public class BiologyListWindow : EditorWindow
         GUILayout.Label(new GUIContent(" 輸入生物圖號 :" + biologyName, AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/Dice.png")));
         GUILayout.BeginHorizontal("box");
 
-
-
-        EditorGUI.BeginDisabledGroup(BiologyNUMisRight == false);
         if (GUILayout.Button("新增空白生物"))
         {
             newBio = Instantiate(Resources.Load("Prefab/Biology", typeof(GameObject))) as GameObject;
@@ -110,7 +109,7 @@ public class BiologyListWindow : EditorWindow
             SceneView.lastActiveSceneView.FrameSelected();
 
         }
-        EditorGUI.EndDisabledGroup();
+
         GUILayout.EndHorizontal();
 
     }
