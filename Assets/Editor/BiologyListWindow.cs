@@ -59,7 +59,14 @@ public class BiologyListWindow : EditorWindow
         Texture texture = AssetPreview.GetAssetPreview(Resources.Load("Biology/" + Selection.activeGameObject.GetComponent<Biology>().ModelName, typeof(GameObject))); //fixme:應該顯示生物編號轉圖號結果
         GUILayout.Label(new GUIContent("", texture));
         if (GUILayout.Button("移除生物")) Selection.activeGameObject.GetComponent<Biology>().DestroyGameObject();
-        if (GUILayout.Button("複製生物")) Instantiate(Selection.activeGameObject).transform.SetParent(Selection.activeGameObject.transform.parent);
+        if (GUILayout.Button("複製生物"))
+        {
+            var dupBio = Instantiate(Selection.activeGameObject).transform;
+            dupBio.SetParent(Selection.activeGameObject.transform.parent);
+            dupBio.transform.localPosition = Vector3.zero + Vector3.up * 0.5f;
+            Selection.activeGameObject = dupBio.gameObject;
+            SceneView.lastActiveSceneView.FrameSelected();
+        }
         EditorGUILayout.EndScrollView();
         GUILayout.EndHorizontal();
 
@@ -80,6 +87,7 @@ public class BiologyListWindow : EditorWindow
         stringToEdit = GUILayout.TextField(stringToEdit, 5);
         if (GUI.changed)
         {
+            Selection.activeGameObject.GetComponent<Biology>().LoadDB();
             BiologyNUMisRight = GameDB.Instance.biologyDB.ContainsKey(stringToEdit) && stringToEdit != "";
             if (BiologyNUMisRight == false) { biologyName = ""; return; }
             biologyName = new BiologyBuilder(stringToEdit).Name;

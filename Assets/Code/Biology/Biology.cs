@@ -29,16 +29,22 @@ public class Biology : MonoBehaviour
     // Use this for initialization
     private void Awake()
     {
-        LoadDB();
+        // LoadDB();
     }
 
 
-    // Update is called once per frame
     private void Update()
     {
+        EditorOnly();
 
     }
 
+    private void EditorOnly()
+    {
+#if UNITY_EDITOR
+        transform.position = new Vector3(Mathf.Round(transform.position.x), 0.5f, Mathf.Round(transform.position.z));
+#endif
+    }
 
     public void LoadDB()
     {

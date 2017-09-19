@@ -11,7 +11,11 @@ public class BiologyEditor : Editor
     {
         DrawDefaultInspector();
         Biology Biology = (Biology)target;
-        Biology.LoadDB();
+
+        if (GUI.changed)
+        {
+            Biology.LoadDB();
+        }
         if (GUILayout.Button("載入資訊"))
         {
             Biology.LoadDB();
@@ -33,5 +37,9 @@ public class BiologyEditor : Editor
                 }
         */
 
+    }
+    public void OnInspectorUpdate()
+    {
+        this.Repaint();
     }
 }
