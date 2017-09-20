@@ -39,7 +39,7 @@ public class BiologyListWindow : EditorWindow
     private void DrawMapEditor()
     {
         GUILayout.Label(new GUIContent(" 地圖編輯", AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/List.png")));
-
+        if (GUILayout.Button("鎖圖層")) { EditorExpand.SetSortingLayerLocked(8, true); }
         GUILayout.BeginVertical("box");
         selGridInt = GUILayout.SelectionGrid(selGridInt, selStrings, 2);
         SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
