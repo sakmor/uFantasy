@@ -27,10 +27,33 @@ public class BiologyListWindow : EditorWindow
 
     void OnGUI()
     {
+        DrawMapEditor();
         UpdateBiologysList();
         DrawBiologysList();
         DrawSelectedBiologyLayout();
         DrawAddBiologyLayout();
+    }
+    bool MapMode = true, bioMode = false;
+    int selGridInt = 0;
+    String[] selStrings = { "生物模式", "地圖模式" };
+    private void DrawMapEditor()
+    {
+        GUILayout.Label(new GUIContent(" 地圖編輯", AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/List.png")));
+
+        GUILayout.BeginVertical("box");
+        selGridInt = GUILayout.SelectionGrid(selGridInt, selStrings, 2);
+        SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
+        var i = tagManager.targetObjects[0].name;
+        SerializedProperty tagsProp = tagManager.FindProperty("tags");
+        // GUILayout.BeginHorizontal("box");
+        // MapMode = EditorGUILayout.BeginToggleGroup("aaa", MapMode);
+        // MapMode = GUILayout.Toggle(MapMode, "Unity Font", (GUIStyle)"Radio");
+        // bioMode = GUILayout.Toggle(bioMode, "Bitmap Font", (GUIStyle)"Radio");
+        // EditorGUILayout.EndToggleGroup();
+        // bioMode = EditorGUILayout.BeginToggleGroup("aaa", bioMode);
+        // EditorGUILayout.EndToggleGroup();
+        // GUILayout.EndHorizontal();
+        GUILayout.EndVertical();
     }
 
     private void DrawSelectedBiologyLayout()
@@ -116,8 +139,9 @@ public class BiologyListWindow : EditorWindow
 
     private void DrawBiologysList()
     {
-        DrawBiologysListScrollPos = EditorGUILayout.BeginScrollView(DrawBiologysListScrollPos);
         GUILayout.Label(new GUIContent(" 生物清單", AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/List.png")));
+        GUILayout.BeginVertical("box");
+        DrawBiologysListScrollPos = EditorGUILayout.BeginScrollView(DrawBiologysListScrollPos);
         FrameSelected = EditorGUI.Toggle(new Rect(100, 3, position.width, 10), "追蹤選取", FrameSelected);
         foreach (var i in BiologysMenu.Biologys)
         {
@@ -129,6 +153,7 @@ public class BiologyListWindow : EditorWindow
             }
         }
         EditorGUILayout.EndScrollView();
+        GUILayout.EndVertical();
     }
 
     private void UpdateBiologysList()
