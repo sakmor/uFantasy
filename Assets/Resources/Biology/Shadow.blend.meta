@@ -1,25 +1,17 @@
 fileFormatVersion: 2
-guid: d5d4901ce783b8f4b92b0b5495c1a6a4
-timeCreated: 1505384550
+guid: 84daeb8278d18214faf67f417b2ba315
+timeCreated: 1506156024
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 21
   fileIDToRecycleName:
-    100000: '>Capsule Blend File Data<'
-    100002: Camera
-    100004: Lamp
-    100006: //RootNode
-    100008: shadow
-    400000: '>Capsule Blend File Data<'
-    400002: Camera
-    400004: Lamp
-    400006: //RootNode
-    400008: shadow
-    2300000: shadow
-    2300002: //RootNode
-    3300000: shadow
-    3300002: //RootNode
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
     4300000: shadow
+    7400000: Default Take
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -42,6 +34,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -49,7 +42,10 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    importVisibility: 1
     importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -65,6 +61,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
+    normalCalculationMode: 4
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -84,7 +81,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

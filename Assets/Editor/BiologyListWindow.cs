@@ -33,6 +33,7 @@ public class BiologyListWindow : EditorWindow
 
     void OnHierarchyChange()
     {
+        if (Selection.activeGameObject && Selection.activeGameObject.GetComponent<Biology>()) Selection.activeGameObject.GetComponent<Biology>().LoadDB();
         UpdateBiologysList();
     }
     void OnGUI()
@@ -111,8 +112,6 @@ public class BiologyListWindow : EditorWindow
         }
         EditorGUILayout.EndScrollView();
         GUILayout.EndHorizontal();
-
-
     }
 
     private bool JumpOutIfNotScene(string v)

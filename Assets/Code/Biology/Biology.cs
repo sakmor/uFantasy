@@ -18,10 +18,10 @@ public class Biology : MonoBehaviour
     [Header("AI編號")] private int Ai;
     private Dictionary<int, string[]> BiologyDB;
 
-    [Header("生物模型")] public string ModelName;
-    [Header("武器模型")] public GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
+    [Header("生物模型")] private string ModelName;
+    [Header("武器模型")] private GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
 
-    private GameObject _model; //fixme:這個有點壞設計
+    private GameObject _model, Shadow; //fixme:這個有點壞設計
     private Animator Animator;
 
 
@@ -50,6 +50,15 @@ public class Biology : MonoBehaviour
         SetBiologyWeaponModel();
         SetBiologyAnimator();
         Rename();
+        AddShadow();
+    }
+
+    private void AddShadow()
+    {
+        Shadow = Instantiate(Resources.Load("Biology/Shadow") as GameObject);
+        Shadow.transform.SetParent(transform);
+        Shadow.transform.localPosition = Vector3.zero;
+        Shadow.name = "Shadow";
     }
 
     private void RemoveChild()
@@ -102,19 +111,12 @@ public class Biology : MonoBehaviour
 
     private void SetBiologyDraw()
     {
-        //預設使用空生物
-        _model = Instantiate(Resources.Load("Biology/Empty") as GameObject);
-        _model.transform.SetParent(transform);
-        _model.transform.localPosition = Vector3.zero;
-        _model.name = "空生物";
-
         //清空所有子物件
         foreach (Transform child in transform) { DestroyImmediate(child.gameObject); }
 
         //DrawNum 資料未指定時跳出
         if (DrawNum == null)
         {
-
             return;
         }
 
