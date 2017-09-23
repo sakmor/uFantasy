@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.EventSystems;
 using System;
 using System.Text.RegularExpressions;
 
@@ -7,7 +8,7 @@ public class BiologyListWindow : EditorWindow
 {
     bool FrameSelected = true;
     private string biologyName;
-    private BiologysMenu BiologysMenu;
+    private Biology[] BiologyList;
 
     private Vector2 DrawBiologysListScrollPos, DrawSelectedBiologyScrollPos;
     bool BiologyNUMisRight = false;
@@ -25,10 +26,18 @@ public class BiologyListWindow : EditorWindow
 
     }
 
+    void Awake()
+    {
+        UpdateBiologysList();
+    }
+
+    void OnHierarchyChange()
+    {
+        UpdateBiologysList();
+    }
     void OnGUI()
     {
-        DrawMapEditor();
-        UpdateBiologysList();
+        // DrawMapEditor();
         DrawBiologysList();
         DrawSelectedBiologyLayout();
         DrawAddBiologyLayout();
@@ -45,14 +54,6 @@ public class BiologyListWindow : EditorWindow
         SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
         var i = tagManager.targetObjects[0].name;
         SerializedProperty tagsProp = tagManager.FindProperty("tags");
-        // GUILayout.BeginHorizontal("box");
-        // MapMode = EditorGUILayout.BeginToggleGroup("aaa", MapMode);
-        // MapMode = GUILayout.Toggle(MapMode, "Unity Font", (GUIStyle)"Radio");
-        // bioMode = GUILayout.Toggle(bioMode, "Bitmap Font", (GUIStyle)"Radio");
-        // EditorGUILayout.EndToggleGroup();
-        // bioMode = EditorGUILayout.BeginToggleGroup("aaa", bioMode);
-        // EditorGUILayout.EndToggleGroup();
-        // GUILayout.EndHorizontal();
         GUILayout.EndVertical();
     }
 
@@ -65,6 +66,7 @@ public class BiologyListWindow : EditorWindow
         DrawSelectedBiologyLayout_Input = Selection.activeGameObject.GetComponent<Biology>().BiologyNum;
         DrawSelectedBiologyLayout_Input = GUILayout.TextField(DrawSelectedBiologyLayout_Input, 5);
         DrawSelectedBiologyLayout_Input = Regex.Replace(DrawSelectedBiologyLayout_Input, "[^0-9]", "");
+
         if (GUILayout.Button("上一項"))
         {
             if (DrawSelectedBiologyLayout_Input == "99999") { DrawSelectedBiologyLayout_Input = "10001"; }
@@ -85,16 +87,20 @@ public class BiologyListWindow : EditorWindow
                 if (DrawSelectedBiologyLayout_Input == "10001") break;
             }
         }
-        Selection.activeGameObject.GetComponent<Biology>().BiologyNum = DrawSelectedBiologyLayout_Input;
-        Selection.activeGameObject.GetComponent<Biology>().LoadDB();
-
-
+        if (GUI.changed)
+        {
+            Selection.activeGameObject.GetComponent<Biology>().BiologyNum = DrawSelectedBiologyLayout_Input;
+            Selection.activeGameObject.GetComponent<Biology>().LoadDB();
+        }
 
         GUILayout.EndHorizontal();
         DrawSelectedBiologyScrollPos = EditorGUILayout.BeginScrollView(DrawSelectedBiologyScrollPos);
 
         GUILayout.BeginHorizontal("box");
-        if (GUILayout.Button("移除生物")) Selection.activeGameObject.GetComponent<Biology>().DestroyGameObject();
+        if (GUILayout.Button("移除生物"))
+        {
+            Selection.activeGameObject.GetComponent<Biology>().DestroyGameObject();
+        }
         if (GUILayout.Button("複製生物"))
         {
             var dupBio = Instantiate(Selection.activeGameObject).transform;
@@ -139,11 +145,12 @@ public class BiologyListWindow : EditorWindow
 
     private void DrawBiologysList()
     {
+        FrameSelected = EditorGUI.Toggle(new Rect(100, 3, position.width, 10), "追蹤選取", FrameSelected);
         GUILayout.Label(new GUIContent(" 生物清單", AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor/List.png")));
         GUILayout.BeginVertical("box");
         DrawBiologysListScrollPos = EditorGUILayout.BeginScrollView(DrawBiologysListScrollPos);
-        FrameSelected = EditorGUI.Toggle(new Rect(100, 3, position.width, 10), "追蹤選取", FrameSelected);
-        foreach (var i in BiologysMenu.Biologys)
+        UpdateBiologysList();
+        foreach (var i in BiologyList)
         {
             if (GUILayout.Button(i.name))
             {
@@ -158,8 +165,7 @@ public class BiologyListWindow : EditorWindow
 
     private void UpdateBiologysList()
     {
-        BiologysMenu = GameObject.Find("生物清單").GetComponent<BiologysMenu>();
-        BiologysMenu.UpdateBiologysList();
+        BiologyList = GameObject.Find("生物清單").GetComponentsInChildren<Biology>();
     }
 
     public void OnInspectorUpdate()

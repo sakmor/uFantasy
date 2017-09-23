@@ -29,7 +29,7 @@ public class Biology : MonoBehaviour
     // Use this for initialization
     private void Awake()
     {
-        LoadDB();
+        // LoadDB();
     }
 
 
@@ -42,15 +42,22 @@ public class Biology : MonoBehaviour
 
     public void LoadDB()
     {
+        RemoveChild();
         transform.localScale = Vector3.one;
         SetBiology();
         SetBiologyDraw();
         SetBiologyModel();
         SetBiologyWeaponModel();
         SetBiologyAnimator();
-        rename();
+        Rename();
+    }
 
-
+    private void RemoveChild()
+    {
+        foreach (Transform child in transform)
+        {
+            DestroyImmediate(child.gameObject);
+        }
     }
 
     private void SetBiologyWeaponModel()
@@ -62,7 +69,7 @@ public class Biology : MonoBehaviour
         Weapon.transform.localPosition = Vector3.zero;
     }
 
-    private void rename()
+    private void Rename()
     {
         name = BiologyNum + " " + Name;
     }
@@ -72,7 +79,6 @@ public class Biology : MonoBehaviour
         if (_model == null) return;
         Animator = _model.GetComponent<Animator>();
         if (Animator == null) Animator = _model.AddComponent<Animator>();
-        DestroyImmediate(_model.GetComponent<Animation>());
         Animator.runtimeAnimatorController = Resources.Load("Biology/Motions/" + ModelName) as RuntimeAnimatorController;
         if (Animator.runtimeAnimatorController == null && BiologyNum != "99999") Debug.Log("Controller is Missing !");
     }
