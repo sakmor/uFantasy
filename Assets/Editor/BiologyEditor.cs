@@ -18,7 +18,8 @@ public class BiologyEditor : Editor
         DrawSelectedBiologyLayout();
         if (GUI.changed)
         {
-            Biology.LoadDB();
+            // Biology.LoadDB();
+            Biology.SetAnimatorState(Biology.State);
         }
         if (GUILayout.Button("移除生物"))
         {
@@ -75,7 +76,7 @@ public class BiologyEditor : Editor
         if (GUI.changed)
         {
             Selection.activeGameObject.GetComponent<Biology>().BiologyNum = Biology.BiologyNum;
-            Selection.activeGameObject.GetComponent<Biology>().LoadDB();
+            // Selection.activeGameObject.GetComponent<Biology>().LoadDB();
         }
 
         GUILayout.EndHorizontal();

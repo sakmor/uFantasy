@@ -2,18 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BiologyAnimator : MonoBehaviour
+public class BiologyAnimator
 {
-
+    public uFantasy.Enum.State state;
     // Use this for initialization
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

@@ -19,12 +19,12 @@ public class Biology : MonoBehaviour
     private Dictionary<int, string[]> BiologyDB;
 
     [Header("生物模型")] private string ModelName;
-    [Header("武器模型")] private GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
+    [Header("武器模型")] public GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
 
     private GameObject _model, Shadow; //fixme:這個有點壞設計
     private Animator Animator;
-
-
+    private BiologyAnimator BiologyAnimator;
+    public uFantasy.Enum.State State;
 
     // Use this for initialization
     private void Awake()
@@ -38,7 +38,10 @@ public class Biology : MonoBehaviour
 
     }
 
-
+    public void SetAnimatorState(uFantasy.Enum.State State)
+    {
+        Animator.SetInteger("State", (int)State);
+    }
 
     public void LoadDB()
     {
@@ -50,7 +53,7 @@ public class Biology : MonoBehaviour
         SetBiologyWeaponModel();
         SetBiologyAnimator();
         Rename();
-        AddShadow();
+        AddShazdow();
     }
 
     private void AddShadow()
@@ -90,6 +93,7 @@ public class Biology : MonoBehaviour
         if (Animator == null) Animator = _model.AddComponent<Animator>();
         Animator.runtimeAnimatorController = Resources.Load("Biology/Motions/" + ModelName) as RuntimeAnimatorController;
         if (Animator.runtimeAnimatorController == null && BiologyNum != "99999") Debug.Log("Controller is Missing !");
+        BiologyAnimator = new BiologyAnimator();
     }
 
     private void SetBiologyModel()
