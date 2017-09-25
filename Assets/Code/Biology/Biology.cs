@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 [SelectionBase]
 [DisallowMultipleComponent]
-[ExecuteInEditMode]
+
 public class Biology : MonoBehaviour
 {
 
@@ -23,7 +23,7 @@ public class Biology : MonoBehaviour
 
     private GameObject _model, Shadow; //fixme:這個有點壞設計
     private Animator Animator;
-    private BiologyAnimator BiologyAnimator;
+    private BiologyMovement BiologyMovement;
     public uFantasy.Enum.State State;
 
     // Use this for initialization
@@ -35,7 +35,7 @@ public class Biology : MonoBehaviour
 
     private void Update()
     {
-
+        BiologyMovement.Update();
     }
 
     public void SetAnimatorState(uFantasy.Enum.State State)
@@ -54,6 +54,12 @@ public class Biology : MonoBehaviour
         SetBiologyAnimator();
         Rename();
         AddShadow();
+        SetBiologyMovement();
+    }
+
+    private void SetBiologyMovement()
+    {
+        BiologyMovement = new BiologyMovement(transform);
     }
 
     private void AddShadow()
@@ -93,7 +99,6 @@ public class Biology : MonoBehaviour
         if (Animator == null) Animator = _model.AddComponent<Animator>();
         Animator.runtimeAnimatorController = Resources.Load("Biology/Motions/" + ModelName) as RuntimeAnimatorController;
         if (Animator.runtimeAnimatorController == null && BiologyNum != "99999") Debug.Log("Controller is Missing !");
-        BiologyAnimator = new BiologyAnimator();
     }
 
     private void SetBiologyModel()
