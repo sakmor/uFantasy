@@ -26,6 +26,7 @@ public class BiologyMovement
 
     public void Update()
     {
+        // Biology.State = Biology.Animator.GetInteger("State"); fixme:用這方法更新狀態
         Move();
         FaceToGoal();
         Debug.Log(GoalPos);

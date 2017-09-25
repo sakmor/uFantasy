@@ -49,7 +49,6 @@ public class Biology : MonoBehaviour
                 Animator.CrossFade("Battle", 0.25f);
                 break;
             case uFantasy.Enum.State.Attack_01:
-                if (Animator.GetInteger("State") == 101) break;
                 BiologyMovement.Stop();
                 Animator.CrossFade("Attack_01", 0.25f);
                 Animator.SetInteger("State", 101);
