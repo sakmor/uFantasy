@@ -34,6 +34,7 @@ public class BiologyEditor : Editor
             Selection.activeGameObject.GetComponent<Biology>().setAction(uFantasy.Enum.State.Run);
             Selection.activeGameObject.GetComponent<Biology>().BiologyMovement.MoveTo(new Vector3(0, 0.5f, 0));
         }
+
         GUILayout.EndVertical();
 
 
@@ -90,6 +91,7 @@ public class BiologyEditor : Editor
             Biology.LoadDB();
         }
         EditorGUILayout.EndScrollView();
+
 
     }
 

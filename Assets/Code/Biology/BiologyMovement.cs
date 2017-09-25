@@ -4,83 +4,71 @@ using System.Collections.Generic;
 using UnityEngine;
 public class BiologyMovement
 {
-
+    UnityEngine.AI.NavMeshAgent NavMeshAgent;
     Transform BiologyTransfrom;
     Biology Biology;
     Vector3 GoalPos;
 
     private float Closest = 0.125f;
-    private float Speed = 2.5f;
+    private float Speed = 4.5f;
     public BiologyMovement(Biology biology)
     {
+        NavMeshAgent = biology.GetComponent<UnityEngine.AI.NavMeshAgent>();
+        NavMeshAgent.stoppingDistance = Closest;
+        NavMeshAgent.speed = Speed;
         BiologyTransfrom = biology.transform;
         Biology = biology;
-        Stop();
+        Biology.Invoke("GoRandom", 0);
+        // Stop();
     }
+
+
 
     public void Stop()
     {
         GoalPos = BiologyTransfrom.localPosition;
+        NavMeshAgent.isStopped = true;
+        Biology.setAction(uFantasy.Enum.State.Battle);
+        UpdateDestination();
     }
 
 
     public void Update()
     {
-        // Biology.State = Biology.Animator.GetInteger("State"); fixme:用這方法更新狀態
+        UpdateBiologyState();
         Move();
-        FaceToGoal();
-        Debug.Log(GoalPos);
     }
 
-    private void FaceToGoal()
+    private void UpdateBiologyState()
     {
-        if (isAngleLessClosest()) return;
-        Vector3 targetDir = GoalPos - BiologyTransfrom.position;
-        Vector3 newDir = Vector3.RotateTowards(BiologyTransfrom.forward, targetDir, Speed * Time.deltaTime, 0.0f);
-        BiologyTransfrom.localRotation = Quaternion.LookRotation(newDir);
-    }
-
-    private bool isAngleLessClosest()
-    {
-        float GoalPosAngle = getAngleGoalPos();
-        if (GoalPosAngle < Closest) return true;
-        if (GoalPosAngle >= Closest) return false;
-        return false;
-    }
-
-    private float getAngleGoalPos()
-    {
-        return Vector3.Angle(BiologyTransfrom.position, GoalPos);
-    }
-    private float getGoalPosDist()
-    {
-        return Vector3.Distance(BiologyTransfrom.position, GoalPos);
-    }
-
-    private bool isDistLessClosest()
-    {
-        float MovePosDist = getGoalPosDist();
-        if (MovePosDist < Closest) return true;
-        if (MovePosDist >= Closest) return false;
-        return false;
+        Biology.State = (uFantasy.Enum.State)Biology.Animator.GetInteger("State");
     }
 
     private void Move()
     {
-        if (Biology.State != uFantasy.Enum.State.Run) return;
-        if (isDistLessClosest())
+        if (NavMeshAgent.remainingDistance < Closest)
         {
-            Biology.setAction(uFantasy.Enum.State.Battle);
+
+            Stop();
+            Biology.Invoke("GoRandom", 3);
+            // GoRandom();
+
             return;
         }
-
-        BiologyTransfrom.localPosition = Vector3.MoveTowards(BiologyTransfrom.localPosition, GoalPos, Speed * Time.deltaTime);
-        Biology.setAction(uFantasy.Enum.State.Run);
     }
 
     public void MoveTo(Vector3 pos)
     {
         GoalPos = new Vector3(pos.x, 0.5f, pos.z);
+        UpdateDestination();
+    }
+
+    private void UpdateDestination()
+    {
+        if (Vector3.Distance(BiologyTransfrom.position, GoalPos) < Closest) return;
+        NavMeshAgent.isStopped = false;
+        NavMeshAgent.destination = GoalPos;
+        Biology.setAction(uFantasy.Enum.State.Run);
 
     }
 }

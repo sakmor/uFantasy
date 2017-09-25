@@ -32,7 +32,11 @@ public class Biology : MonoBehaviour
     {
         LoadDB();
     }
-
+    private void GoRandom() //fixme:測試好玩用的
+    {
+        GetComponent<UnityEngine.AI.NavMeshAgent>().isStopped = false;
+        BiologyMovement.MoveTo(transform.localPosition * UnityEngine.Random.Range(-10, 10));
+    }
     public void setAction(uFantasy.Enum.State state)
     {
         State = state;
@@ -57,7 +61,7 @@ public class Biology : MonoBehaviour
     }
 
 
-    private void Update()
+    public void Update()
     {
         BiologyMovement.Update();
         BiologyAnimator.Update();
