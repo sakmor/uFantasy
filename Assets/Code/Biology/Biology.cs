@@ -29,7 +29,7 @@ public class Biology : MonoBehaviour
     // Use this for initialization
     private void Awake()
     {
-        // LoadDB();
+        LoadDB();
     }
 
 
@@ -53,7 +53,7 @@ public class Biology : MonoBehaviour
         SetBiologyWeaponModel();
         SetBiologyAnimator();
         Rename();
-        AddShazdow();
+        AddShadow();
     }
 
     private void AddShadow()
