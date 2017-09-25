@@ -18,30 +18,24 @@ public class BiologyEditor : Editor
         DrawSelectedBiologyLayout();
         if (GUI.changed)
         {
-            // Biology.LoadDB();
-            Biology.SetAnimatorState(Biology.State);
+            Biology.LoadDB();
         }
         if (GUILayout.Button("移除生物"))
         {
             Selection.activeGameObject.GetComponent<Biology>().DestroyGameObject();
         }
-        GUILayout.EndVertical();
-        /*
-                if (GUI.changed)
-                {
-                    Biology.LoadDB();
-                }
-                if (GUILayout.Button("移除生物"))
-                {
-                    Selection.activeGameObject = GameObject.Find("生物清單").gameObject;
-                    Biology.DestroyGameObject(); //fixme:在unity 5.6 這樣的操作會造成錯誤訊息，如果2017不會的話就把這行備註更正吧
-                }
+        if (GUILayout.Button("Attack"))
+        {
+            Selection.activeGameObject.GetComponent<Biology>().setAction(uFantasy.Enum.State.Attack_01);
+        }
+        if (GUILayout.Button("Go"))
+        {
 
-                if (GUILayout.Button("返回清單"))
-                {
-                    Selection.activeGameObject = GameObject.Find("生物清單").gameObject;
-                }
-        */
+            Selection.activeGameObject.GetComponent<Biology>().setAction(uFantasy.Enum.State.Run);
+            Selection.activeGameObject.GetComponent<Biology>().BiologyMovement.MoveTo(new Vector3(0, 0.5f, 0));
+        }
+        GUILayout.EndVertical();
+
 
     }
 
@@ -76,7 +70,6 @@ public class BiologyEditor : Editor
         if (GUI.changed)
         {
             Selection.activeGameObject.GetComponent<Biology>().BiologyNum = Biology.BiologyNum;
-            // Selection.activeGameObject.GetComponent<Biology>().LoadDB();
         }
 
         GUILayout.EndHorizontal();

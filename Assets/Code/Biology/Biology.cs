@@ -22,9 +22,10 @@ public class Biology : MonoBehaviour
     [Header("武器模型")] public GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
 
     private GameObject _model, Shadow; //fixme:這個有點壞設計
-    private Animator Animator;
-    private BiologyMovement BiologyMovement;
-    public uFantasy.Enum.State State;
+    public Animator Animator;
+    public BiologyMovement BiologyMovement;
+    private BiologyAnimator BiologyAnimator;
+    [SerializeField] public uFantasy.Enum.State State;
 
     // Use this for initialization
     private void Awake()
@@ -32,15 +33,35 @@ public class Biology : MonoBehaviour
         LoadDB();
     }
 
+    public void setAction(uFantasy.Enum.State state)
+    {
+        State = state;
+        switch (state)
+        {
+            case uFantasy.Enum.State.Run:
+                if (Animator.GetInteger("State") == 600) break;
+                Animator.SetInteger("State", 600);
+                Animator.CrossFade("Run", 0.25f);
+                break;
+            case uFantasy.Enum.State.Battle:
+                if (Animator.GetInteger("State") == 0) break;
+                Animator.SetInteger("State", 0);
+                Animator.CrossFade("Battle", 0.25f);
+                break;
+            case uFantasy.Enum.State.Attack_01:
+                if (Animator.GetInteger("State") == 101) break;
+                BiologyMovement.Stop();
+                Animator.CrossFade("Attack_01", 0.25f);
+                Animator.SetInteger("State", 101);
+                break;
+        }
+    }
+
 
     private void Update()
     {
         BiologyMovement.Update();
-    }
-
-    public void SetAnimatorState(uFantasy.Enum.State State)
-    {
-        Animator.SetInteger("State", (int)State);
+        BiologyAnimator.Update();
     }
 
     public void LoadDB()
@@ -59,7 +80,7 @@ public class Biology : MonoBehaviour
 
     private void SetBiologyMovement()
     {
-        BiologyMovement = new BiologyMovement(transform);
+        BiologyMovement = new BiologyMovement(this);
     }
 
     private void AddShadow()
@@ -94,6 +115,7 @@ public class Biology : MonoBehaviour
 
     private void SetBiologyAnimator()
     {
+        BiologyAnimator = new BiologyAnimator(this);
         if (_model == null) return;
         Animator = _model.GetComponent<Animator>();
         if (Animator == null) Animator = _model.AddComponent<Animator>();

@@ -7707,7 +7707,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &749039367
 Transform:
   m_ObjectHideFlags: 0
@@ -7746,8 +7746,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BiologyNum: 50003
+  BiologyNum: 50006
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
+  Animator: {fileID: 0}
   State: 0
 --- !u!1 &752163510
 GameObject:
@@ -13966,7 +13967,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1344647629
 Transform:
   m_ObjectHideFlags: 0
@@ -14007,6 +14008,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BiologyNum: 50006
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
+  Animator: {fileID: 0}
   State: 0
 --- !u!1001 &1345490787
 Prefab:
@@ -17955,6 +17957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
+  Animator: {fileID: 0}
   State: 0
 --- !u!65 &1804391669
 BoxCollider:
@@ -17975,7 +17978,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1804391667}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.27, y: 0.5, z: -0.44}
+  m_LocalPosition: {x: -1.8, y: 0.5, z: 0.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1220322283}
