@@ -46,7 +46,7 @@ public class BiologyMovement
 
     private void Move()
     {
-        if (NavMeshAgent.remainingDistance < Closest)
+        if (NavMeshAgent.remainingDistance < Closest && NavMeshAgent.isStopped == false)
         {
             Stop();
             Biology.Invoke("GoRandom", 3);
