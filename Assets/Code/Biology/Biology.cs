@@ -35,7 +35,7 @@ public class Biology : MonoBehaviour
     private void GoRandom() //fixme:測試好玩用的
     {
         GetComponent<UnityEngine.AI.NavMeshAgent>().isStopped = false;
-        BiologyMovement.MoveTo(transform.localPosition * UnityEngine.Random.Range(-10, 10));
+        BiologyMovement.MoveTo(new Vector3(transform.localPosition.x + UnityEngine.Random.Range(-5, 5), 0.5f, transform.localPosition.z + UnityEngine.Random.Range(-5, 5)));
     }
     public void setAction(uFantasy.Enum.State state)
     {

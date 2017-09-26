@@ -48,11 +48,8 @@ public class BiologyMovement
     {
         if (NavMeshAgent.remainingDistance < Closest)
         {
-
             Stop();
             Biology.Invoke("GoRandom", 3);
-            // GoRandom();
-
             return;
         }
     }
