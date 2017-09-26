@@ -56,12 +56,12 @@ public class editorMenuCS : MonoBehaviour
 
         Dictionary<Vector3, GameObject> NewMap = GetCleanMap();
         foreach (var item in NewMap)
-        {
-            GameObjectUtility.SetNavMeshArea(item.Value, 0); //先預設為可走
-            if (NewMap.ContainsKey(item.Key + Vector3.up) || NewMap.ContainsKey(item.Key + Vector3.up * 2))
-            {
-                GameObjectUtility.SetNavMeshArea(item.Value, 1); //如果方塊的正上方兩格有物體則不可走
-            }
+        {   //先預設為可走
+            GameObjectUtility.SetNavMeshArea(item.Value, 0);
+            // if (NewMap.ContainsKey(item.Key + Vector3.up) || NewMap.ContainsKey(item.Key + Vector3.up * 2))
+            // {
+            //      GameObjectUtility.SetNavMeshArea(item.Value, 1); //如果方塊的正上方兩格有物體則不可走
+            // }
         }
 
         UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
