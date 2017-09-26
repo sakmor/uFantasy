@@ -50,7 +50,7 @@ public class editorMenuCS : MonoBehaviour
         return NewMap;
 
     }
-    [MenuItem("[Menu]/場景整理")]
+    [MenuItem("[Menu]/場景整理 %f")]
     static void SetNavigationBake()
     {
 
@@ -63,6 +63,8 @@ public class editorMenuCS : MonoBehaviour
                 GameObjectUtility.SetNavMeshArea(item.Value, 1); //如果方塊的正上方兩格有物體則不可走
             }
         }
+
+        UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
 
     }
 
