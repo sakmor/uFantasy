@@ -18,7 +18,7 @@ public class CubeEditor : Editor
         {
             foreach (var i in Selection.gameObjects)
             {
-                i.transform.eulerAngles += new Vector3(0, 0, -90);
+                i.transform.eulerAngles += new Vector3(0, 0, 90);
             }
         }
 
@@ -26,7 +26,7 @@ public class CubeEditor : Editor
         {
             foreach (var i in Selection.gameObjects)
             {
-                i.transform.eulerAngles += new Vector3(0, 0, 90);
+                i.transform.eulerAngles += new Vector3(0, 90, 0);
             }
         }
         GUILayout.EndHorizontal();
