@@ -1,21 +1,27 @@
 fileFormatVersion: 2
-guid: 354ff36aa96130042a4b1c0b6d9a1a23
-timeCreated: 1475077976
+guid: 3b7b3f2509339b947bdabd4600f651f8
+timeCreated: 1506477546
 licenseType: Free
 ModelImporter:
-  serializedVersion: 21
+  serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: 128_SandstoneStairs
+    100004: Camera
+    100006: Lamp
     400000: //RootNode
+    400002: 128_SandstoneStairs
+    400004: Camera
+    400006: Lamp
     2300000: //RootNode
+    2300002: 128_SandstoneStairs
     3300000: //RootNode
-    4300000: 00005
-    4300002: 10005
-    7400000: Take 001
-    9500000: //RootNode
+    3300002: 128_SandstoneStairs
+    4300000: 10001
+    4300002: 128_SandstoneStairs
   materials:
     importMaterials: 1
-    materialName: 1
+    materialName: 0
     materialSearch: 1
   animations:
     legacyGenerateAnimations: 4
@@ -35,7 +41,6 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -43,10 +48,7 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importVisibility: 0
     importBlendShapes: 1
-    importCameras: 0
-    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -62,7 +64,6 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-    normalCalculationMode: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -80,9 +81,9 @@ ModelImporter:
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
-    skeletonHasParents: 0
+    skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

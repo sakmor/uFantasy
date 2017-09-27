@@ -1,16 +1,26 @@
 fileFormatVersion: 2
-guid: cac80cb378b342b459113edec3536d51
-timeCreated: 1475077977
+guid: b383d38696cd469409c4c3f7a2979543
+timeCreated: 1475077976
 licenseType: Free
 ModelImporter:
-  serializedVersion: 21
+  serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: 2_Grass
+    100004: Camera
+    100006: Lamp
     400000: //RootNode
+    400002: 2_Grass
+    400004: Camera
+    400006: Lamp
     2300000: //RootNode
+    2300002: 2_Grass
     3300000: //RootNode
-    4300000: 00003
-    4300002: 10003
+    3300002: 2_Grass
+    4300000: 00002
+    4300002: 10002
+    4300004: 20_Glass
+    4300006: 2_Grass
   materials:
     importMaterials: 1
     materialName: 1
@@ -33,7 +43,6 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -41,10 +50,7 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importVisibility: 0
     importBlendShapes: 1
-    importCameras: 0
-    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -60,7 +66,6 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-    normalCalculationMode: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
