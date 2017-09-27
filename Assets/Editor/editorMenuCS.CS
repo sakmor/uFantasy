@@ -3,11 +3,54 @@ using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class editorMenuCS : MonoBehaviour
 {
+    public static float exeTime;
+    public static Dictionary<Vector3, GameObject> CleanMap;
 
-    static Dictionary<Vector3, GameObject> GetCleanMap()
+    [MenuItem("我的工具/場景整理 %f")]
+    static void SetNavigationBake()
+    {
+        exeTime = Time.realtimeSinceStartup;
+
+        GetCleanMap();
+        SetEveryCubeWalkable();
+        BuildNavMesh();
+        RemoveHideCube();
+
+        Debug.Log("整理完畢 " + (Time.realtimeSinceStartup - exeTime).ToString("F2"));
+
+    }
+    [MenuItem("我的工具/所有生物衝向目標 %v")]
+    static void GoGoalPos()
+    {
+        if (Application.isPlaying == false)
+        {
+            EditorUtility.DisplayDialog("System", "請在撥放模式下使用", "知道了");
+            return;
+        }
+
+        Biology[] Biology_List = FindObjectsOfType(typeof(Biology)) as Biology[];
+        Vector3 pos;
+        try
+        {
+            pos = GameObject.Find("GoalPos").transform.position;
+        }
+        catch
+        {
+            EditorUtility.DisplayDialog("System", "找不到GoalPos", "好");
+            return;
+        }
+
+        foreach (var Biology in Biology_List)
+        {
+            Biology.BiologyMovement.MoveTo(pos);
+        }
+
+    }
+    static void GetCleanMap()
     {
         CUBE[] CUBE_list = FindObjectsOfType(typeof(CUBE)) as CUBE[];
         Dictionary<Vector3, GameObject> NewMap = new Dictionary<Vector3, GameObject>();
@@ -25,49 +68,44 @@ public class editorMenuCS : MonoBehaviour
                 NewMap.Add(item.transform.position, item.gameObject);
             }
         }
+        CleanMap = NewMap;
 
-        // 完全看不見的物件移除 
-        //fixme: 會當機
-        /*
+    }
+    private static void RemoveHideCube()
+    {
+
         List<GameObject> DestoryList = new List<GameObject>();
-        foreach (var item in NewMap)
+        foreach (var item in CleanMap)
         {
-            if (NewMap.ContainsKey(item.Key + Vector3.up)
-             && NewMap.ContainsKey(item.Key + Vector3.down)
-             && NewMap.ContainsKey(item.Key + Vector3.left)
-             && NewMap.ContainsKey(item.Key + Vector3.right))
+            Vector3 pos = item.Key;
+            if (CleanMap.ContainsKey(pos + new Vector3(1, 0, 0))
+             && CleanMap.ContainsKey(pos + new Vector3(-1, 0, 0))
+             && CleanMap.ContainsKey(pos + new Vector3(0, 1, 0))
+             && CleanMap.ContainsKey(pos + new Vector3(0, -1, 0))
+             && CleanMap.ContainsKey(pos + new Vector3(0, 0, 1))
+             && CleanMap.ContainsKey(pos + new Vector3(0, 0, -1)))
             {
                 var temp = item.Value;
                 DestoryList.Add(item.Value);
-                // DestroyImmediate(temp); //如果上下左右都有方塊擋住則視為看不見
             }
         }
-        foreach (var gameObject in DestoryList)
+        for (var i = 0; i < DestoryList.Count; i++)
         {
-            DestroyImmediate(gameObject);
+            CleanMap.Remove(DestoryList[i].transform.position);
+            DestroyImmediate(DestoryList[i]);
         }
- */
-        return NewMap;
-
     }
-    [MenuItem("[Menu]/場景整理 %f")]
-    static void SetNavigationBake()
+
+    private static void BuildNavMesh()
     {
-
-        Dictionary<Vector3, GameObject> NewMap = GetCleanMap();
-        foreach (var item in NewMap)
-        {   //先預設為可走
-            GameObjectUtility.SetNavMeshArea(item.Value, 0);
-            // if (NewMap.ContainsKey(item.Key + Vector3.up) || NewMap.ContainsKey(item.Key + Vector3.up * 2))
-            // {
-            //      GameObjectUtility.SetNavMeshArea(item.Value, 1); //如果方塊的正上方兩格有物體則不可走
-            // }
-        }
-
         UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
-
     }
 
-
-
+    private static void SetEveryCubeWalkable()
+    {
+        foreach (var item in CleanMap)
+        {
+            GameObjectUtility.SetNavMeshArea(item.Value, 0);
+        }
+    }
 }

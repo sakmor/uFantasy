@@ -42,7 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 11
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 8
+    serializedVersion: 9
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -88,7 +88,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 112000002, guid: 2279e5fbd455f5a4e8ec50cb0da0d94f,
     type: 2}
-  m_ShadowMaskMode: 2
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2795,7 +2795,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 1725367321}
@@ -3999,10 +3998,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44088fd2443f9d849858878d250a9e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &181832431 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100000, guid: c9c2790c87c2b5a4096232106d764d30, type: 3}
-  m_PrefabInternal: {fileID: 913876616}
 --- !u!4 &181832432 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: c9c2790c87c2b5a4096232106d764d30, type: 3}
@@ -11580,7 +11575,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 502607751}
@@ -11690,7 +11684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 15751159}
@@ -12824,7 +12817,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 2072862056}
@@ -15593,7 +15585,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 16414915}
@@ -17925,7 +17916,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 1007633314}
@@ -21555,7 +21545,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 592198616}
@@ -23908,7 +23897,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 100801324}
@@ -24781,7 +24769,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 1992673348}
@@ -29576,7 +29563,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 2034275796}
@@ -33611,7 +33597,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 390339288}
@@ -38651,7 +38636,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 1872210101}
@@ -41044,7 +41028,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 753062535}
@@ -41900,7 +41883,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 1710976485}
@@ -42040,7 +42022,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 257016897}
@@ -42344,6 +42325,20 @@ Light:
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
+  m_FalloffTable:
+    m_Table[0]: 0
+    m_Table[1]: 0
+    m_Table[2]: 0
+    m_Table[3]: 0
+    m_Table[4]: 0
+    m_Table[5]: 0
+    m_Table[6]: 0
+    m_Table[7]: 0
+    m_Table[8]: 0
+    m_Table[9]: 0
+    m_Table[10]: 0
+    m_Table[11]: 0
+    m_Table[12]: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
@@ -43168,7 +43163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 2144849815}
@@ -46461,7 +46455,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 1339471092}
@@ -47331,7 +47324,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 1168234269}
@@ -48165,7 +48157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 2018140941}
@@ -49046,7 +49037,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 607838430}
@@ -50348,7 +50338,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Goal: {fileID: 181832431}
   BiologyNum: 10001
   Weapon: {fileID: 100000, guid: 33ffaa2ced0eb394dbff29a391d9b024, type: 3}
   Animator: {fileID: 50310834}
@@ -50633,6 +50622,7 @@ GameObject:
   - component: {fileID: 1971603484}
   - component: {fileID: 1971603483}
   - component: {fileID: 1971603488}
+  - component: {fileID: 1971603489}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -50722,6 +50712,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   profile: {fileID: 11400000, guid: eec14f4e79154df4a9f9251da99c5542, type: 2}
+--- !u!114 &1971603489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1971603482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9253c3231c613844893470b31cb3ebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  targetOffset: {x: 0, y: 0, z: 0}
+  distance: 5
+  maxDistance: 20
+  minDistance: 0.6
+  xSpeed: 200
+  ySpeed: 200
+  yMinLimit: -80
+  yMaxLimit: 80
+  zoomRate: 40
+  panSpeed: 0.3
+  zoomDampening: 5
 --- !u!1 &1972201789
 GameObject:
   m_ObjectHideFlags: 0

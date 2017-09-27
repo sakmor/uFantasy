@@ -24,16 +24,7 @@ public class BiologyEditor : Editor
         {
             Selection.activeGameObject.GetComponent<Biology>().DestroyGameObject();
         }
-        if (GUILayout.Button("Attack"))
-        {
-            Selection.activeGameObject.GetComponent<Biology>().setAction(uFantasy.Enum.State.Attack_01);
-        }
-        if (GUILayout.Button("Go"))
-        {
 
-            Selection.activeGameObject.GetComponent<Biology>().setAction(uFantasy.Enum.State.Run);
-            Selection.activeGameObject.GetComponent<Biology>().BiologyMovement.MoveTo(new Vector3(0, 0.5f, 0));
-        }
 
         GUILayout.EndVertical();
 

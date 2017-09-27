@@ -32,10 +32,24 @@ public class Biology : MonoBehaviour
     {
         LoadDB();
     }
-    private void GoRandom() //fixme:測試好玩用的
+
+    public void Update()
     {
-        GetComponent<UnityEngine.AI.NavMeshAgent>().isStopped = false;
-        BiologyMovement.MoveTo(new Vector3(transform.localPosition.x + UnityEngine.Random.Range(-5, 5), 0.5f, transform.localPosition.z + UnityEngine.Random.Range(-5, 5)));
+        BiologyMovement.Update();
+    }
+
+    public void LoadDB()
+    {
+        RemoveChild();
+        transform.localScale = Vector3.one;
+        SetBiology();
+        SetBiologyDraw();
+        SetBiologyModel();
+        SetBiologyWeaponModel();
+        SetBiologyAnimator();
+        Rename();
+        AddShadow();
+        SetBiologyMovement();
     }
     public void setAction(uFantasy.Enum.State state)
     {
@@ -59,28 +73,6 @@ public class Biology : MonoBehaviour
                 break;
         }
     }
-
-
-    public void Update()
-    {
-        BiologyMovement.Update();
-
-    }
-
-    public void LoadDB()
-    {
-        RemoveChild();
-        transform.localScale = Vector3.one;
-        SetBiology();
-        SetBiologyDraw();
-        SetBiologyModel();
-        SetBiologyWeaponModel();
-        SetBiologyAnimator();
-        Rename();
-        AddShadow();
-        SetBiologyMovement();
-    }
-
     private void SetBiologyMovement()
     {
         BiologyMovement = new BiologyMovement(this);
@@ -128,7 +120,7 @@ public class Biology : MonoBehaviour
     private void SetBiologyModel()
     {
         BiologyModel BiologyModel = new BiologyModel(ModelName);
-        GetComponent<BoxCollider>().center = Vector3.up * BiologyModel.CollisionPostionY;
+        GetComponent<BoxCollider>().center = Vector3.up * BiologyModel.CollisionPostionY;//fixme: 之後碰撞交給Nav Mesh Agent
         GetComponent<BoxCollider>().size = new Vector3(BiologyModel.CollisionSizeXZ, 1, BiologyModel.CollisionSizeXZ);
     }
 

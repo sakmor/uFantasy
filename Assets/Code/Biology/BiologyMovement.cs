@@ -18,8 +18,6 @@ public class BiologyMovement
         NavMeshAgent.speed = Speed;
         BiologyTransfrom = biology.transform;
         Biology = biology;
-        Biology.Invoke("GoRandom", 0);
-        // Stop();
     }
 
 
@@ -49,14 +47,13 @@ public class BiologyMovement
         if (NavMeshAgent.remainingDistance < Closest && NavMeshAgent.isStopped == false)
         {
             Stop();
-            Biology.Invoke("GoRandom", 3);
             return;
         }
     }
 
     public void MoveTo(Vector3 pos)
     {
-        GoalPos = new Vector3(pos.x, 0.5f, pos.z);
+        GoalPos = new Vector3(pos.x, pos.y, pos.z);
         UpdateDestination();
     }
 

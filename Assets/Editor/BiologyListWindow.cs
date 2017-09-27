@@ -128,7 +128,7 @@ public class BiologyListWindow : EditorWindow
             newBio.GetComponent<Biology>().BiologyNum = "99999";
             newBio.GetComponent<Biology>().LoadDB();
             Selection.activeGameObject = newBio.gameObject;
-            SceneView.lastActiveSceneView.FrameSelected();
+            if (FrameSelected) SceneView.lastActiveSceneView.FrameSelected();
 
         }
 
