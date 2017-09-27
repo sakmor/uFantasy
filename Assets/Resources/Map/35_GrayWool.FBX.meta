@@ -6,9 +6,17 @@ ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: 35_GrayWool
+    100004: Camera
+    100006: Lamp
     400000: //RootNode
+    400002: 35_GrayWool
+    400004: Camera
+    400006: Lamp
     2300000: //RootNode
+    2300002: 35_GrayWool
     3300000: //RootNode
+    3300002: 35_GrayWool
     4300000: 10357
     4300002: 35_GrayWool
   materials:

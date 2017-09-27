@@ -24,7 +24,7 @@ public class Biology : MonoBehaviour
     private GameObject _model, Shadow; //fixme:這個有點壞設計
     public Animator Animator;
     public BiologyMovement BiologyMovement;
-    private BiologyAnimator BiologyAnimator;
+
     [SerializeField] public uFantasy.Enum.State State;
 
     // Use this for initialization
@@ -64,7 +64,7 @@ public class Biology : MonoBehaviour
     public void Update()
     {
         BiologyMovement.Update();
-        BiologyAnimator.Update();
+
     }
 
     public void LoadDB()
@@ -118,7 +118,6 @@ public class Biology : MonoBehaviour
 
     private void SetBiologyAnimator()
     {
-        BiologyAnimator = new BiologyAnimator(this);
         if (_model == null) return;
         Animator = _model.GetComponent<Animator>();
         if (Animator == null) Animator = _model.AddComponent<Animator>();

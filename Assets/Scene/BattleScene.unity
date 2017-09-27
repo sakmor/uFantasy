@@ -58389,19 +58389,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c9c2790c87c2b5a4096232106d764d30, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.000000021855694
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c9c2790c87c2b5a4096232106d764d30, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00000004371139
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c9c2790c87c2b5a4096232106d764d30, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 1.0165751e-15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c9c2790c87c2b5a4096232106d764d30, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c9c2790c87c2b5a4096232106d764d30, type: 3}
       propertyPath: m_RootOrder
@@ -58426,7 +58426,7 @@ Prefab:
     - target: {fileID: 3300000, guid: c9c2790c87c2b5a4096232106d764d30, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4300004, guid: 103ec97496833cb448d81b0574607ef1, type: 3}
+      objectReference: {fileID: 4300002, guid: 92c33c2e98940334b8fe1453c4b2dd65, type: 3}
     - target: {fileID: 100000, guid: c9c2790c87c2b5a4096232106d764d30, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -58442,6 +58442,10 @@ Prefab:
     - target: {fileID: 100000, guid: c9c2790c87c2b5a4096232106d764d30, type: 3}
       propertyPath: m_NavMeshLayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c9c2790c87c2b5a4096232106d764d30, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c9c2790c87c2b5a4096232106d764d30, type: 3}
@@ -91574,7 +91578,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
