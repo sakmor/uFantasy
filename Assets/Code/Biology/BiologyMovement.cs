@@ -20,7 +20,7 @@ public class BiologyMovement
         NavMeshAgent = biology.GetComponent<UnityEngine.AI.NavMeshAgent>();
         NavMeshAgent.stoppingDistance = Closest;
         NavMeshAgent.speed = Speed;
-        NavMeshAgent.isStopped = false;
+        Stop();
 
     }
 
@@ -47,11 +47,9 @@ public class BiologyMovement
 
     private void Move()
     {
-        Debug.Log(BiologyTransfrom.name + ":" + NavMeshAgent.isStopped);
-        if (NavMeshAgent.remainingDistance < Closest && NavMeshAgent.isStopped == false)
+        if (NavMeshAgent.isStopped == false && Vector3.Distance(BiologyTransfrom.position, GoalPos) < Closest)
         {
             Stop();
-            return;
         }
     }
 

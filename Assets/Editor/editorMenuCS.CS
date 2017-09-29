@@ -10,7 +10,7 @@ public class editorMenuCS : MonoBehaviour
     public static float exeTime;
     public static Dictionary<Vector3, GameObject> CleanMap;
 
-    [MenuItem("我的工具/場景整理 %f")]
+    [MenuItem("我的工具/場景整理 %1")]
     static void SetNavigationBake()
     {
         exeTime = Time.realtimeSinceStartup;
@@ -23,7 +23,7 @@ public class editorMenuCS : MonoBehaviour
         Debug.Log("整理完畢 " + (Time.realtimeSinceStartup - exeTime).ToString("F2"));
 
     }
-    [MenuItem("我的工具/所有生物衝向目標 %F1")]
+    [MenuItem("我的工具/所有生物衝向目標 %2")]
     static void GoGoalPos()
     {
         if (Application.isPlaying == false)
