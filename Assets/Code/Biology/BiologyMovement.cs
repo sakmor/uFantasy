@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
 public class BiologyMovement
 {
-    UnityEngine.AI.NavMeshAgent NavMeshAgent;
+    public UnityEngine.AI.NavMeshAgent NavMeshAgent;
     Transform BiologyTransfrom;
     Biology Biology;
     Vector3 GoalPos;
@@ -13,11 +15,13 @@ public class BiologyMovement
     private float Speed = 4.5f;
     public BiologyMovement(Biology biology)
     {
+        Biology = biology;
+        BiologyTransfrom = biology.transform;
         NavMeshAgent = biology.GetComponent<UnityEngine.AI.NavMeshAgent>();
         NavMeshAgent.stoppingDistance = Closest;
         NavMeshAgent.speed = Speed;
-        BiologyTransfrom = biology.transform;
-        Biology = biology;
+        NavMeshAgent.isStopped = false;
+
     }
 
 
@@ -27,7 +31,6 @@ public class BiologyMovement
         GoalPos = BiologyTransfrom.localPosition;
         NavMeshAgent.isStopped = true;
         Biology.setAction(uFantasy.Enum.State.Battle);
-        UpdateDestination();
     }
 
 
@@ -44,6 +47,7 @@ public class BiologyMovement
 
     private void Move()
     {
+        Debug.Log(BiologyTransfrom.name + ":" + NavMeshAgent.isStopped);
         if (NavMeshAgent.remainingDistance < Closest && NavMeshAgent.isStopped == false)
         {
             Stop();
@@ -53,16 +57,10 @@ public class BiologyMovement
 
     public void MoveTo(Vector3 pos)
     {
-        GoalPos = new Vector3(pos.x, pos.y, pos.z);
-        UpdateDestination();
-    }
-
-    private void UpdateDestination()
-    {
-        if (Vector3.Distance(BiologyTransfrom.position, GoalPos) < Closest) return;
+        GoalPos = pos;
+        NavMeshAgent.SetDestination(GoalPos);
         NavMeshAgent.isStopped = false;
-        NavMeshAgent.destination = GoalPos;
         Biology.setAction(uFantasy.Enum.State.Run);
-
     }
+
 }

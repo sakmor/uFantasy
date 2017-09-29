@@ -23,7 +23,7 @@ public class editorMenuCS : MonoBehaviour
         Debug.Log("整理完畢 " + (Time.realtimeSinceStartup - exeTime).ToString("F2"));
 
     }
-    [MenuItem("我的工具/所有生物衝向目標 %v")]
+    [MenuItem("我的工具/所有生物衝向目標 %F1")]
     static void GoGoalPos()
     {
         if (Application.isPlaying == false)
