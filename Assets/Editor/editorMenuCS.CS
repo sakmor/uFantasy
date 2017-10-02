@@ -49,6 +49,8 @@ public class editorMenuCS : MonoBehaviour
             Biology.BiologyMovement.MoveTo(pos);
         }
 
+        Camera.main.GetComponent<CameraMovement>().TargetLeader();
+
     }
     static void GetCleanMap()
     {

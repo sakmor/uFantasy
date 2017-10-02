@@ -12,7 +12,7 @@ using System.Collections;
 [AddComponentMenu("Camera-Control/3dsMax Camera Style")]
 public class CameraMovement : MonoBehaviour
 {
-    public Transform target;
+
     public Vector3 targetOffset;
     public float distance = 5.0f;
     public float maxDistance = 20;
@@ -33,19 +33,26 @@ public class CameraMovement : MonoBehaviour
     private Quaternion desiredRotation;
     private Quaternion rotation;
     private Vector3 position;
+    private GameObject go;
+    private Transform target;
+    private float smoothTime = 0.25F;
+    private Vector3 velocity = Vector3.zero;
+    private bool isMove = false;
 
+    IEnumerator moveCoroutine;
     void Start() { Init(); }
     void OnEnable() { Init(); }
 
     public void Init()
     {
+
+
         //If there is no target, create a temporary target at 'distance' from the cameras current viewpoint
-        if (!target)
-        {
-            GameObject go = new GameObject("Cam Target");
-            go.transform.position = transform.position + (transform.forward * distance);
-            target = go.transform;
-        }
+        if (!go) go = new GameObject("Cam Target");
+
+        go.transform.position = transform.position + (transform.forward * distance);
+        target = go.transform;
+
 
         distance = Vector3.Distance(transform.position, target.position);
         currentDistance = distance;
@@ -66,13 +73,15 @@ public class CameraMovement : MonoBehaviour
      */
     void LateUpdate()
     {
+
+
         // If Control and Alt and Middle button? ZOOM!
-        if (Input.GetMouseButton(2) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftControl))
+        if (isMove == false && Input.GetMouseButton(2) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftControl))
         {
             desiredDistance -= Input.GetAxis("Mouse Y") * Time.deltaTime * zoomRate * 0.125f * Mathf.Abs(desiredDistance);
         }
         // If middle mouse and left alt are selected? ORBIT
-        else if (Input.GetMouseButton(2) && Input.GetKey(KeyCode.LeftAlt))
+        else if (isMove == false && Input.GetMouseButton(2) && Input.GetKey(KeyCode.LeftAlt))
         {
             xDeg += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
             yDeg -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
@@ -89,7 +98,7 @@ public class CameraMovement : MonoBehaviour
             transform.rotation = rotation;
         }
         // otherwise if middle mouse is selected, we pan by way of transforming the target in screenspace
-        else if (Input.GetMouseButton(2))
+        else if (isMove == false && Input.GetMouseButton(0))
         {
             //grab the rotation of the camera so we can move in a psuedo local XY space
             target.rotation = transform.rotation;
@@ -118,5 +127,49 @@ public class CameraMovement : MonoBehaviour
         if (angle > 360)
             angle -= 360;
         return Mathf.Clamp(angle, min, max);
+    }
+
+    public void TargetLeader()
+    {
+        Debug.Log("TargetLeader");
+        moveto(GameObject.Find("10001 騎士01").transform);
+    }
+    public void moveto(Transform pos)
+    {
+        //moveCoroutine
+        moveCoroutine = moving(pos);
+
+        //停止正在進行的 moveCoroutine ，如果沒有預先指定（即14行）會無法通過編譯
+        StopCoroutine(moveCoroutine);
+
+        //指定 moveCoroutine 使用的迭代器與參數 --- IEnumberator moving(vector3,GameObject)
+        moveCoroutine = moving(pos);
+
+        //執行 moveCoroutine
+        StartCoroutine(moveCoroutine);
+    }
+
+    IEnumerator moving(Transform pos)
+    {
+        //這段程式碼只執行一次
+        float dist = Mathf.Infinity;
+        isMove = true;
+
+        // 當「物件位置」與「目的位置」距離差距超過0.1f距離單位以上時，while內的程式買將重複執行
+        while (dist > 0.00125f)
+        {
+            //計算與目標之間的距離差並儲存到dist
+            dist = Vector3.Distance(target.transform.position, pos.position);
+            //Vector3.SmoothDamp (起始位置、目標位置、當前速度、抵達時間)
+            target.transform.position = Vector3.SmoothDamp(target.transform.position, pos.position, ref velocity, smoothTime);
+
+            yield return null;
+        }
+
+        // 當「物件位置」與「目的位置」距離差距低於0.1f距離單位以上時，下面程式碼會執行後跳出 moving 迭代器
+        target.transform.position = pos.position;
+        isMove = false;
+
+
     }
 }
