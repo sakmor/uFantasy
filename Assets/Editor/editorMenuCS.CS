@@ -63,13 +63,14 @@ public class editorMenuCS : MonoBehaviour
     }
     static void SetAnimator(string modelName)
     {
-        if (modelName == "Empty") return;
+        if (modelName == "Empty" || modelName == "Shadow") return;
         Dictionary<string, Motion> Motions = GetMotions(modelName);
         exeTime = Time.realtimeSinceStartup;
         UnityEditor.Animations.AnimatorController AnimatorController = Resources.Load("Biology/Motions/" + modelName, typeof(UnityEditor.Animations.AnimatorController)) as UnityEditor.Animations.AnimatorController;
         var states = AnimatorController.layers[0].stateMachine.states;
         foreach (var state in states)
         {
+            Debug.Log(state.state.name);
             if (Motions.ContainsKey(modelName + "_" + state.state.name))
             {
                 state.state.motion = Motions[modelName + "_" + state.state.name];
