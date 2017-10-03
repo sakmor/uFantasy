@@ -14,16 +14,12 @@ public class CameraMovement : MonoBehaviour
 {
 
     public Vector3 targetOffset;
-    public float distance = 5.0f;
-    public float maxDistance = 20;
-    public float minDistance = .6f;
-    public float xSpeed = 200.0f;
-    public float ySpeed = 200.0f;
-    public int yMinLimit = -80;
-    public int yMaxLimit = 80;
+    public float distance = 3.0f;
+    public float maxDistance = 5.0f;
+    public float minDistance = 1.6f;
     public int zoomRate = 40;
     public float panSpeed = 0.3f;
-    public float zoomDampening = 5.0f;
+    public float zoomDampening = 1.5f;
 
     private float xDeg = 0.0f;
     private float yDeg = 0.0f;
@@ -35,7 +31,7 @@ public class CameraMovement : MonoBehaviour
     private Vector3 position;
     private GameObject go;
     private Transform target;
-    private float smoothTime = 0.25F;
+    private float smoothTime = 0.5F;
     private Vector3 velocity = Vector3.zero;
     private bool isMove = false;
 
@@ -53,8 +49,6 @@ public class CameraMovement : MonoBehaviour
         go.transform.position = transform.position + (transform.forward * distance);
         target = go.transform;
 
-
-        distance = Vector3.Distance(transform.position, target.position);
         currentDistance = distance;
         desiredDistance = distance;
 
@@ -66,6 +60,8 @@ public class CameraMovement : MonoBehaviour
 
         xDeg = Vector3.Angle(Vector3.right, transform.right);
         yDeg = Vector3.Angle(Vector3.up, transform.up);
+
+        TargetLeader();
     }
 
     /*
@@ -74,32 +70,9 @@ public class CameraMovement : MonoBehaviour
     void LateUpdate()
     {
 
-
-        // If Control and Alt and Middle button? ZOOM!
-        if (isMove == false && Input.GetMouseButton(2) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetMouseButton(0))
         {
-            desiredDistance -= Input.GetAxis("Mouse Y") * Time.deltaTime * zoomRate * 0.125f * Mathf.Abs(desiredDistance);
-        }
-        // If middle mouse and left alt are selected? ORBIT
-        else if (isMove == false && Input.GetMouseButton(2) && Input.GetKey(KeyCode.LeftAlt))
-        {
-            xDeg += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
-            yDeg -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
-
-            ////////OrbitAngle
-
-            //Clamp the vertical axis for the orbit
-            yDeg = ClampAngle(yDeg, yMinLimit, yMaxLimit);
-            // set camera rotation 
-            desiredRotation = Quaternion.Euler(yDeg, xDeg, 0);
-            currentRotation = transform.rotation;
-
-            rotation = Quaternion.Lerp(currentRotation, desiredRotation, Time.deltaTime * zoomDampening);
-            transform.rotation = rotation;
-        }
-        // otherwise if middle mouse is selected, we pan by way of transforming the target in screenspace
-        else if (isMove == false && Input.GetMouseButton(0))
-        {
+            StopCoroutine(moveCoroutine);
             //grab the rotation of the camera so we can move in a psuedo local XY space
             target.rotation = transform.rotation;
             target.Translate(Vector3.right * -Input.GetAxis("Mouse X") * panSpeed);
@@ -107,7 +80,6 @@ public class CameraMovement : MonoBehaviour
         }
 
         ////////Orbit Position
-
         // affect the desired Zoom distance if we roll the scrollwheel
         desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance);
         //clamp the zoom min/max
@@ -115,9 +87,16 @@ public class CameraMovement : MonoBehaviour
         // For smoothing of the zoom, lerp distance
         currentDistance = Mathf.Lerp(currentDistance, desiredDistance, Time.deltaTime * zoomDampening);
 
+        GetComponent<Camera>().orthographicSize = currentDistance;
+
         // calculate position based on the new currentDistance 
-        position = target.position - (rotation * Vector3.forward * currentDistance + targetOffset);
+        position = target.position - (rotation * Vector3.forward * 100 + targetOffset);
         transform.position = position;
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            TargetLeader();
+        }
     }
 
     private static float ClampAngle(float angle, float min, float max)
@@ -131,8 +110,12 @@ public class CameraMovement : MonoBehaviour
 
     public void TargetLeader()
     {
-        Debug.Log("TargetLeader");
         moveto(GameObject.Find("10001 騎士01").transform);
+    }
+
+    public void SetLeader()
+    {
+
     }
     public void moveto(Transform pos)
     {
@@ -156,7 +139,7 @@ public class CameraMovement : MonoBehaviour
         isMove = true;
 
         // 當「物件位置」與「目的位置」距離差距超過0.1f距離單位以上時，while內的程式買將重複執行
-        while (dist > 0.00125f)
+        while (dist > 0.00125f && isMove == true)
         {
             //計算與目標之間的距離差並儲存到dist
             dist = Vector3.Distance(target.transform.position, pos.position);

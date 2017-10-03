@@ -52,6 +52,42 @@ public class editorMenuCS : MonoBehaviour
         Camera.main.GetComponent<CameraMovement>().TargetLeader();
 
     }
+    [MenuItem("我的工具/AnimatorController %3")]
+    static void SetModelAnimator()
+    {
+        var biologys = Resources.LoadAll("Biology/", typeof(GameObject));
+        foreach (var i in biologys)
+        {
+            SetAnimator(i.name);
+        }
+    }
+    static void SetAnimator(string modelName)
+    {
+        if (modelName == "Empty") return;
+        Dictionary<string, Motion> Motions = GetMotions(modelName);
+        exeTime = Time.realtimeSinceStartup;
+        UnityEditor.Animations.AnimatorController AnimatorController = Resources.Load("Biology/Motions/" + modelName, typeof(UnityEditor.Animations.AnimatorController)) as UnityEditor.Animations.AnimatorController;
+        var states = AnimatorController.layers[0].stateMachine.states;
+        foreach (var state in states)
+        {
+            if (Motions.ContainsKey(modelName + "_" + state.state.name))
+            {
+                state.state.motion = Motions[modelName + "_" + state.state.name];
+            }
+        }
+        Debug.Log("AnimatorController 整理完畢 " + (Time.realtimeSinceStartup - exeTime).ToString("F2"));
+    }
+    static Dictionary<string, Motion> GetMotions(string modelName)
+    {
+        var MotionArray = Resources.LoadAll("Biology/" + modelName, typeof(AnimationClip));
+
+        Dictionary<string, Motion> Motions = new Dictionary<string, Motion>();
+        foreach (var i in MotionArray)
+        {
+            Motions.Add(i.name, i as Motion);
+        }
+        return Motions;
+    }
     static void GetCleanMap()
     {
         CUBE[] CUBE_list = FindObjectsOfType(typeof(CUBE)) as CUBE[];
