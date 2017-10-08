@@ -62,9 +62,22 @@ public class BiologyMovement
 
     public void MoveTo(Vector3 pos)
     {
+        if (IsPathReachDestination(pos) == false) return;
+        GameObject.Find("Line").GetComponent<LineRenderer>().enabled = true;
+        GameObject.Find("Line").GetComponent<LineRenderer>().positionCount = NavMeshAgent.path.corners.Length;
+        GameObject.Find("Line").GetComponent<LineRenderer>().SetPositions(NavMeshAgent.path.corners);
+
         GoalPos = pos;
         NavMeshAgent.SetDestination(GoalPos);
         NavMeshAgent.isStopped = false;
         Biology.setAction(uFantasy.Enum.State.Run);
+    }
+    private bool IsPathReachDestination(Vector3 GoalPos)
+    {
+        UnityEngine.AI.NavMeshPath path = new UnityEngine.AI.NavMeshPath();
+        NavMeshAgent.CalculatePath(GoalPos, path);
+        if (path.status == UnityEngine.AI.NavMeshPathStatus.PathPartial) return false;
+
+        return true;
     }
 }
