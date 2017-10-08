@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class BiologyMovement
 {
-    public UnityEngine.AI.NavMeshAgent NavMeshAgent;
+    public UnityEngine.AI.NavMeshAgent NavMeshAgent; //fixme:暴露在外面似乎不太好
     Transform BiologyTransfrom;
     Biology Biology;
     Vector3 GoalPos;
@@ -47,10 +47,17 @@ public class BiologyMovement
 
     private void Move()
     {
+        RunFpsAdjustment();
         if (NavMeshAgent.isStopped == false && Vector3.Distance(BiologyTransfrom.position, GoalPos) < Closest)
         {
             Stop();
         }
+    }
+
+    private void RunFpsAdjustment()
+    {
+        // Debug.Log(NavMeshAgent.GetComponent<Animation>().name);
+        Biology.Animator.speed = 1 + NavMeshAgent.velocity.magnitude * 0.09f;
     }
 
     public void MoveTo(Vector3 pos)
@@ -60,5 +67,4 @@ public class BiologyMovement
         NavMeshAgent.isStopped = false;
         Biology.setAction(uFantasy.Enum.State.Run);
     }
-
 }

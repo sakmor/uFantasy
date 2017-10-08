@@ -3,7 +3,7 @@ guid: 0acd7c0c0f144f145bd3434276b6a6e7
 timeCreated: 1507027123
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 21
   fileIDToRecycleName:
     100000: //RootNode
     100002: Model
@@ -12,6 +12,11 @@ ModelImporter:
     100008: Slime_Joint01
     100010: Slime_Joint02
     100012: Slime_Joint03
+    100014: Models_001
+    100016: Root_001
+    100018: Slime_Joint01_001
+    100020: Slime_Joint3
+    100022: Slime_Joint4
     400000: //RootNode
     400002: Model
     400004: Models
@@ -19,9 +24,21 @@ ModelImporter:
     400008: Slime_Joint01
     400010: Slime_Joint02
     400012: Slime_Joint03
+    400014: Models_001
+    400016: Root_001
+    400018: Slime_Joint01_001
+    400020: Slime_Joint3
+    400022: Slime_Joint4
     4300000: Model
     7400000: Default Take
     7400002: B501_Battle
+    7400004: B501_Dead
+    7400006: B501_Deading
+    7400008: B501_Attack_01
+    7400010: B501_Attack_03
+    7400012: B501_Hurt
+    7400014: B501_Use
+    7400016: B501_Run
     9500000: //RootNode
     13700000: Model
   materials:
@@ -46,6 +63,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -53,7 +71,10 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -69,6 +90,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
+    normalCalculationMode: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:

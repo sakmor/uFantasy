@@ -76,6 +76,8 @@ namespace DCM
 
                 Destroy(this);
             }
+
+
         }
 
         /// <summary>
@@ -216,6 +218,7 @@ namespace DCM
                     MeshFilter filter = go.AddComponent<MeshFilter>();
                     go.AddComponent<MeshRenderer>().sharedMaterial = unatlasedGroup.Key;
                     filter.mesh = combinedMeshes[i];
+                    go.AddComponent<MeshCollider>();
                 }
             }
         }

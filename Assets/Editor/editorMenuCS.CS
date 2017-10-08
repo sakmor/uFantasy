@@ -1,16 +1,62 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Text;
+
 
 public class editorMenuCS : MonoBehaviour
 {
     public static float exeTime;
     public static Dictionary<Vector3, GameObject> CleanMap;
 
-    [MenuItem("我的工具/場景整理 %1")]
+
+
+    static string MeshToString(Mesh mesh)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.Append("g ").Append(mesh.name).Append("\n");
+        foreach (Vector3 v in mesh.vertices)
+        {
+            sb.Append(string.Format("v {0} {1} {2}\n", v.x, v.y, v.z));
+        }
+        sb.Append("\n");
+        foreach (Vector3 v in mesh.normals)
+        {
+            sb.Append(string.Format("vn {0} {1} {2}\n", v.x, v.y, v.z));
+        }
+        sb.Append("\n");
+        foreach (Vector3 v in mesh.uv)
+        {
+            sb.Append(string.Format("vt {0} {1}\n", v.x, v.y));
+        }
+        for (int material = 0; material < mesh.subMeshCount; material++)
+        {
+            sb.Append("\n");
+            //sb.Append("usemtl ").Append(mats[material].name).Append("\n");
+            //sb.Append("usemap ").Append(mats[material].name).Append("\n");
+
+            int[] triangles = mesh.GetTriangles(material);
+            for (int i = 0; i < triangles.Length; i += 3)
+            {
+                sb.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n", triangles[i] + 1, triangles[i + 1] + 1, triangles[i + 2] + 1));
+            }
+        }
+        return sb.ToString();
+    }
+
+    static void MeshToFile(Mesh mesh, string filename)
+    {
+        using (StreamWriter sw = new StreamWriter(filename))
+        {
+            sw.Write(MeshToString(mesh));
+        }
+    }
+    [MenuItem("MyTools/場景整理 %1")]
     static void SetNavigationBake()
     {
         exeTime = Time.realtimeSinceStartup;
@@ -19,6 +65,7 @@ public class editorMenuCS : MonoBehaviour
         SetEveryCubeWalkable();
         BuildNavMesh();
         RemoveHideCube();
+        // Export();
 
         Debug.Log("整理完畢 " + (Time.realtimeSinceStartup - exeTime).ToString("F2"));
 
@@ -52,7 +99,7 @@ public class editorMenuCS : MonoBehaviour
         Camera.main.GetComponent<CameraMovement>().TargetLeader();
 
     }
-    [MenuItem("我的工具/AnimatorController %3")]
+    [MenuItem("MyTools/AnimatorController %3")]
     static void SetModelAnimator()
     {
         var biologys = Resources.LoadAll("Biology/", typeof(GameObject));
@@ -146,5 +193,26 @@ public class editorMenuCS : MonoBehaviour
         {
             GameObjectUtility.SetNavMeshArea(item.Value, 0);
         }
+    }
+
+    static void Export()
+    {
+        NavMeshTriangulation triangulatedNavMesh = NavMesh.CalculateTriangulation();
+
+        Mesh mesh = new Mesh();
+        mesh.name = "ExportedNavMesh";
+        mesh.vertices = triangulatedNavMesh.vertices;
+        mesh.triangles = triangulatedNavMesh.indices;
+        DestroyImmediate(GameObject.Find("n"));
+        GameObject n = new GameObject("n");
+        n.AddComponent<MeshCollider>().sharedMesh = mesh;
+        n.AddComponent<MeshFilter>().mesh = mesh;
+        n.AddComponent<MeshRenderer>();
+        // n.AddComponent<MeshFilter>().mesh = mesh;
+        // n.AddComponent<MeshRenderer>();
+        // string filename = Application.dataPath + "/" + Path.GetFileNameWithoutExtension(EditorApplication.currentScene) + " Exported NavMesh.obj";
+        // MeshToFile(mesh, filename);
+        // print("NavMesh exported as '" + filename + "'");
+        AssetDatabase.Refresh();
     }
 }

@@ -61,7 +61,7 @@ public class CameraMovement : MonoBehaviour
         xDeg = Vector3.Angle(Vector3.right, transform.right);
         yDeg = Vector3.Angle(Vector3.up, transform.up);
 
-        TargetLeader();
+
     }
 
     /*
@@ -70,14 +70,6 @@ public class CameraMovement : MonoBehaviour
     void LateUpdate()
     {
 
-        if (Input.GetMouseButton(0))
-        {
-            StopCoroutine(moveCoroutine);
-            //grab the rotation of the camera so we can move in a psuedo local XY space
-            target.rotation = transform.rotation;
-            target.Translate(Vector3.right * -Input.GetAxis("Mouse X") * panSpeed);
-            target.Translate(transform.up * -Input.GetAxis("Mouse Y") * panSpeed, Space.World);
-        }
 
         ////////Orbit Position
         // affect the desired Zoom distance if we roll the scrollwheel
@@ -93,10 +85,8 @@ public class CameraMovement : MonoBehaviour
         position = target.position - (rotation * Vector3.forward * 100 + targetOffset);
         transform.position = position;
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            TargetLeader();
-        }
+        TargetLeader();
+
     }
 
     private static float ClampAngle(float angle, float min, float max)
