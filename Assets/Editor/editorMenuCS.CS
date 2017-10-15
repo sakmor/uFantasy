@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System;
 using System.Text;
 
 
@@ -12,8 +10,6 @@ public class editorMenuCS : MonoBehaviour
 {
     public static float exeTime;
     public static Dictionary<Vector3, GameObject> CleanMap;
-
-
 
     static string MeshToString(Mesh mesh)
     {
@@ -56,7 +52,7 @@ public class editorMenuCS : MonoBehaviour
             sw.Write(MeshToString(mesh));
         }
     }
-    [MenuItem("MyTools/場景整理 %1")]
+    [MenuItem("我的工具/場景整理 %1")]
     static void SetNavigationBake()
     {
         exeTime = Time.realtimeSinceStartup;
@@ -99,7 +95,7 @@ public class editorMenuCS : MonoBehaviour
         Camera.main.GetComponent<CameraMovement>().TargetLeader();
 
     }
-    [MenuItem("MyTools/AnimatorController %3")]
+    [MenuItem("我的工具/AnimatorController %3")]
     static void SetModelAnimator()
     {
         var biologys = Resources.LoadAll("Biology/", typeof(GameObject));

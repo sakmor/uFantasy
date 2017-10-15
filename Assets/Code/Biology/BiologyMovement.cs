@@ -48,27 +48,24 @@ public class BiologyMovement
     private void Move()
     {
         RunFpsAdjustment();
-        if (NavMeshAgent.isStopped == false && Vector3.Distance(BiologyTransfrom.position, GoalPos) < Closest)
-        {
-            Stop();
-        }
+        if (NavMeshAgent.isStopped == false && Vector3.Distance(BiologyTransfrom.position, GoalPos) < Closest) Stop();
     }
 
     private void RunFpsAdjustment()
     {
         // Debug.Log(NavMeshAgent.GetComponent<Animation>().name);
-        Biology.Animator.speed = 1 + NavMeshAgent.velocity.magnitude * 0.09f;
+        Biology.Animator.speed = 1 + NavMeshAgent.velocity.magnitude * 0.08f;
     }
 
-    public void MoveTo(Vector3 pos)
+    public bool MoveTo(Vector3 pos)
     {
-        if (IsPathReachDestination(pos) == false) return;
-
+        if (IsPathReachDestination(pos) == false) return false;
 
         GoalPos = pos;
         NavMeshAgent.SetDestination(GoalPos);
         NavMeshAgent.isStopped = false;
         Biology.setAction(uFantasy.Enum.State.Run);
+        return true;
     }
     private bool IsPathReachDestination(Vector3 GoalPos)
     {

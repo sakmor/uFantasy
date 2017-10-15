@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEditor;
+// using UnityEditor;
 using UnityEngine;
 
 /// 
@@ -14,11 +14,11 @@ public class EditorExpand
 {
     public static void AddSortLayerIfNotExist(string name)
     {
-        if(!isExistShortLayer(name))
+        if (!isExistShortLayer(name))
         {
             int index = GetSortingLayerCount();
             AddSortingLayer();
-            SetSortingLayerName(index,name);
+            SetSortingLayerName(index, name);
         }
     }
 

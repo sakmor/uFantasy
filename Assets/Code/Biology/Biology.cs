@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+
 [SelectionBase]
 [DisallowMultipleComponent]
 
@@ -90,7 +90,16 @@ public class Biology : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            DestroyImmediate(child.gameObject);
+
+            if (!Application.isPlaying)
+            {
+                DestroyImmediate(child.gameObject);
+            }
+            else
+            {
+                Destroy(child.gameObject);
+            }
+
         }
     }
 
