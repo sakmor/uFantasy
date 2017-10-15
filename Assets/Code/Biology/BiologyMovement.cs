@@ -63,9 +63,7 @@ public class BiologyMovement
     public void MoveTo(Vector3 pos)
     {
         if (IsPathReachDestination(pos) == false) return;
-        GameObject.Find("Line").GetComponent<LineRenderer>().enabled = true;
-        GameObject.Find("Line").GetComponent<LineRenderer>().positionCount = NavMeshAgent.path.corners.Length;
-        GameObject.Find("Line").GetComponent<LineRenderer>().SetPositions(NavMeshAgent.path.corners);
+
 
         GoalPos = pos;
         NavMeshAgent.SetDestination(GoalPos);
