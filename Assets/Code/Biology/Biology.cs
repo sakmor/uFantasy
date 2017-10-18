@@ -31,6 +31,9 @@ public class Biology : MonoBehaviour
     private void Awake()
     {
         LoadDB();
+        Rename();
+        AddShadow();
+        SetBiologyMovement();
     }
 
     public void Update()
@@ -47,9 +50,6 @@ public class Biology : MonoBehaviour
         SetBiologyModel();
         SetBiologyWeaponModel();
         SetBiologyAnimator();
-        Rename();
-        AddShadow();
-        SetBiologyMovement();
     }
     public void setAction(uFantasy.Enum.State state)
     {
@@ -88,6 +88,7 @@ public class Biology : MonoBehaviour
 
     private void RemoveChild()
     {
+        if (Application.isPlaying) return;
         foreach (Transform child in transform)
         {
 

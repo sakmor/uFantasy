@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.EventSystems;
@@ -37,10 +38,13 @@ public class BiologyListWindow : EditorWindow
     }
     void OnGUI()
     {
-        // DrawMapEditor();
-        DrawBiologysList();
-        DrawSelectedBiologyLayout();
-        DrawAddBiologyLayout();
+        if (!Application.isPlaying && GameObject.Find("生物清單"))
+        {
+            DrawBiologysList();
+            DrawSelectedBiologyLayout();
+            DrawAddBiologyLayout();
+        }
+
     }
     bool MapMode = true, bioMode = false;
     int selGridInt = 0;
@@ -158,7 +162,8 @@ public class BiologyListWindow : EditorWindow
 
     private void UpdateBiologysList()
     {
-        BiologyList = GameObject.Find("生物清單").GetComponentsInChildren<Biology>();
+        if (GameObject.Find("生物清單"))
+            BiologyList = GameObject.Find("生物清單").GetComponentsInChildren<Biology>();
     }
 
     public void OnInspectorUpdate()
@@ -167,3 +172,4 @@ public class BiologyListWindow : EditorWindow
     }
 
 }
+#endif
