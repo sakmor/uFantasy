@@ -190,5 +190,8 @@ public class Biology : MonoBehaviour
     {
         DestroyImmediate(gameObject);
     }
-
+    void OnGUI()
+    {
+        GUI.Label(new Rect(0, 60, 120, 30), "" + name);
+    }
 }

@@ -5,7 +5,7 @@ public class GameDB
     readonly public Dictionary<string, string[]> biologyDB;
     readonly public Dictionary<string, string[]> biologyDraw;
     readonly public Dictionary<string, string[]> biologyModel;
-    readonly private JsonParse JsonParse;
+    private JsonParse JsonParse;
 
     private static readonly GameDB _instance = new GameDB();
     public static GameDB Instance { get { return _instance; } }
@@ -16,6 +16,5 @@ public class GameDB
         biologyDB = JsonParse.LoadBiologyDB();
         biologyDraw = JsonParse.LoadBiologyDraw();
         biologyModel = JsonParse.LoadBiologyModel();
-
     }
 }

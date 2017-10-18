@@ -11,6 +11,7 @@ public class mainGame_Sam : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
+        Screen.SetResolution(Mathf.FloorToInt(Screen.width * 1f), Mathf.FloorToInt(Screen.height * 1f), true);//fixme:應該在整個遊戲的進入點
         Leader = GameObject.Find("10001 騎士01").GetComponent<Biology>(); //fixme:暫時指定隊長
         DotLine = GameObject.Find("Line").GetComponent<DotLine>();
         GameObject n = new GameObject("navMesh");
@@ -73,4 +74,5 @@ public class mainGame_Sam : MonoBehaviour
 
         return Vector3.zero;
     }
+
 }

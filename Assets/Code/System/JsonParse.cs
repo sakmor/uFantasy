@@ -44,16 +44,14 @@ public class JsonParse
     }
     private string[] Load_DB_Json(string FileName)
     {
-        //讀取json檔案並轉存成文字格式
-        StreamReader file = new StreamReader(Application.dataPath + "/Resources/DB/" + FileName + ".json");
-        string loadJson = file.ReadToEnd();
-        file.Close();
+        TextAsset loadJson = Resources.Load<TextAsset>("DB/" + FileName);
+
 
         //新增一個物件類型為playerState的變數 loadData
         JsonClass loadData = new JsonClass();
 
         //使用JsonUtillty的FromJson方法將存文字轉成Json
-        loadData = JsonUtility.FromJson<JsonClass>(loadJson);
+        loadData = JsonUtility.FromJson<JsonClass>(loadJson.text);
 
         return loadData.Index;
 
