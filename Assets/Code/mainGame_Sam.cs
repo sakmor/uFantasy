@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class mainGame_Sam : MonoBehaviour
 {
+    public float ResolutionScale = 0.5f;
     private Biology Leader;
     private DotLine DotLine;
 
@@ -11,9 +13,9 @@ public class mainGame_Sam : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        Screen.SetResolution(Mathf.FloorToInt(Screen.width * 1f), Mathf.FloorToInt(Screen.height * 1f), true);//fixme:應該在整個遊戲的進入點
         Leader = GameObject.Find("10001 騎士01").GetComponent<Biology>(); //fixme:暫時指定隊長
         DotLine = GameObject.Find("Line").GetComponent<DotLine>();
+
         GameObject n = new GameObject("navMesh");
 
     }
@@ -25,9 +27,20 @@ public class mainGame_Sam : MonoBehaviour
         InputProcess();
 
     }
+    private bool IsPointerOverUIObject()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
+    }
 
     private void InputProcess()
     {
+        //當玩家點選到UI物件時跳出
+        if (IsPointerOverUIObject()) return;
+
         if (GetInput() == false)
         {
             DotLine.DrawLineStop();
