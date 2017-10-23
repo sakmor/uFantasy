@@ -9,6 +9,7 @@ public class BiologyAI_Condition
 
     private BiologyAI_Condition()
     {
+        Conditions = new Dictionary<string, Func<bool>>();
         Conditions.Add("Ally:HP < 90%", Ally_HP_Less_90_Percent);
         Conditions.Add("Ally:HP < 80%", Ally_HP_Less_80_Percent);
     }
