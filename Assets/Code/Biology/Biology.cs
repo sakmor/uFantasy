@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [SelectionBase]
+[RequireComponent(typeof(BiologyAttr))]
 [DisallowMultipleComponent]
 
 public class Biology : MonoBehaviour
@@ -23,8 +24,10 @@ public class Biology : MonoBehaviour
     private GameObject _model, Shadow; //fixme:這個有點壞設計
     internal Animator Animator;
     public BiologyMovement BiologyMovement;
+    internal BiologyAttr BiologyAttr;
     internal BiologyAI BiologyAI;
     internal Biology[] Biologys;
+    public Biology Target;
 
     [SerializeField] public uFantasy.Enum.State State;
 
@@ -63,6 +66,13 @@ public class Biology : MonoBehaviour
         Rename();
         AddShadow();
         SetBiologyMovement();
+        SetBiologyAttr();
+    }
+
+    private void SetBiologyAttr()
+    {
+        BiologyAttr = gameObject.GetComponent<BiologyAttr>();
+        BiologyAttr.Biology = this;
     }
 
     private void SetBiologyAI()

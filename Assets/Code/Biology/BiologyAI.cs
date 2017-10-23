@@ -8,10 +8,12 @@ public class BiologyAI
     public List<string> ActionList;
     private int _ConditionListStart = 3, _ConditionListEnd = 25;
     private int _ActionListStart = 4, _ActionListEnd = 26;
+    private int _Vision = 1;
     private string AiNumber;
-    private Biology Parent;
-    private List<Biology> Visible_Ally_Biologys;
-    private List<Biology> Visible_Foe_Biologys;
+    internal Biology Parent;
+    internal float Vision;
+    internal List<Biology> Visible_Ally_Biologys;
+    internal List<Biology> Visible_Foe_Biologys;
     public BiologyAI(Biology Parent, string AiNumber)
     {
         //如果無此資料
@@ -21,6 +23,7 @@ public class BiologyAI
         this.Parent = Parent;
         ConditionList = GetConditionList();
         ActionList = GetActionList();
+        Vision = GetVision();
 
     }
     private List<string> GetConditionList()
@@ -41,6 +44,10 @@ public class BiologyAI
         }
         return n;
     }
+    private float GetVision()
+    {
+        return float.Parse(GameDB.Instance.biologyAi[AiNumber][_Vision]);
+    }
 
     public void Update()
     {
@@ -50,7 +57,7 @@ public class BiologyAI
 
     private void ConditionBioUpdate()
     {
-        BiologyAI_Condition.Instance.Condition(this, "Ally:HP < 90%");
+        BiologyAI_Condition.Instance.Condition(this);
     }
 
     private void VisibleBioUpdate() //fixme:之後需要效能優化，不需要每一楨都執行  
@@ -60,7 +67,7 @@ public class BiologyAI
         foreach (var t in Parent.Biologys)
         {
             //fixme: 超醜
-            if (Vector3.Distance(Parent.transform.position, t.transform.position) > 10) continue;//fixme:應該索引AI表
+            if (Vector3.Distance(Parent.transform.position, t.transform.position) > Vision) continue;
 
             if (Parent.Type == uFantasy.Enum.BiologyType.Player)
             {
