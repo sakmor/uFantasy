@@ -13,17 +13,18 @@ public class Biology : MonoBehaviour
     [Header("生物名稱")] private string Nname;
     [Header("生物名稱")] private string Name;
     [Header("生物圖號")] private string DrawNum;
-    [Header("生物類型")] private uFantasy.Enum.BiologyType Type;
+    [Header("生物類型")] internal uFantasy.Enum.BiologyType Type;
     [Header("生物等級")] private int Lv;
-    [Header("AI編號")] private int Ai;
-    private Dictionary<int, string[]> BiologyDB;
-
+    [Header("AI編號")] private string Ai;
+    [Header("AI編號")] internal float Speed;
     [Header("生物模型")] private string ModelName;
     [Header("武器模型")] public GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
 
     private GameObject _model, Shadow; //fixme:這個有點壞設計
-    public Animator Animator;
+    internal Animator Animator;
     public BiologyMovement BiologyMovement;
+    internal BiologyAI BiologyAI;
+    internal Biology[] Biologys;
 
     [SerializeField] public uFantasy.Enum.State State;
 
@@ -31,14 +32,22 @@ public class Biology : MonoBehaviour
     private void Awake()
     {
         LoadDB();
-        Rename();
-        AddShadow();
-        SetBiologyMovement();
+    }
+
+    void Start()
+    {
+        GetBiologys();
+    }
+
+    private void GetBiologys()
+    {
+        Biologys = GameObject.Find("mainGame").GetComponent<mainGame_Sam>().Biologys; //fixme: 不知道有沒有更好的寫法
     }
 
     public void Update()
     {
         BiologyMovement.Update();
+        BiologyAI.Update();
     }
 
     public void LoadDB()
@@ -50,7 +59,17 @@ public class Biology : MonoBehaviour
         SetBiologyModel();
         SetBiologyWeaponModel();
         SetBiologyAnimator();
+        SetBiologyAI();
+        Rename();
+        AddShadow();
+        SetBiologyMovement();
     }
+
+    private void SetBiologyAI()
+    {
+        BiologyAI = new BiologyAI(this, Ai);
+    }
+
     public void setAction(uFantasy.Enum.State state)
     {
         State = state;
@@ -130,7 +149,7 @@ public class Biology : MonoBehaviour
     private void SetBiologyModel()
     {
         BiologyModel BiologyModel = new BiologyModel(ModelName);
-        GetComponent<BoxCollider>().center = Vector3.up * BiologyModel.CollisionPostionY;//fixme: 之後碰撞交給Nav Mesh Agent
+        GetComponent<BoxCollider>().center = Vector3.up * BiologyModel.CollisionPostionY;//fixme: 之後碰撞交給Nav Mesh Agent ，這裡可移除了
         GetComponent<BoxCollider>().size = new Vector3(BiologyModel.CollisionSizeXZ, 1, BiologyModel.CollisionSizeXZ);
     }
 
@@ -142,6 +161,7 @@ public class Biology : MonoBehaviour
         Type = BiologyBuilder.Type;
         Lv = BiologyBuilder.Lv;
         Ai = BiologyBuilder.Ai;
+        Speed = BiologyBuilder.Speed;
     }
 
     private void SetBiologyDraw()
@@ -189,9 +209,5 @@ public class Biology : MonoBehaviour
     public void DestroyGameObject()
     {
         DestroyImmediate(gameObject);
-    }
-    void OnGUI()
-    {
-        GUI.Label(new Rect(0, 60, 120, 30), "" + name);
     }
 }

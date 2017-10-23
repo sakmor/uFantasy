@@ -7,13 +7,18 @@ public class mainGame_Sam : MonoBehaviour
 {
     public float ResolutionScale = 0.5f;
     private Biology Leader;
+    public Biology[] Biologys;
     private DotLine DotLine;
 
-
+    private void Awake()
+    {
+        Biologys = (Biology[])FindObjectsOfType(typeof(Biology));
+    }
     // Use this for initialization
     private void Start()
     {
         Leader = GameObject.Find("10001 騎士01").GetComponent<Biology>(); //fixme:暫時指定隊長
+
         DotLine = GameObject.Find("Line").GetComponent<DotLine>();
 
         GameObject n = new GameObject("navMesh");

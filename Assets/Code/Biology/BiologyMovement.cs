@@ -7,9 +7,9 @@ using UnityEngine;
 public class BiologyMovement
 {
     public UnityEngine.AI.NavMeshAgent NavMeshAgent; //fixme:暴露在外面似乎不太好
-    Transform BiologyTransfrom;
-    Biology Biology;
-    Vector3 GoalPos;
+    private Transform BiologyTransfrom;
+    private Biology Biology;
+    private Vector3 GoalPos;
 
     private float Closest = 0.125f;
     private float Speed = 4.5f;
@@ -19,7 +19,7 @@ public class BiologyMovement
         BiologyTransfrom = biology.transform;
         NavMeshAgent = biology.GetComponent<UnityEngine.AI.NavMeshAgent>();
         NavMeshAgent.stoppingDistance = Closest;
-        NavMeshAgent.speed = Speed;
+        NavMeshAgent.speed = Biology.Speed;
         Stop();
 
     }

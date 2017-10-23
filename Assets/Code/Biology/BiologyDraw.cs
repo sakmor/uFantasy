@@ -19,7 +19,7 @@ public class BiologyDraw
         {
             return;
         }
-        Debug.ClearDeveloperConsole();
+        Debug.ClearDeveloperConsole(); //fixme:忘記放這行在這裡幹嘛了? 
 
         this.DrawNum = DrawNum;
         Mesh = GetDrawMesh();

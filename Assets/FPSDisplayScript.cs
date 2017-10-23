@@ -11,7 +11,6 @@ public class FPSDisplayScript : MonoBehaviour
     void Start()
     {
         timeA = Time.timeSinceLevelLoad;
-        DontDestroyOnLoad(this);
     }
 
     // Update is called once per frame

@@ -8,12 +8,14 @@ public class JsonParse
     string Biology;
     string BiologyDraw;
     string BiologyModel;
+    string BiologyAi;
 
     public JsonParse()
     {
         Biology = "Biology";
         BiologyDraw = "BiologyDraw";
         BiologyModel = "BiologyModel";
+        BiologyAi = "BiologyAi";
     }
 
 
@@ -28,6 +30,10 @@ public class JsonParse
     public Dictionary<string, string[]> LoadBiologyDraw()
     {
         return LoadDB(BiologyDraw);
+    }
+    public Dictionary<string, string[]> LoadBiologyAi()
+    {
+        return LoadDB(BiologyAi);
     }
     private Dictionary<string, string[]> LoadDB(string name)
     {
