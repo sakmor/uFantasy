@@ -91,8 +91,8 @@ public class BiologyAI
                     Visible_Ally_Biologys.Add(t.gameObject.GetComponent<Biology>());
                 }
             }
-            this.Visible_Ally_Biologys = Visible_Ally_Biologys;
-            this.Visible_Foe_Biologys = Visible_Foe_Biologys;
         }
+        this.Visible_Ally_Biologys = Visible_Ally_Biologys;
+        this.Visible_Foe_Biologys = Visible_Foe_Biologys;
     }
 }

@@ -16,19 +16,14 @@ public class BiologyEditor : Editor
 
         GUILayout.BeginVertical("box");
         DrawSelectedBiologyLayout();
-        if (GUI.changed)
-        {
-            Biology.LoadDB();
-        }
-        if (GUILayout.Button("移除生物"))
-        {
-            Selection.activeGameObject.GetComponent<Biology>().DestroyGameObject();
-        }
-
-
+        if (GUILayout.Button("移除生物")) Selection.activeGameObject.GetComponent<Biology>().DestroyGameObject();
         GUILayout.EndVertical();
 
-
+        if (GUI.changed)
+        {
+            Selection.activeGameObject.GetComponent<Biology>().BiologyNum = Biology.BiologyNum;
+            Biology.LoadDB();
+        }
     }
 
 
@@ -59,16 +54,6 @@ public class BiologyEditor : Editor
                 if (Biology.BiologyNum == "10001") break;
             }
         }
-        if (GUI.changed)
-        {
-            Selection.activeGameObject.GetComponent<Biology>().BiologyNum = Biology.BiologyNum;
-        }
-
-        GUILayout.EndHorizontal();
-        DrawSelectedBiologyScrollPos = EditorGUILayout.BeginScrollView(DrawSelectedBiologyScrollPos);
-
-
-
         if (GUILayout.Button("複製生物"))
         {
             var dupBio = Instantiate(Selection.activeGameObject).transform;
@@ -77,11 +62,20 @@ public class BiologyEditor : Editor
             Selection.activeGameObject = dupBio.gameObject;
             SceneView.lastActiveSceneView.FrameSelected();
         }
+
+
+
+        GUILayout.EndHorizontal();
+
+
+
+
+
         if (GUILayout.Button("載入資訊"))
         {
             Biology.LoadDB();
         }
-        EditorGUILayout.EndScrollView();
+
 
 
     }
