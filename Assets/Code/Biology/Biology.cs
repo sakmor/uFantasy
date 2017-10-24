@@ -72,7 +72,6 @@ public class Biology : MonoBehaviour
     private void SetBiologyAttr()
     {
         BiologyAttr = gameObject.GetComponent<BiologyAttr>();
-        BiologyAttr.Biology = this;
     }
 
     private void SetBiologyAI()

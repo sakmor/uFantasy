@@ -8,5 +8,10 @@ public class BiologyAttr : MonoBehaviour
     public int HpMax = 100;
     internal Biology Biology;
 
+    void Awake()
+    {
+        Biology = GetComponent<Biology>();
+    }
+
 
 }
