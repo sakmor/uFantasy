@@ -9,6 +9,7 @@ public class JsonParse
     string BiologyDraw;
     string BiologyModel;
     string BiologyAi;
+    string Level;
 
     public JsonParse()
     {
@@ -16,6 +17,7 @@ public class JsonParse
         BiologyDraw = "BiologyDraw";
         BiologyModel = "BiologyModel";
         BiologyAi = "BiologyAi";
+        Level = "Level";
     }
 
 
@@ -34,6 +36,11 @@ public class JsonParse
     public Dictionary<string, string[]> LoadBiologyAi()
     {
         return LoadDB(BiologyAi);
+    }
+
+    public Dictionary<string, string[]> LoadLevel()
+    {
+        return LoadDB(Level);
     }
     private Dictionary<string, string[]> LoadDB(string name)
     {

@@ -24,6 +24,7 @@ public class BiologyAI_Condition
         Conditions.Add("Ally:HP < 30%", new Command(Ally_HP_Less, 0.3f));
         Conditions.Add("Ally:HP < 20%", new Command(Ally_HP_Less, 0.2f));
         Conditions.Add("Ally:HP < 10%", new Command(Ally_HP_Less, 0.1f));
+        Conditions.Add("Ally:Lowest HP", new Command(Ally_HP_Lowest_Point, 0));
 
         Conditions.Add("Foe:HP = 100%", new Command(Foe_HP_Full, 0.0f));
 
@@ -35,6 +36,8 @@ public class BiologyAI_Condition
         Conditions.Add("Foe:HP < 3,000", new Command(Foe_HP_Less_Point, 3000));
         Conditions.Add("Foe:HP < 2,000", new Command(Foe_HP_Less_Point, 2000));
         Conditions.Add("Foe:HP < 1,000", new Command(Foe_HP_Less_Point, 1000));
+        Conditions.Add("Foe:Lowest HP", new Command(Foe_HP_Lowest_Point, 0));
+
         Conditions.Add("Foe:HP < 500", new Command(Foe_HP_Less_Point, 500));
 
         Conditions.Add("Self:HP < 100%", new Command(Self_HP_Less, 1.0f));
@@ -58,6 +61,30 @@ public class BiologyAI_Condition
         Conditions.Add("Self:MP < 30%", new Command(Self_MP_Less, 0.3f));
         Conditions.Add("Self:MP < 20%", new Command(Self_MP_Less, 0.2f));
         Conditions.Add("Self:MP < 10%", new Command(Self_MP_Less, 0.1f));
+    }
+
+    private bool Foe_HP_Lowest_Point(float n)
+    {
+        return n_HP_Lowest_Point(BiologyAI.Visible_Ally_Biologys, n);
+    }
+    private bool Ally_HP_Lowest_Point(float n)
+    {
+        return n_HP_Lowest_Point(BiologyAI.Visible_Ally_Biologys, n);
+    }
+    private bool n_HP_Lowest_Point(List<Biology> biologys, float n)
+    {
+        float Hp_Hp_Lowest = Mathf.Infinity;
+        for (int i = 0; i < biologys.Count; i++)
+        {
+            Biology p = biologys[i];
+            if (IsBiologyDead(p)) continue;
+
+            if (p.BiologyAttr.Hp > Hp_Hp_Lowest) continue;
+            Hp_Hp_Lowest = p.BiologyAttr.Hp;
+            BiologyAI.Parent.Target = p;
+
+        }
+        return true;
     }
 
     public void Condition(BiologyAI Ai)
@@ -110,6 +137,8 @@ public class BiologyAI_Condition
         for (int i = 0; i < biologys.Count; i++)
         {
             Biology p = biologys[i];
+            if (IsBiologyDead(p)) continue;
+
             if ((float)p.BiologyAttr.Mp / (float)p.BiologyAttr.MpMax > n) continue;
             BiologyAI.Parent.Target = p;
             return true;
@@ -121,6 +150,8 @@ public class BiologyAI_Condition
         for (int i = 0; i < biologys.Count; i++)
         {
             Biology p = biologys[i];
+            if (IsBiologyDead(p)) continue;
+
             if ((float)p.BiologyAttr.Hp / (float)p.BiologyAttr.HpMax > n) continue;
             BiologyAI.Parent.Target = p;
             return true;
@@ -152,5 +183,11 @@ public class BiologyAI_Condition
             this.Func = Func;
             this.p1 = p1;
         }
+    }
+    private bool IsBiologyDead(Biology biology)
+    {
+        if (biology.BiologyAttr.Hp <= 0) return true;
+        return false;
+
     }
 }

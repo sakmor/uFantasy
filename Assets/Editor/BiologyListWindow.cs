@@ -75,7 +75,7 @@ public class BiologyListWindow : EditorWindow
         {
             if (DrawSelectedBiologyLayout_Input == "99999") { DrawSelectedBiologyLayout_Input = "10001"; }
             DrawSelectedBiologyLayout_Input = (int.Parse(DrawSelectedBiologyLayout_Input) + 1).ToString();
-            while (GameDB.Instance.biologyDB.ContainsKey(DrawSelectedBiologyLayout_Input) == false)
+            while (GameDB.Instance.BiologyDB.ContainsKey(DrawSelectedBiologyLayout_Input) == false)
             {
                 DrawSelectedBiologyLayout_Input = (int.Parse(DrawSelectedBiologyLayout_Input) + 1).ToString();
                 if (DrawSelectedBiologyLayout_Input == "99999") { DrawSelectedBiologyLayout_Input = "10001"; break; }
@@ -85,7 +85,7 @@ public class BiologyListWindow : EditorWindow
         {
             if (DrawSelectedBiologyLayout_Input == "10001") { DrawSelectedBiologyLayout_Input = "99999"; }
             DrawSelectedBiologyLayout_Input = (int.Parse(DrawSelectedBiologyLayout_Input) - 1).ToString();
-            while (GameDB.Instance.biologyDB.ContainsKey(DrawSelectedBiologyLayout_Input) == false)
+            while (GameDB.Instance.BiologyDB.ContainsKey(DrawSelectedBiologyLayout_Input) == false)
             {
                 DrawSelectedBiologyLayout_Input = (int.Parse(DrawSelectedBiologyLayout_Input) - 1).ToString();
                 if (DrawSelectedBiologyLayout_Input == "10001") break;

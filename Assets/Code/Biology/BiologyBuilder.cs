@@ -12,7 +12,7 @@ public class BiologyBuilder//fixme:名字怪怪的
     public string Name;
     public string DrawNum;
     public uFantasy.Enum.BiologyType Type;
-    public int Lv;
+    public string Lv;
     public string Ai;
     private string BiologyNum;
     internal float Speed;
@@ -20,7 +20,7 @@ public class BiologyBuilder//fixme:名字怪怪的
     public BiologyBuilder(string BiologyNum)
     {
         //如果無此資料
-        if (BiologyNum == "" || GameDB.Instance.biologyDB.ContainsKey(BiologyNum) == false) return;
+        if (BiologyNum == "" || GameDB.Instance.BiologyDB.ContainsKey(BiologyNum) == false) return;
 
         this.BiologyNum = BiologyNum;
         //轉換Biology資料
@@ -36,37 +36,36 @@ public class BiologyBuilder//fixme:名字怪怪的
 
     private float GetBioSpeed()
     {
-        float result = float.Parse(GameDB.Instance.biologyDB[BiologyNum][_Speed]);
+        float result = float.Parse(GameDB.Instance.BiologyDB[BiologyNum][_Speed]);
         return result;
     }
 
     private string GetBioAi()
     {
-        string result = GameDB.Instance.biologyDB[BiologyNum][_Ai];
+        string result = GameDB.Instance.BiologyDB[BiologyNum][_Ai];
         return result;
     }
 
-    private int GetBioLv()
+    private string GetBioLv()
     {
-        int result = int.Parse(GameDB.Instance.biologyDB[BiologyNum][_Lv]);
-        return result;
+        return GameDB.Instance.BiologyDB[BiologyNum][_Lv];
     }
 
     private uFantasy.Enum.BiologyType GetBioType()
     {
-        var result = int.Parse(GameDB.Instance.biologyDB[BiologyNum][_Tpye]);
+        var result = int.Parse(GameDB.Instance.BiologyDB[BiologyNum][_Tpye]);
         return (uFantasy.Enum.BiologyType)result;
     }
 
     private string GetBioDrawNum()
     {
-        var result = GameDB.Instance.biologyDB[BiologyNum][_DrawNum];
+        var result = GameDB.Instance.BiologyDB[BiologyNum][_DrawNum];
         return result;
     }
 
     private string GetBioName()
     {
-        string result = GameDB.Instance.biologyDB[BiologyNum][_Name];
+        string result = GameDB.Instance.BiologyDB[BiologyNum][_Name];
         return result;
     }
 

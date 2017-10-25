@@ -17,7 +17,7 @@ public class BiologyAI
     public BiologyAI(Biology Parent, string AiNumber)
     {
         //如果無此資料
-        if (AiNumber == "" || GameDB.Instance.biologyAi.ContainsKey(AiNumber) == false) return;
+        if (AiNumber == "" || GameDB.Instance.BiologyAi.ContainsKey(AiNumber) == false) return;
 
         this.AiNumber = AiNumber;
         this.Parent = Parent;
@@ -31,7 +31,7 @@ public class BiologyAI
         List<string> n = new List<string>();
         for (var i = _ConditionListStart; i < _ConditionListEnd; i += 2)
         {
-            n.Add(GameDB.Instance.biologyAi[AiNumber][i]);
+            n.Add(GameDB.Instance.BiologyAi[AiNumber][i]);
         }
         return n;
     }
@@ -40,13 +40,13 @@ public class BiologyAI
         List<string> n = new List<string>();
         for (var i = _ActionListStart; i < _ActionListEnd; i += 2)
         {
-            n.Add(GameDB.Instance.biologyAi[AiNumber][i]);
+            n.Add(GameDB.Instance.BiologyAi[AiNumber][i]);
         }
         return n;
     }
     private float GetVision()
     {
-        return float.Parse(GameDB.Instance.biologyAi[AiNumber][_Vision]);
+        return float.Parse(GameDB.Instance.BiologyAi[AiNumber][_Vision]);
     }
 
     public void Update()

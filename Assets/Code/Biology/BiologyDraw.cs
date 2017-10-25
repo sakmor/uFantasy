@@ -15,7 +15,7 @@ public class BiologyDraw
     public BiologyDraw(string DrawNum)
     {
         //如果無此資料
-        if (DrawNum == "" || GameDB.Instance.biologyDraw.ContainsKey(DrawNum) == false)
+        if (DrawNum == "" || GameDB.Instance.BiologyDraw.ContainsKey(DrawNum) == false)
         {
             return;
         }
@@ -31,23 +31,23 @@ public class BiologyDraw
     }
     private string GetModelName()
     {
-        return GameDB.Instance.biologyDraw[DrawNum][_Mesh];
+        return GameDB.Instance.BiologyDraw[DrawNum][_Mesh];
     }
     private Mesh GetDrawMesh()
     {
-        string MeshName = GameDB.Instance.biologyDraw[DrawNum][_Mesh];
+        string MeshName = GameDB.Instance.BiologyDraw[DrawNum][_Mesh];
         return (Mesh)Resources.Load("Biology/" + MeshName, typeof(Mesh));
     }
 
     private Texture GetDrawTexture()
     {
-        string textureName = GameDB.Instance.biologyDraw[DrawNum][_Texture];
+        string textureName = GameDB.Instance.BiologyDraw[DrawNum][_Texture];
         Texture textrue = (Texture)Resources.Load("Biology/Texture/" + textureName, typeof(Texture));
         return textureName == "" ? null : textrue;
     }
     private float GetDrawScale()
     {
-        return float.Parse(GameDB.Instance.biologyDraw[DrawNum][_Scale]);
+        return float.Parse(GameDB.Instance.BiologyDraw[DrawNum][_Scale]);
     }
 
 }

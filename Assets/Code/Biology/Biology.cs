@@ -15,13 +15,14 @@ public class Biology : MonoBehaviour
     [Header("生物名稱")] private string Name;
     [Header("生物圖號")] private string DrawNum;
     [Header("生物類型")] internal uFantasy.Enum.BiologyType Type;
-    [Header("生物等級")] private int Lv;
+    [Header("生物等級")] internal string Lv;
     [Header("AI編號")] private string Ai;
     [Header("AI編號")] internal float Speed;
     [Header("生物模型")] private string ModelName;
     [Header("武器模型")] public GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
 
     private GameObject _model, Shadow; //fixme:這個有點壞設計
+    private DotLine DotLine;
     internal Animator Animator;
     public BiologyMovement BiologyMovement;
     internal BiologyAttr BiologyAttr;
@@ -51,6 +52,15 @@ public class Biology : MonoBehaviour
     {
         BiologyMovement.Update();
         BiologyAI.Update();
+        Line2Target();
+    }
+    private void Line2Target() //fixme:Debug用
+    {
+        if (Target == null) return;
+        Vector3[] lineDate = new Vector3[2];
+        lineDate[0] = transform.position;
+        lineDate[1] = Target.transform.position;
+        DotLine.DrawLine(lineDate);
     }
 
     public void LoadDB()
@@ -65,17 +75,30 @@ public class Biology : MonoBehaviour
         SetBiologyAI();
         Rename();
         AddShadow();
+        AddLine();
         SetBiologyMovement();
         SetBiologyAttr();
     }
 
+    private void AddLine()
+    {
+        GameObject line = Instantiate(Resources.Load("Prefab/Line", typeof(GameObject)) as GameObject);
+        line.transform.SetParent(GameObject.Find("Line").transform);
+        line.name = name + "Line";
+        DotLine = line.GetComponent<DotLine>();
+    }
+
     private void SetBiologyAttr()
     {
+        //讀取Level資料
+        BiologyDraw BiologyDraw = new BiologyDraw(DrawNum);
+        ModelName = BiologyDraw.ModelName;
         BiologyAttr = gameObject.GetComponent<BiologyAttr>();
     }
 
     private void SetBiologyAI()
     {
+
         BiologyAI = new BiologyAI(this, Ai);
     }
 
@@ -192,7 +215,7 @@ public class Biology : MonoBehaviour
         _model = Instantiate(Resources.Load("Biology/" + BiologyDraw.ModelName) as GameObject);
         _model.transform.SetParent(transform);
         _model.transform.localPosition = Vector3.zero;
-        _model.name = ModelName;
+        _model.name = "Model";
 
         //載入縮放大小
         transform.localScale = Vector3.one * BiologyDraw.Scale;

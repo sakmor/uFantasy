@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class DotLine : MonoBehaviour
 {
-    private Vector3[] LeaderPathCorners;
+
     private LineRenderer LineRenderer;
     private Transform Select_Arrow;
     // Use this for initialization
     private void Start()
     {
-        LineRenderer = GameObject.Find("Line").GetComponent<LineRenderer>();
-        Select_Arrow = GameObject.Find("Select_Arrow").transform;
+        LineRenderer = GetComponent<LineRenderer>();
+        Select_Arrow = transform.Find("Select_Arrow").transform;
     }
 
     // Update is called once per frame
@@ -22,7 +22,7 @@ public class DotLine : MonoBehaviour
         LineRenderer.SetPositions(postions);
         float lineLength = GetLineLenght(postions);
         LineRenderer.material.SetFloat("_RepeatCount", lineLength * 2);
-        Select_Arrow.position = postions[postions.Length - 1]; //fixme: 不要搜尋名稱的方式
+        Select_Arrow.position = postions[postions.Length - 1];
     }
 
 

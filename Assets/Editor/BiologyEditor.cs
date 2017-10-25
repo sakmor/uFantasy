@@ -38,7 +38,7 @@ public class BiologyEditor : Editor
         {
             if (Biology.BiologyNum == "99999") { Biology.BiologyNum = "10001"; }
             Biology.BiologyNum = (int.Parse(Biology.BiologyNum) + 1).ToString();
-            while (GameDB.Instance.biologyDB.ContainsKey(Biology.BiologyNum) == false)
+            while (GameDB.Instance.BiologyDB.ContainsKey(Biology.BiologyNum) == false)
             {
                 Biology.BiologyNum = (int.Parse(Biology.BiologyNum) + 1).ToString();
                 if (Biology.BiologyNum == "99999") { Biology.BiologyNum = "10001"; break; }
@@ -48,7 +48,7 @@ public class BiologyEditor : Editor
         {
             if (Biology.BiologyNum == "10001") { Biology.BiologyNum = "99999"; }
             Biology.BiologyNum = (int.Parse(Biology.BiologyNum) - 1).ToString();
-            while (GameDB.Instance.biologyDB.ContainsKey(Biology.BiologyNum) == false)
+            while (GameDB.Instance.BiologyDB.ContainsKey(Biology.BiologyNum) == false)
             {
                 Biology.BiologyNum = (int.Parse(Biology.BiologyNum) - 1).ToString();
                 if (Biology.BiologyNum == "10001") break;

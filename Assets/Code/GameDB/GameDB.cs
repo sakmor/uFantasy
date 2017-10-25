@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 public class GameDB
 {
-    readonly public Dictionary<string, string[]> biologyDB;
-    readonly public Dictionary<string, string[]> biologyDraw;
-    readonly public Dictionary<string, string[]> biologyModel;
-    readonly public Dictionary<string, string[]> biologyAi;
+    readonly public Dictionary<string, string[]> BiologyDB;
+    readonly public Dictionary<string, string[]> BiologyDraw;
+    readonly public Dictionary<string, string[]> BiologyModel;
+    readonly public Dictionary<string, string[]> BiologyAi;
+    readonly public Dictionary<string, string[]> Level;
     private JsonParse JsonParse;
 
     private static readonly GameDB _instance = new GameDB();
@@ -14,9 +15,10 @@ public class GameDB
     private GameDB()
     {
         JsonParse = new JsonParse();
-        biologyDB = JsonParse.LoadBiologyDB();
-        biologyDraw = JsonParse.LoadBiologyDraw();
-        biologyModel = JsonParse.LoadBiologyModel();
-        biologyAi = JsonParse.LoadBiologyAi();
+        BiologyDB = JsonParse.LoadBiologyDB();
+        BiologyDraw = JsonParse.LoadBiologyDraw();
+        BiologyModel = JsonParse.LoadBiologyModel();
+        BiologyAi = JsonParse.LoadBiologyAi();
+        Level = JsonParse.LoadLevel();
     }
 }

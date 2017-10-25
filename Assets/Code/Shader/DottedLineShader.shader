@@ -7,6 +7,7 @@ Shader "Unlit/DottedLineShader"
         _RepeatCount("Repeat Count", float) = 5
         _Spacing("Spacing", float) = 0.5
         _Offset("Offset", float) = 0
+         _ColorTint ("Tint", Color) = (1.0, 1.0, 1.0, 1.0)
     }
         SubShader
     {
@@ -52,13 +53,14 @@ Shader "Unlit/DottedLineShader"
 
                 return o;
             }
-
+            fixed4 _ColorTint;
             fixed4 frag (v2f i) : SV_Target
             {
                 i.uv.x = fmod(i.uv.x, 1.0f + _Spacing);
                 float r = length(i.uv - float2(1.0f + _Spacing, 1.0f) * 0.5f) * 2.0f;
 
                 fixed4 color = i.color;
+                color *= _ColorTint;
                 color.a *= saturate((0.99f - r) * 100.0f);
 
                 return color;

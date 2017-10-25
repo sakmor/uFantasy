@@ -15,7 +15,7 @@ class BiologyModel
     public BiologyModel(string ModelName)
     {
         //如果無此資料
-        if (ModelName == "" || GameDB.Instance.biologyModel.ContainsKey(ModelName) == false)
+        if (ModelName == "" || GameDB.Instance.BiologyModel.ContainsKey(ModelName) == false)
         {
             return;
         }
@@ -27,14 +27,14 @@ class BiologyModel
 
     private float GetWalkStep()
     {
-        return float.Parse(GameDB.Instance.biologyModel[ModelName][_WalkStep]);
+        return float.Parse(GameDB.Instance.BiologyModel[ModelName][_WalkStep]);
     }
     private float GetCollisionPostionXZ()
     {
-        return float.Parse(GameDB.Instance.biologyModel[ModelName][_CollisionSizeXZ]);
+        return float.Parse(GameDB.Instance.BiologyModel[ModelName][_CollisionSizeXZ]);
     }
     private float GetCollisionPostionY()
     {
-        return float.Parse(GameDB.Instance.biologyModel[ModelName][_CollisionPostionY]);
+        return float.Parse(GameDB.Instance.BiologyModel[ModelName][_CollisionPostionY]);
     }
 }
