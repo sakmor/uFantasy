@@ -13,7 +13,7 @@ public class BiologyAI_Condition
     private BiologyAI_Condition()
     {
         Conditions = new Dictionary<string, Command>();
-        Conditions.Add("Ally: Status = KO", new Command(Ally_HP_Less, 0.0f));
+        Conditions.Add("Ally:Status = KO", new Command(Ally_HP_Zero, 0.0f));
         Conditions.Add("Ally:HP < 100%", new Command(Ally_HP_Less, 1.0f));
         Conditions.Add("Ally:HP < 90%", new Command(Ally_HP_Less, 0.9f));
         Conditions.Add("Ally:HP < 80%", new Command(Ally_HP_Less, 0.8f));
@@ -36,9 +36,16 @@ public class BiologyAI_Condition
         Conditions.Add("Foe:HP < 3,000", new Command(Foe_HP_Less_Point, 3000));
         Conditions.Add("Foe:HP < 2,000", new Command(Foe_HP_Less_Point, 2000));
         Conditions.Add("Foe:HP < 1,000", new Command(Foe_HP_Less_Point, 1000));
+        Conditions.Add("Foe:HP < 500", new Command(Foe_HP_Less_Point, 500));
+
+        Conditions.Add("Foe:HP < 90%", new Command(Foe_HP_Less, 0.9f));
+        Conditions.Add("Foe:HP < 70%", new Command(Foe_HP_Less, 0.7f));
+        Conditions.Add("Foe:HP < 50%", new Command(Foe_HP_Less, 0.5f));
+        Conditions.Add("Foe:HP < 30%", new Command(Foe_HP_Less, 0.3f));
+        Conditions.Add("Foe:HP < 10%", new Command(Foe_HP_Less, 0.1f));
+
         Conditions.Add("Foe:Lowest HP", new Command(Foe_HP_Lowest_Point, 0));
 
-        Conditions.Add("Foe:HP < 500", new Command(Foe_HP_Less_Point, 500));
 
         Conditions.Add("Self:HP < 100%", new Command(Self_HP_Less, 1.0f));
         Conditions.Add("Self:HP < 90%", new Command(Self_HP_Less, 0.9f));
@@ -65,7 +72,7 @@ public class BiologyAI_Condition
 
     private bool Foe_HP_Lowest_Point(float n)
     {
-        return n_HP_Lowest_Point(BiologyAI.Visible_Ally_Biologys, n);
+        return n_HP_Lowest_Point(BiologyAI.Visible_Foe_Biologys, n);
     }
     private bool Ally_HP_Lowest_Point(float n)
     {
@@ -97,7 +104,8 @@ public class BiologyAI_Condition
             Func<float, bool> f = Conditions[Ai.ConditionList[i]].Func;
             float p = Conditions[Ai.ConditionList[i]].p1;
             bool ConditionResult = f(p);
-            if (ConditionResult) return;
+            if (ConditionResult == false) continue;
+            Debug.Log(BiologyAI.Parent.name + "-->" + BiologyAI.Parent.Target.name + ":" + Ai.ConditionList[i]);
         }
     }
     private bool Foe_HP_Full(float n)
@@ -111,9 +119,14 @@ public class BiologyAI_Condition
         }
         return false;
     }
+
     private bool Ally_HP_Less(float n)
     {
         return n_HP_Less(BiologyAI.Visible_Ally_Biologys, n);
+    }
+    private bool Ally_HP_Zero(float n)
+    {
+        return n_HP_Less_Point(BiologyAI.Visible_Ally_Biologys, 1);
     }
     private bool Foe_HP_Less(float n)
     {
@@ -139,7 +152,7 @@ public class BiologyAI_Condition
             Biology p = biologys[i];
             if (IsBiologyDead(p)) continue;
 
-            if ((float)p.BiologyAttr.Mp / (float)p.BiologyAttr.MpMax > n) continue;
+            if ((float)p.BiologyAttr.Mp / (float)p.BiologyAttr.MpMax >= n) continue;
             BiologyAI.Parent.Target = p;
             return true;
         }
@@ -152,7 +165,7 @@ public class BiologyAI_Condition
             Biology p = biologys[i];
             if (IsBiologyDead(p)) continue;
 
-            if ((float)p.BiologyAttr.Hp / (float)p.BiologyAttr.HpMax > n) continue;
+            if ((float)p.BiologyAttr.Hp / (float)p.BiologyAttr.HpMax >= n) continue;
             BiologyAI.Parent.Target = p;
             return true;
         }
@@ -168,12 +181,13 @@ public class BiologyAI_Condition
         for (int i = 0; i < biologys.Count; i++)
         {
             Biology p = biologys[i];
-            if ((float)p.BiologyAttr.Hp > n) continue;
+            if ((float)p.BiologyAttr.Hp >= n) continue;
             BiologyAI.Parent.Target = p;
             return true;
         }
         return false;
     }
+
     private class Command
     {
         public Func<float, bool> Func;
