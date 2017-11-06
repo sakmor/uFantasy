@@ -22,7 +22,7 @@ public class Biology : MonoBehaviour
     [Header("武器模型")] public GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
 
     private GameObject _model, Shadow; //fixme:這個有點壞設計
-    private DotLine DotLine;
+    private BezierLine BezierLine;
     internal Animator Animator;
     public BiologyMovement BiologyMovement;
     internal BiologyAttr BiologyAttr;
@@ -57,10 +57,7 @@ public class Biology : MonoBehaviour
     private void Line2Target() //fixme:Debug用
     {
         if (Target == null) return;
-        Vector3[] lineDate = new Vector3[2];
-        lineDate[0] = transform.position;
-        lineDate[1] = Target.transform.position;
-        DotLine.DrawLine(lineDate);
+        BezierLine.line2target(transform, Target.transform);
     }
 
     public void LoadDB()
@@ -82,10 +79,10 @@ public class Biology : MonoBehaviour
 
     private void AddLine()
     {
-        GameObject line = Instantiate(Resources.Load("Prefab/Line", typeof(GameObject)) as GameObject);
-        line.transform.SetParent(GameObject.Find("Line").transform);
-        line.name = name + "Line";
-        DotLine = line.GetComponent<DotLine>();
+        GameObject line = Instantiate(Resources.Load("Prefab/BZLine", typeof(GameObject)) as GameObject);
+        line.transform.SetParent(GameObject.Find("BZLine").transform);
+        line.name = name + "BZLine";
+        BezierLine = line.GetComponent<BezierLine>();
     }
 
     private void SetBiologyAttr()
