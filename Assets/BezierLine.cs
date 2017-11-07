@@ -27,7 +27,7 @@ public class BezierLine : MonoBehaviour
     }
     public void line2target(Transform Parent, Transform target)
     {
-        transform.Find("P0").localPosition = new Vector3(0, 10, 0);
+        transform.Find("P0").position = Parent.transform.position + Vector3.up * 10;
         this.controlPoints[0] = Parent;
         this.controlPoints[1] = transform.Find("P0");
         this.controlPoints[2] = target;

@@ -80,7 +80,7 @@ public class Biology : MonoBehaviour
     private void AddLine()
     {
         GameObject line = Instantiate(Resources.Load("Prefab/BZLine", typeof(GameObject)) as GameObject);
-        line.transform.SetParent(GameObject.Find("BZLine").transform);
+        line.transform.SetParent(transform);
         line.name = name + "BZLine";
         BezierLine = line.GetComponent<BezierLine>();
     }
