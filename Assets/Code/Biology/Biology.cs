@@ -57,7 +57,7 @@ public class Biology : MonoBehaviour
     private void Line2Target() //fixme:Debug用
     {
         if (Target == null) return;
-        BezierLine.line2target(transform, Target.transform);
+        BezierLine.Lin2Target(transform, Target.transform);
     }
 
     public void LoadDB()

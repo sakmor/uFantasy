@@ -13,10 +13,10 @@ public class BezierLine : MonoBehaviour
     private int curveCount = 0;
     private int layerOrder = 0;
     private int SEGMENT_COUNT = 50;
-    private float currentTime;
-    public float duration, fadeOut;
-
-
+    private float currentTime, currentTimeAlpha;
+    public float duration, alpha;
+    private Color Color;
+    private Transform p0;
 
     void Start()
     {
@@ -28,30 +28,25 @@ public class BezierLine : MonoBehaviour
 
         SetColor("Blue");
     }
-    public void line2target(Transform Parent, Transform target)
+    public void Lin2Target(Transform Parent, Transform Target)
     {
-        Transform p0 = transform.Find("P0");
 
-        p0.position = Parent.transform.position + Vector3.up * (5 + Mathf.Clamp(10 - Vector3.Distance(Parent.position, target.position), 0, 10));
+        if (drawIt == true) return;
+        p0 = transform.Find("P0");
+
         this.controlPoints[0] = Parent;
         this.controlPoints[1] = p0;
-        this.controlPoints[2] = target;
-        this.controlPoints[3] = target;
+        this.controlPoints[2] = Target;
+        this.controlPoints[3] = Target;
         drawIt = true;
 
     }
-    public void line2target(Transform Parent, Transform target, string color)
+    public void Lin2Target(Transform Parent, Transform target, string color)
     {
-        line2target(Parent, target);
+        Lin2Target(Parent, target);
         SetColor(color);
     }
-    public void closeLine()
-    {
-        this.controlPoints[2] = this.transform.parent.transform;
-        this.controlPoints[3] = this.transform.parent.transform;
-        drawIt = false;
 
-    }
 
     public void SetGreen()
     {
@@ -72,8 +67,9 @@ public class BezierLine : MonoBehaviour
 
     public void SetColor(string c)
     {
-        GetComponent<LineRenderer>().sharedMaterial = Resources.Load("Map/Materials/LightBeam" + c, typeof(Material)) as Material;
-        LightStar.GetComponent<SpriteRenderer>().sharedMaterial = Resources.Load("Map/Materials/LightStar" + c, typeof(Material)) as Material;
+        lineRenderer.sharedMaterial = Instantiate(Resources.Load("Map/Materials/LightBeam" + c, typeof(Material)) as Material);
+        LightStar.GetComponent<SpriteRenderer>().sharedMaterial = Instantiate(Resources.Load("Map/Materials/LightStar" + c, typeof(Material)) as Material);
+        Color = lineRenderer.material.GetColor("_TintColor");
     }
     void Update()
     {
@@ -83,6 +79,7 @@ public class BezierLine : MonoBehaviour
     void DrawCurve()
     {
         if (drawIt == false) return;
+        lineRenderer.material.SetColor("_TintColor", new Color(Color.r, Color.g, Color.b, 0.5f));
         float t = 0;
         currentTime += Time.deltaTime;
         float pa = Easing.QuintEaseIn(currentTime, 0, 1, duration);
@@ -104,8 +101,23 @@ public class BezierLine : MonoBehaviour
             }
         }
 
-        if (t < 1) return;
+
+        if (t < 1)
+        {
+            p0.position = controlPoints[0].position + Vector3.up * (5 + Mathf.Clamp(10 - Vector3.Distance(controlPoints[0].position, controlPoints[3].position), 0, 10));
+            return;
+        }
+        currentTimeAlpha += Time.deltaTime;
+        alpha = 0.5f - currentTimeAlpha;
+        lineRenderer.material.SetColor("_TintColor", new Color(Color.r, Color.g, Color.b, alpha));
+        p0.transform.position -= Vector3.up * 2.5f * Time.deltaTime;
+
+        if (alpha > 0f) return;
+        currentTimeAlpha = 0;
         currentTime = 0;
+        drawIt = false;
+
+
     }
 
     Vector3 CalculateCubicBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
