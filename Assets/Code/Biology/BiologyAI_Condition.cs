@@ -105,7 +105,7 @@ public class BiologyAI_Condition
             float p = Conditions[Ai.ConditionList[i]].p1;
             bool ConditionResult = f(p);
             if (ConditionResult == false) continue;
-            Debug.Log(BiologyAI.Parent.name + "-->" + BiologyAI.Parent.Target.name + ":" + Ai.ConditionList[i]);
+            // Debug.Log(BiologyAI.Parent.name + "-->" + BiologyAI.Parent.Target.name + ":" + Ai.ConditionList[i]);
         }
     }
     private bool Foe_HP_Full(float n)

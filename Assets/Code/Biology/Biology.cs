@@ -52,7 +52,7 @@ public class Biology : MonoBehaviour
     {
         BiologyMovement.Update();
         BiologyAI.Update();
-        Line2Target();
+        Line2Target();//fixme:Debug用
     }
     private void Line2Target() //fixme:Debug用
     {
@@ -80,7 +80,7 @@ public class Biology : MonoBehaviour
     private void AddLine()
     {
         GameObject line = Instantiate(Resources.Load("Prefab/BZLine", typeof(GameObject)) as GameObject);
-        line.transform.SetParent(transform);
+        line.transform.SetParent(GameObject.Find("uComponet/BZLine").transform);
         line.name = name + "BZLine";
         BezierLine = line.GetComponent<BezierLine>();
     }

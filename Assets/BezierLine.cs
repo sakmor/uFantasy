@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿//http://www.theappguruz.com/blog/bezier-curve-in-games
+using UnityEngine;
 
 
 [RequireComponent(typeof(LineRenderer))]
 public class BezierLine : MonoBehaviour
 {
+    Transform LightStar;
     public Transform[] controlPoints;
     public LineRenderer lineRenderer;
     public bool drawIt = false;
@@ -11,31 +13,37 @@ public class BezierLine : MonoBehaviour
     private int curveCount = 0;
     private int layerOrder = 0;
     private int SEGMENT_COUNT = 50;
-    private float startTime;
-    public float duration, linepapa, fadeOut;
+    private float currentTime;
+    public float duration, fadeOut;
 
 
 
     void Start()
     {
-        linepapa = 0;
-        duration = 0.25f;
+        duration = 1.25f;
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.sortingLayerID = layerOrder;
         curveCount = (int)controlPoints.Length / 3;
-        startTime = Time.time;
+        LightStar = transform.Find("LightStar");
+
+        SetColor("Blue");
     }
     public void line2target(Transform Parent, Transform target)
     {
-        transform.Find("P0").position = Parent.transform.position + Vector3.up * 10;
+        Transform p0 = transform.Find("P0");
+
+        p0.position = Parent.transform.position + Vector3.up * (5 + Mathf.Clamp(10 - Vector3.Distance(Parent.position, target.position), 0, 10));
         this.controlPoints[0] = Parent;
-        this.controlPoints[1] = transform.Find("P0");
+        this.controlPoints[1] = p0;
         this.controlPoints[2] = target;
         this.controlPoints[3] = target;
         drawIt = true;
-        linepapa = 0;
-        startTime = Time.time;
 
+    }
+    public void line2target(Transform Parent, Transform target, string color)
+    {
+        line2target(Parent, target);
+        SetColor(color);
     }
     public void closeLine()
     {
@@ -45,58 +53,59 @@ public class BezierLine : MonoBehaviour
 
     }
 
+    public void SetGreen()
+    {
+        SetColor("Green");
+    }
+    public void SetYellow()
+    {
+        SetColor("Yellow");
+    }
+    public void SetRed()
+    {
+        SetColor("Red");
+    }
+    public void SetBlue()
+    {
+        SetColor("Blue");
+    }
 
+    public void SetColor(string c)
+    {
+        GetComponent<LineRenderer>().sharedMaterial = Resources.Load("Map/Materials/LightBeam" + c, typeof(Material)) as Material;
+        LightStar.GetComponent<SpriteRenderer>().sharedMaterial = Resources.Load("Map/Materials/LightStar" + c, typeof(Material)) as Material;
+    }
     void Update()
     {
-        // print(Time.deltaTime);
-        if (drawIt)
-        {
-            DrawCurve();
-        }
-
+        DrawCurve();
     }
 
     void DrawCurve()
     {
+        if (drawIt == false) return;
+        float t = 0;
+        currentTime += Time.deltaTime;
+        float pa = Easing.QuintEaseIn(currentTime, 0, 1, duration);
 
         for (int j = 0; j < curveCount; j++)
         {
             for (int i = 1; i <= SEGMENT_COUNT; i++)
             {
-                float t = i / (float)SEGMENT_COUNT;
+                // 控制曲線繪圖進度(動畫)
+                // Fixme:不易閱讀   
+                t = i / (float)SEGMENT_COUNT;
+                t = t >= pa ? pa : t;
 
-                // if (linepapa <= 0.9)
-                // {
-
-                //     linepapa += 0.001f;// MathS.easeInQuad(Time.time - startTime, 0, 1, duration);
-
-                //     if (t > linepapa)
-                //     {
-                //         t = linepapa;
-                //     }
-                //     fadeOut = 1;
-                // }
-                // else
-                // {
-                //     // fadeOut -= Time.deltaTime * 0.03f;
-                //     // if (fadeOut > 0)
-                //     // {
-                //     //     rend.material.SetColor("_Color", new Color(1, 1, 1, fadeOut));
-                //     // }
-                //     // else
-                //     // {
-                //     //     drawIt = false;
-
-                //     // }
-                // }
                 int nodeIndex = j * 3;
                 Vector3 pixel = CalculateCubicBezierPoint(t, controlPoints[nodeIndex].position, controlPoints[nodeIndex + 1].position, controlPoints[nodeIndex + 2].position, controlPoints[nodeIndex + 3].position);
-                lineRenderer.positionCount = (j * SEGMENT_COUNT) + i;
+                lineRenderer.positionCount = (((j * SEGMENT_COUNT) + i));
                 lineRenderer.SetPosition((j * SEGMENT_COUNT) + (i - 1), pixel);
-
+                transform.Find("LightStar").position = pixel + Vector3.up * 0.5f;
             }
-
         }
+
+        if (t < 1) return;
+        currentTime = 0;
     }
 
     Vector3 CalculateCubicBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
