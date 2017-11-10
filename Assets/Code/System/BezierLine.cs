@@ -28,7 +28,7 @@ public class BezierLine : MonoBehaviour
 
         SetColor("Blue");
     }
-    public void Lin2Target(Transform Parent, Transform Target)
+    public void Line2Target(Transform Parent, Transform Target)
     {
 
         if (drawIt == true) return;
@@ -41,28 +41,10 @@ public class BezierLine : MonoBehaviour
         drawIt = true;
 
     }
-    public void Lin2Target(Transform Parent, Transform target, string color)
+    public void Line2Target(Transform Parent, Transform target, string color)
     {
-        Lin2Target(Parent, target);
+        Line2Target(Parent, target);
         SetColor(color);
-    }
-
-
-    public void SetGreen()
-    {
-        SetColor("Green");
-    }
-    public void SetYellow()
-    {
-        SetColor("Yellow");
-    }
-    public void SetRed()
-    {
-        SetColor("Red");
-    }
-    public void SetBlue()
-    {
-        SetColor("Blue");
     }
 
     public void SetColor(string c)
@@ -101,16 +83,14 @@ public class BezierLine : MonoBehaviour
             }
         }
 
+        p0.position = controlPoints[0].position + Vector3.up * (5 + Mathf.Clamp(10 - Vector3.Distance(controlPoints[0].position, controlPoints[3].position), 0, 10));
+        p0.transform.position -= Vector3.up * 1.5f * currentTime;
 
-        if (t < 1)
-        {
-            p0.position = controlPoints[0].position + Vector3.up * (5 + Mathf.Clamp(10 - Vector3.Distance(controlPoints[0].position, controlPoints[3].position), 0, 10));
-            return;
-        }
+        if (t < 1) return;
         currentTimeAlpha += Time.deltaTime;
         alpha = 0.5f - currentTimeAlpha;
         lineRenderer.material.SetColor("_TintColor", new Color(Color.r, Color.g, Color.b, alpha));
-        p0.transform.position -= Vector3.up * 2.5f * Time.deltaTime;
+
 
         if (alpha > 0f) return;
         currentTimeAlpha = 0;

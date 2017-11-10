@@ -57,7 +57,19 @@ public class Biology : MonoBehaviour
     private void Line2Target() //fixme:Debug用
     {
         if (Target == null) return;
-        BezierLine.Lin2Target(transform, Target.transform);
+
+        if (Type == uFantasy.Enum.BiologyType.Player &&
+            Target.Type == uFantasy.Enum.BiologyType.Player) BezierLine.Line2Target(transform, Target.transform, "Green");
+
+        if (Type == uFantasy.Enum.BiologyType.Player &&
+            Target.Type != uFantasy.Enum.BiologyType.Player) BezierLine.Line2Target(transform, Target.transform, "Blue");
+
+        if (Type != uFantasy.Enum.BiologyType.Player &&
+        Target.Type == uFantasy.Enum.BiologyType.Player) BezierLine.Line2Target(transform, Target.transform, "Red");
+
+        if (Type != uFantasy.Enum.BiologyType.Player &&
+            Target.Type != uFantasy.Enum.BiologyType.Player) BezierLine.Line2Target(transform, Target.transform, "Purple");
+
     }
 
     public void LoadDB()
