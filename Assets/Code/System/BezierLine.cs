@@ -12,7 +12,7 @@ public class BezierLine : MonoBehaviour
 
     private int curveCount = 0;
     private int layerOrder = 0;
-    private int SEGMENT_COUNT = 50;
+    private int SEGMENT_COUNT = 25;
     private float currentTime, currentTimeAlpha;
     public float duration, alpha;
     private Color Color;
