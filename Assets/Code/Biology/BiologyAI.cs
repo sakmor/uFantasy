@@ -51,14 +51,17 @@ public class BiologyAI
 
     public void Update()
     {
-        VisibleBioUpdate();
-        ConditionBioUpdate();
+        VisibleBioUpdate(); //取得視線範圍內的生物
+        BioConditionUpdate();//狀況檢查並取得行為與目標
+
+        //執行行為
     }
 
-    private void ConditionBioUpdate()
+    private void BioConditionUpdate()
     {
         BiologyAI_Condition.Instance.Condition(this);
     }
+
 
     private void VisibleBioUpdate() //fixme:之後需要效能優化，不需要每一楨都執行  
     {

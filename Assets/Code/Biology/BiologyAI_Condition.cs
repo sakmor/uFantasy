@@ -9,6 +9,8 @@ public class BiologyAI_Condition
     private static readonly BiologyAI_Condition _instance = new BiologyAI_Condition();
     public static BiologyAI_Condition Instance { get { return _instance; } }
     private Dictionary<string, Command> Conditions;
+    internal Biology Target;
+    internal String Action;
 
     private BiologyAI_Condition()
     {
@@ -89,7 +91,7 @@ public class BiologyAI_Condition
 
             if (p.BiologyAttr.Hp > Hp_Hp_Lowest) continue;
             Hp_Hp_Lowest = p.BiologyAttr.Hp;
-            BiologyAI.Parent.Target = p;
+            Target = p;
 
         }
         return true;
@@ -101,19 +103,37 @@ public class BiologyAI_Condition
         BiologyAI.Parent.Target = null;
         for (int i = 0; i < Ai.ConditionList.Count; i++)
         {
+            //如果資料庫無此策略跳下一個
             if (Conditions.ContainsKey(Ai.ConditionList[i]) == false) continue;
+
+            //如果此策略無法執行則跳下一個
             Func<float, bool> f = Conditions[Ai.ConditionList[i]].Func;
-            float p = Conditions[Ai.ConditionList[i]].p1;
-            bool ConditionResult = f(p);
+            float cp = Conditions[Ai.ConditionList[i]].p1;
+            bool ConditionResult = f(cp);
             if (ConditionResult == false) continue;
-            // Debug.Log(BiologyAI.Parent.name + "-->" + BiologyAI.Parent.Target.name + ":" + Ai.ConditionList[i]);
+
+            //取得該策略對應的行為
+            Action = Ai.ActionList[i];
+
+            //檢查該行為是否可以執行
+            if (BiologyAI_Action.Instance.CheckAction(this) == false) continue;
+
+            //設定生物目標
+            BiologyAI.Parent.Target = Target;
+
+            //設定生物行為
+            // BiologyAI.Parent.Action = Target;
+
+
+            //印出完整行為報告
+            Debug.Log(Ai.Parent.name + "  " + Action + " " + Target + " 因 " + Ai.ConditionList[i]);
         }
     }
     private bool Foe_Any(float n)
     {
         if (BiologyAI.Visible_Foe_Biologys == null) return false;
 
-        BiologyAI.Parent.Target = BiologyAI.Visible_Foe_Biologys[0];
+        Target = BiologyAI.Visible_Foe_Biologys[0];
         return true;
     }
     private bool Foe_Nearest(float n)
@@ -126,7 +146,7 @@ public class BiologyAI_Condition
             float d = Vector3.Distance(BiologyAI.Parent.transform.position, p.transform.position);
             if (d > Foe_Nearest) continue;
             Foe_Nearest = d;
-            BiologyAI.Parent.Target = p;
+            Target = p;
         }
         return true;
     }
@@ -136,7 +156,7 @@ public class BiologyAI_Condition
         {
             Biology p = BiologyAI.Visible_Foe_Biologys[i];
             if ((float)p.BiologyAttr.Hp < (float)p.BiologyAttr.HpMax) continue;
-            BiologyAI.Parent.Target = p;
+            Target = p;
             return true;
         }
         return false;
@@ -175,7 +195,7 @@ public class BiologyAI_Condition
             if (IsBiologyDead(p)) continue;
 
             if ((float)p.BiologyAttr.Mp / (float)p.BiologyAttr.MpMax >= n) continue;
-            BiologyAI.Parent.Target = p;
+            Target = p;
             return true;
         }
         return false;
@@ -188,7 +208,7 @@ public class BiologyAI_Condition
             if (IsBiologyDead(p)) continue;
 
             if ((float)p.BiologyAttr.Hp / (float)p.BiologyAttr.HpMax >= n) continue;
-            BiologyAI.Parent.Target = p;
+            Target = p;
             return true;
         }
 
@@ -204,7 +224,7 @@ public class BiologyAI_Condition
         {
             Biology p = biologys[i];
             if ((float)p.BiologyAttr.Hp >= n) continue;
-            BiologyAI.Parent.Target = p;
+            Target = p;
             return true;
         }
         return false;
@@ -224,6 +244,5 @@ public class BiologyAI_Condition
     {
         if (biology.BiologyAttr.Hp <= 0) return true;
         return false;
-
     }
 }
