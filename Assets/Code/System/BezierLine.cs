@@ -83,6 +83,8 @@ public class BezierLine : MonoBehaviour
             }
         }
 
+        lineRenderer.SetPosition(0, controlPoints[0].position);// 讓線條起點在生物身上
+
         p0.position = controlPoints[0].position + Vector3.up * (5 + Mathf.Clamp(10 - Vector3.Distance(controlPoints[0].position, controlPoints[3].position), 0, 10));
         p0.transform.position -= Vector3.up * 1.5f * currentTime;
 

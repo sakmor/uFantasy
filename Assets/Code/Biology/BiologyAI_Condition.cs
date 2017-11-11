@@ -26,8 +26,9 @@ public class BiologyAI_Condition
         Conditions.Add("Ally:HP < 10%", new Command(Ally_HP_Less, 0.1f));
         Conditions.Add("Ally:Lowest HP", new Command(Ally_HP_Lowest_Point, 0));
 
+        Conditions.Add("Foe:Any", new Command(Foe_Any, 0.0f));
+        Conditions.Add("Foe:Nearest", new Command(Foe_Nearest, 0.0f));
         Conditions.Add("Foe:HP = 100%", new Command(Foe_HP_Full, 0.0f));
-
 
         Conditions.Add("Foe:HP < 100,000", new Command(Foe_HP_Less_Point, 100000));
         Conditions.Add("Foe:HP < 50,000", new Command(Foe_HP_Less_Point, 50000));
@@ -107,6 +108,27 @@ public class BiologyAI_Condition
             if (ConditionResult == false) continue;
             // Debug.Log(BiologyAI.Parent.name + "-->" + BiologyAI.Parent.Target.name + ":" + Ai.ConditionList[i]);
         }
+    }
+    private bool Foe_Any(float n)
+    {
+        if (BiologyAI.Visible_Foe_Biologys == null) return false;
+
+        BiologyAI.Parent.Target = BiologyAI.Visible_Foe_Biologys[0];
+        return true;
+    }
+    private bool Foe_Nearest(float n)
+    {
+        float Foe_Nearest = Mathf.Infinity;
+        for (int i = 0; i < BiologyAI.Visible_Foe_Biologys.Count; i++)
+        {
+            Biology p = BiologyAI.Visible_Foe_Biologys[i];
+            if (IsBiologyDead(p)) continue;
+            float d = Vector3.Distance(BiologyAI.Parent.transform.position, p.transform.position);
+            if (d > Foe_Nearest) continue;
+            Foe_Nearest = d;
+            BiologyAI.Parent.Target = p;
+        }
+        return true;
     }
     private bool Foe_HP_Full(float n)
     {

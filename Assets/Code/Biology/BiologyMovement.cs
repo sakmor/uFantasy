@@ -12,7 +12,7 @@ public class BiologyMovement
     private Vector3 GoalPos;
 
     private float Closest = 0.125f;
-    private float Speed = 4.5f;
+
     public BiologyMovement(Biology biology)
     {
         Biology = biology;

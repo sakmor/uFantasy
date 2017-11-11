@@ -18,10 +18,8 @@ public class mainGame_Sam : MonoBehaviour
     private void Start()
     {
         Leader = GameObject.Find("10001 騎士01").GetComponent<Biology>(); //fixme:暫時指定隊長
-
         DotLine = GameObject.Find("Line").GetComponent<DotLine>();
 
-        GameObject n = new GameObject("navMesh");
 
     }
 

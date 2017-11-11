@@ -129,7 +129,7 @@ public class mainGame
 
         //由攝影機產生一條射線
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit[] hits = Physics.RaycastAll(ray);
+        // RaycastHit[] hits = Physics.RaycastAll(ray);
 
         // // 走訪每一個被Hit到的GameObject
         // foreach (RaycastHit hit in hits)
