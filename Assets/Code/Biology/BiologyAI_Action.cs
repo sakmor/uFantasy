@@ -38,13 +38,22 @@ public class BiologyAI_Action
     {
         return Actions.ContainsKey(Action);
     }
-
+    float current;
     private bool Attack(float n)
     {
         //如果攻擊目標是死人則回傳false
         if (IsTargetDead()) return false;
 
         //如果自己動作不能(石化、混亂...)則回傳false
+
+        //fixme:測試用
+        if (current < 1) { current += Time.deltaTime; return true; }
+        current = 0;
+        int Atk = BiologyAI_Condition.BiologyAI.Parent.BiologyAttr.Atk;
+        int Def = Target.BiologyAttr.Def;
+        int Damage = Atk - Def;
+        // Target.BiologyAttr.Hp -= Damage > 0 ? Damage : 0;
+        Target.BiologyAttr.Hp -= UnityEngine.Random.Range(1, 10);
 
         return true;
     }
@@ -57,7 +66,10 @@ public class BiologyAI_Action
 
         //如果目標滿血則不施展治療
         if (Target.BiologyAttr.Hp == Target.BiologyAttr.HpMax) return false;
-
+        //fixme:測試用
+        if (current < 1) { current += Time.deltaTime; return true; }
+        current = 0;
+        Target.BiologyAttr.Hp += UnityEngine.Random.Range(1, 10);
 
         return true;
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class BezierLine : MonoBehaviour
 {
-    Transform LightStar;
+    private Transform LightStar;
     public Transform[] controlPoints;
     public LineRenderer lineRenderer;
     public bool drawIt = false;
