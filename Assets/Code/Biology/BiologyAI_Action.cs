@@ -9,7 +9,7 @@ public class BiologyAI_Action
     private static readonly BiologyAI_Action _instance = new BiologyAI_Action();
     public static BiologyAI_Action Instance { get { return _instance; } }
     private Dictionary<string, Command> Actions;
-    private string Action = "";
+    private string Action;
     private Biology Target;
 
     private BiologyAI_Action()
@@ -21,6 +21,8 @@ public class BiologyAI_Action
     }
     public bool CheckAction(BiologyAI_Condition BiologyAI_Condition)
     {
+        if (BiologyAI_Condition.Target == null) return false;
+
         this.BiologyAI_Condition = BiologyAI_Condition;
         Action = BiologyAI_Condition.Action;
         Target = BiologyAI_Condition.Target;
@@ -52,8 +54,7 @@ public class BiologyAI_Action
         int Atk = BiologyAI_Condition.BiologyAI.Parent.BiologyAttr.Atk;
         int Def = Target.BiologyAttr.Def;
         int Damage = Atk - Def;
-        // Target.BiologyAttr.Hp -= Damage > 0 ? Damage : 0;
-        Target.BiologyAttr.Hp -= UnityEngine.Random.Range(1, 10);
+        Target.BiologyAttr.Hp -= UnityEngine.Random.Range(15, 20);
 
         return true;
     }
@@ -69,7 +70,7 @@ public class BiologyAI_Action
         //fixme:測試用
         if (current < 1) { current += Time.deltaTime; return true; }
         current = 0;
-        Target.BiologyAttr.Hp += UnityEngine.Random.Range(1, 10);
+        Target.BiologyAttr.Hp += UnityEngine.Random.Range(5, 10);
 
         return true;
     }

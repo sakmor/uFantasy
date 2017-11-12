@@ -101,8 +101,12 @@ public class BiologyAI_Condition
     {
         BiologyAI = Ai;
         BiologyAI.Parent.Target = null;
+        Target = null;
         for (int i = 0; i < Ai.ConditionList.Count; i++)
         {
+            //如果生物已死則直接跳出
+            if (BiologyAI.Parent.BiologyAttr.Hp <= 0) return;
+
             //如果資料庫無此策略跳下一個
             if (Conditions.ContainsKey(Ai.ConditionList[i]) == false) continue;
 
@@ -120,9 +124,6 @@ public class BiologyAI_Condition
 
             //設定生物目標
             BiologyAI.Parent.Target = Target;
-
-            //設定生物行為
-            // BiologyAI.Parent.Action = Target;
 
 
             //印出完整行為報告

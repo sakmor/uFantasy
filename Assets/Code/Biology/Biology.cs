@@ -28,6 +28,7 @@ public class Biology : MonoBehaviour
     internal BiologyAttr BiologyAttr;
     internal BiologyAI BiologyAI;
     internal Biology[] Biologys;
+    internal HpUI HpUI;
     public Biology Target;
 
     [SerializeField] public uFantasy.Enum.State State;
@@ -53,6 +54,7 @@ public class Biology : MonoBehaviour
         BiologyMovement.Update();
         BiologyAI.Update();
         Line2Target();//fixme:Debug用
+        HpUI._Update();
     }
     private void Line2Target() //fixme:Debug用
     {
@@ -87,6 +89,7 @@ public class Biology : MonoBehaviour
         AddLine();
         SetBiologyMovement();
         SetBiologyAttr();
+        AddHpUI();
     }
 
     private void AddLine()
@@ -95,6 +98,14 @@ public class Biology : MonoBehaviour
         line.transform.SetParent(GameObject.Find("uComponet/BZLine").transform);
         line.name = name + "BZLine";
         BezierLine = line.GetComponent<BezierLine>();
+    }
+    private void AddHpUI()
+    {
+        GameObject HP = Instantiate(Resources.Load("Prefab/HP", typeof(GameObject)) as GameObject);
+        HP.transform.SetParent(GameObject.Find("Canvas/HP").transform);
+        HP.name = name + "HP";
+        HpUI = HP.GetComponent<HpUI>();
+        HpUI.SetBio(this);
     }
 
     private void SetBiologyAttr()
