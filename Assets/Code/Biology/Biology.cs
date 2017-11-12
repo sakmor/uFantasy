@@ -37,6 +37,8 @@ public class Biology : MonoBehaviour
     private void Awake()
     {
         LoadDB();
+        AddLine();
+        AddHpUI();
     }
 
     void Start()
@@ -54,7 +56,6 @@ public class Biology : MonoBehaviour
         BiologyMovement.Update();
         BiologyAI.Update();
         Line2Target();//fixme:Debug用
-        HpUI._Update();
     }
     private void Line2Target() //fixme:Debug用
     {
@@ -86,10 +87,9 @@ public class Biology : MonoBehaviour
         SetBiologyAI();
         Rename();
         AddShadow();
-        AddLine();
         SetBiologyMovement();
         SetBiologyAttr();
-        AddHpUI();
+
     }
 
     private void AddLine()
@@ -118,11 +118,31 @@ public class Biology : MonoBehaviour
 
     private void SetBiologyAI()
     {
-
         BiologyAI = new BiologyAI(this, Ai);
     }
+    internal void GetDamage(int Damage)
+    {
+        int Def = BiologyAttr.Def;
+        int fDamage = Damage - Def;
 
-    public void setAction(uFantasy.Enum.State state)
+        if (fDamage <= 0) return;
+
+        BiologyAttr.Hp -= fDamage;
+        Animator.Play("Hurt");
+
+        CheckDead();
+
+    }
+
+    private void CheckDead()
+    {
+        if (BiologyAttr.Hp > 0) return;
+
+        HpUI.Hide();
+        Animator.Play("Deading");
+    }
+
+    internal void setAction(uFantasy.Enum.State state)
     {
         State = state;
         switch (state)

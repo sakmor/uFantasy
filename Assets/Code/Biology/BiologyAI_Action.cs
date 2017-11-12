@@ -10,7 +10,7 @@ public class BiologyAI_Action
     public static BiologyAI_Action Instance { get { return _instance; } }
     private Dictionary<string, Command> Actions;
     private string Action;
-    private Biology Target;
+    private Biology Biology, Target;
 
     private BiologyAI_Action()
     {
@@ -21,8 +21,8 @@ public class BiologyAI_Action
     }
     public bool CheckAction(BiologyAI_Condition BiologyAI_Condition)
     {
-        if (BiologyAI_Condition.Target == null) return false;
-
+        if (BiologyAI_Condition.Target == null) return false; //如果目標不存在直接跳出
+        this.Biology = BiologyAI_Condition.BiologyAI.Parent;
         this.BiologyAI_Condition = BiologyAI_Condition;
         Action = BiologyAI_Condition.Action;
         Target = BiologyAI_Condition.Target;
@@ -49,12 +49,9 @@ public class BiologyAI_Action
         //如果自己動作不能(石化、混亂...)則回傳false
 
         //fixme:測試用
-        if (current < 1) { current += Time.deltaTime; return true; }
+        if (current < 1f) { current += Time.deltaTime; return true; }
         current = 0;
-        int Atk = BiologyAI_Condition.BiologyAI.Parent.BiologyAttr.Atk;
-        int Def = Target.BiologyAttr.Def;
-        int Damage = Atk - Def;
-        Target.BiologyAttr.Hp -= UnityEngine.Random.Range(15, 20);
+        Target.GetDamage(Biology.BiologyAttr.Atk);
 
         return true;
     }

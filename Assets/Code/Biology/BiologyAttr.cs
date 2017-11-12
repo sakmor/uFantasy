@@ -7,18 +7,40 @@ public class BiologyAttr : MonoBehaviour
     private int _Hp = 1, _Def = 2, _Atk = 3, _ASpeed = 4, _Mp = 5, _MSpeed = 6, _Speed = 6;
     private int TypeStep = 7;
     public string Lv;
-    public int Hp, HpMax, Def, Atk, ASpeed, Mp, MpMax, MSpeed, Speed;
+    public int HpMax, Def, Atk, ASpeed, Mp, MpMax, MSpeed, Speed;
+    public int hp;
+    internal Biology Biology;
 
     public uFantasy.Enum.BiologyType Type;
 
+    public int Hp
+    {
+        get
+        {
+            return hp;
+        }
+
+        set
+        {
+            if (hp == value) return;
+
+            hp = value;
+            UpdateHpUI();
+        }
+    }
 
     void Start()
     {
-        Biology biology = GetComponent<Biology>();
-        Lv = biology.Lv;
-        Type = biology.Type;
+        Biology = GetComponent<Biology>();
+        Lv = Biology.Lv;
+        Type = Biology.Type;
         LoadDB();
         Rest();
+    }
+
+    internal void UpdateHpUI()
+    {
+        Biology.HpUI.ChangeHP();
     }
 
     private void LoadDB()

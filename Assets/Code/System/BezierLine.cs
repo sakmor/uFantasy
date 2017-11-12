@@ -91,6 +91,7 @@ public class BezierLine : MonoBehaviour
         if (t < 1) return;
         currentTimeAlpha += Time.deltaTime;
         alpha = 0.5f - currentTimeAlpha;
+        alpha = alpha < 0 ? 0 : alpha;
         lineRenderer.material.SetColor("_TintColor", new Color(Color.r, Color.g, Color.b, alpha));
 
 
