@@ -65,7 +65,7 @@ public class BezierLine : MonoBehaviour
         lineRenderer.material.SetColor("_TintColor", new Color(Color.r, Color.g, Color.b, 0.5f));
         float t = 0;
         currentTime += Time.deltaTime;
-        float pa = Easing.QuintEaseIn(currentTime, 0, 1, duration);
+        float pa = EasingFunction.EaseInExpo(0, 1, currentTime / duration);
 
         for (int j = 0; j < curveCount; j++)
         {
@@ -90,8 +90,9 @@ public class BezierLine : MonoBehaviour
         p0.transform.position -= Vector3.up * 1.5f * currentTime;
 
         if (t < 1) return;
+
         currentTimeAlpha += Time.deltaTime;
-        alpha = 0.5f - currentTimeAlpha;
+        alpha = EasingFunction.Linear(0.5f, 0, currentTimeAlpha / 1);
         alpha = alpha < 0 ? 0 : alpha;
         lineRenderer.material.SetColor("_TintColor", new Color(Color.r, Color.g, Color.b, alpha));
 
