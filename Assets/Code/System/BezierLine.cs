@@ -26,7 +26,7 @@ public class BezierLine : MonoBehaviour
         curveCount = (int)controlPoints.Length / 3;
         LightStar = transform.Find("LightStar");
 
-        SetColor("Blue");
+        SetColor("Hide");
     }
     public void Line2Target(Transform Parent, Transform Target)
     {
@@ -61,6 +61,7 @@ public class BezierLine : MonoBehaviour
     void DrawCurve()
     {
         if (drawIt == false) return;
+
         lineRenderer.material.SetColor("_TintColor", new Color(Color.r, Color.g, Color.b, 0.5f));
         float t = 0;
         currentTime += Time.deltaTime;
@@ -99,6 +100,7 @@ public class BezierLine : MonoBehaviour
         currentTimeAlpha = 0;
         currentTime = 0;
         drawIt = false;
+        SetColor("Hide");
 
 
     }

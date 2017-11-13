@@ -72,38 +72,17 @@ public class BiologyAI_Condition
         Conditions.Add("Self:MP < 20%", new Command(Self_MP_Less, 0.2f));
         Conditions.Add("Self:MP < 10%", new Command(Self_MP_Less, 0.1f));
     }
-
-    private bool Foe_HP_Lowest_Point(float n)
-    {
-        return n_HP_Lowest_Point(BiologyAI.Visible_Foe_Biologys, n);
-    }
-    private bool Ally_HP_Lowest_Point(float n)
-    {
-        return n_HP_Lowest_Point(BiologyAI.Visible_Ally_Biologys, n);
-    }
-    private bool n_HP_Lowest_Point(List<Biology> biologys, float n)
-    {
-        float Hp_Hp_Lowest = Mathf.Infinity;
-        for (int i = 0; i < biologys.Count; i++)
-        {
-            Biology p = biologys[i];
-            if (IsBiologyDead(p)) continue;
-
-            if (p.BiologyAttr.Hp > Hp_Hp_Lowest) continue;
-            Hp_Hp_Lowest = p.BiologyAttr.Hp;
-            Target = p;
-
-        }
-        return true;
-    }
-
     public void Condition(BiologyAI Ai)
     {
         BiologyAI = Ai;
         BiologyAI.Parent.Target = null;
-        Target = null;
+
         for (int i = 0; i < Ai.ConditionList.Count; i++)
         {
+            //清空避免殘留
+            Target = null;
+            Action = null;
+
             //如果生物已死則直接跳出
             if (BiologyAI.Parent.BiologyAttr.Hp <= 0) return;
 
@@ -130,6 +109,31 @@ public class BiologyAI_Condition
             Debug.Log(Ai.Parent.name + "  " + Action + " " + Target + " 因 " + Ai.ConditionList[i]);
         }
     }
+    private bool Foe_HP_Lowest_Point(float n)
+    {
+        return n_HP_Lowest_Point(BiologyAI.Visible_Foe_Biologys, n);
+    }
+    private bool Ally_HP_Lowest_Point(float n)
+    {
+        return n_HP_Lowest_Point(BiologyAI.Visible_Ally_Biologys, n);
+    }
+    private bool n_HP_Lowest_Point(List<Biology> biologys, float n)
+    {
+        float Hp_Hp_Lowest = Mathf.Infinity;
+        for (int i = 0; i < biologys.Count; i++)
+        {
+            Biology p = biologys[i];
+            if (IsBiologyDead(p)) continue;
+
+            if (p.BiologyAttr.Hp > Hp_Hp_Lowest) continue;
+            Hp_Hp_Lowest = p.BiologyAttr.Hp;
+            Target = p;
+
+        }
+        return true;
+    }
+
+
     private bool Foe_Any(float n)
     {
         if (BiologyAI.Visible_Foe_Biologys == null) return false;

@@ -21,7 +21,10 @@ public class BiologyAI_Action
     }
     public bool CheckAction(BiologyAI_Condition BiologyAI_Condition)
     {
+
         if (BiologyAI_Condition.Target == null) return false; //如果目標不存在直接跳出
+        if (BiologyAI_Condition.Action == null) return false; //如果行為不存在直接跳出
+
         this.Biology = BiologyAI_Condition.BiologyAI.Parent;
         this.BiologyAI_Condition = BiologyAI_Condition;
         Action = BiologyAI_Condition.Action;
@@ -52,6 +55,7 @@ public class BiologyAI_Action
         if (current < 1f) { current += Time.deltaTime; return true; }
         current = 0;
         Target.GetDamage(Biology.BiologyAttr.Atk);
+        Biology.Animator.Play("Attack_01");
 
         return true;
     }
@@ -64,10 +68,12 @@ public class BiologyAI_Action
 
         //如果目標滿血則不施展治療
         if (Target.BiologyAttr.Hp == Target.BiologyAttr.HpMax) return false;
+
         //fixme:測試用
         if (current < 1) { current += Time.deltaTime; return true; }
         current = 0;
-        Target.BiologyAttr.Hp += UnityEngine.Random.Range(5, 10);
+        Target.BiologyAttr.Hp += UnityEngine.Random.Range(15, 20);
+        Biology.Animator.Play("Use");
 
         return true;
     }

@@ -86,7 +86,7 @@ public class Biology : MonoBehaviour
         SetBiologyAnimator();
         SetBiologyAI();
         Rename();
-        AddShadow();
+        // AddShadow();
         SetBiologyMovement();
         SetBiologyAttr();
 
