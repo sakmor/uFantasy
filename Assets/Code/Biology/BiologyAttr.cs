@@ -7,8 +7,7 @@ public class BiologyAttr : MonoBehaviour
     private int _Hp = 1, _Def = 2, _Atk = 3, _ASpeed = 4, _Mp = 5, _MSpeed = 6, _Speed = 6;
     private int TypeStep = 7;
     public string Lv;
-    public int HpMax, Def, Atk, ASpeed, Mp, MpMax, MSpeed, Speed;
-    public int hp;
+    public int hp, HpMax, Def, Atk, ASpeed, Mp, MpMax, MSpeed, Speed;
     internal Biology Biology;
 
     public uFantasy.Enum.BiologyType Type;

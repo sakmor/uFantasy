@@ -72,7 +72,7 @@ public class BiologyAI_Action
         //fixme:測試用
         if (current < 1) { current += Time.deltaTime; return true; }
         current = 0;
-        Target.BiologyAttr.Hp += UnityEngine.Random.Range(15, 20);
+        Target.BiologyAttr.Hp += UnityEngine.Random.Range(100, 120);
         Biology.Animator.Play("Use");
 
         return true;
