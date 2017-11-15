@@ -33,6 +33,8 @@ public class HpUI : MonoBehaviour
         if (HPGreen.fillAmount < HPRed.fillAmount)
         {
             ShowHPHeader();
+            HideHPWhite();
+            ShowHPRed();
             HPRed.fillAmount = EasingFunction.EaseInExpo(HPRed.fillAmount, HPGreen.fillAmount, HPRed_t += Time.deltaTime / 0.25f);
         }
         else
@@ -46,6 +48,8 @@ public class HpUI : MonoBehaviour
         if (1 - HPGreen.fillAmount < HPWhite.fillAmount)
         {
             ShowHPHeader();
+            HideHPRed();
+            ShowHPWhite();
             HPWhite.fillAmount = EasingFunction.EaseInExpo(HPWhite.fillAmount, 1 - HPGreen.fillAmount, HPWhite_t += Time.deltaTime / 0.25f);
         }
         else
@@ -89,5 +93,23 @@ public class HpUI : MonoBehaviour
     internal void ShowHPHeader()
     {
         HPHeader.enabled = true;
+    }
+
+    internal void HideHPRed()
+    {
+        HPRed.enabled = false;
+    }
+    internal void ShowHPRed()
+    {
+        HPRed.enabled = true;
+    }
+
+    internal void HideHPWhite()
+    {
+        HPWhite.enabled = false;
+    }
+    internal void ShowHPWhite()
+    {
+        HPWhite.enabled = true;
     }
 }
