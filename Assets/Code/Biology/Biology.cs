@@ -101,7 +101,9 @@ public class Biology : MonoBehaviour
     }
     private void AddHpUI()
     {
-        GameObject HP = Instantiate(Resources.Load("Prefab/HP", typeof(GameObject)) as GameObject);
+        GameObject HP = null;
+        if (Type == uFantasy.Enum.BiologyType.Player) HP = Instantiate(Resources.Load("Prefab/HP_G", typeof(GameObject)) as GameObject);
+        if (Type != uFantasy.Enum.BiologyType.Player) HP = Instantiate(Resources.Load("Prefab/HP_R", typeof(GameObject)) as GameObject);
         HP.transform.SetParent(GameObject.Find("Canvas/HP").transform);
         HP.name = name + "HP";
         HpUI = HP.GetComponent<HpUI>();
