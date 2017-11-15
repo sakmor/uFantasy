@@ -132,16 +132,19 @@ public class Biology : MonoBehaviour
         BiologyAttr.Hp -= fDamage;
         Animator.Play("Hurt");
 
-        CheckDead();
-
     }
 
-    private void CheckDead()
+    internal void CheckDead()
     {
-        if (BiologyAttr.Hp > 0) return;
-
-        HpUI.Hide();
-        Animator.Play("Deading");
+        if (BiologyAttr.Hp <= 0)
+        {
+            HpUI.Hide();
+            Animator.Play("Deading");
+        }
+        if (BiologyAttr.Hp > 0)
+        {
+            HpUI.Show();
+        }
     }
 
     internal void setAction(uFantasy.Enum.State state)

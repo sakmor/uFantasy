@@ -86,6 +86,11 @@ public class HpUI : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    internal void Show()
+    {
+        gameObject.SetActive(true);
+    }
     internal void HideHPHeader()
     {
         HPHeader.enabled = false;

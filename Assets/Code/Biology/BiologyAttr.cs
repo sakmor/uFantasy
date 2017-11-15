@@ -24,8 +24,15 @@ public class BiologyAttr : MonoBehaviour
             if (hp == value) return;
 
             hp = value;
+            CheckHpHpMax();
             UpdateHpUI();
+            Biology.CheckDead();
         }
+    }
+
+    private void CheckHpHpMax()
+    {
+        if (Hp > HpMax) Hp = HpMax;
     }
 
     void Start()

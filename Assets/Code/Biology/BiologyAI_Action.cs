@@ -21,13 +21,12 @@ public class BiologyAI_Action
     }
     public bool CheckAction(BiologyAI_Condition BiologyAI_Condition)
     {
-
         if (BiologyAI_Condition.Target == null) return false; //如果目標不存在直接跳出
-        if (BiologyAI_Condition.Action == null) return false; //如果行為不存在直接跳出
+        if (BiologyAI_Condition.ActionName == null) return false; //如果行為不存在直接跳出
 
         this.Biology = BiologyAI_Condition.BiologyAI.Parent;
         this.BiologyAI_Condition = BiologyAI_Condition;
-        Action = BiologyAI_Condition.Action;
+        Action = BiologyAI_Condition.ActionName;
         Target = BiologyAI_Condition.Target;
 
         //如果該行為不在清單內跳出
@@ -37,6 +36,9 @@ public class BiologyAI_Action
         Func<float, bool> f = Actions[Action].Func;
         float cp = Actions[Action].p1;
         bool ConditionResult = f(cp);
+
+        //測試用，正常應該在正確執行完成後列印 而非【可執行】就列印
+        if (ConditionResult) DebugAction();
         return ConditionResult;
     }
     private bool IsActionInList()
@@ -67,7 +69,7 @@ public class BiologyAI_Action
         //如果自己動作不能(石化、混亂...)則回傳false
 
         //如果目標滿血則不施展治療
-        if (Target.BiologyAttr.Hp == Target.BiologyAttr.HpMax) return false;
+        if (Target.BiologyAttr.Hp >= Target.BiologyAttr.HpMax) return false;
 
         //fixme:測試用
         if (current < 1) { current += Time.deltaTime; return true; }
@@ -84,6 +86,9 @@ public class BiologyAI_Action
         if (IsTargetDead() == false) return false;
 
         //如果身上沒有 PhoenixDown 則回傳false
+
+        //fixme:測試用 
+        //Target.BiologyAttr.Hp = (int)(Target.BiologyAttr.HpMax * 0.1f);
 
         return false;
     }
@@ -102,5 +107,10 @@ public class BiologyAI_Action
             this.Func = Func;
             this.p1 = p1;
         }
+    }
+
+    private void DebugAction()
+    {
+        Debug.Log(Biology.name + "  " + Action + " " + Target + " 因 " + BiologyAI_Condition.ConditionName);
     }
 }

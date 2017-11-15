@@ -10,8 +10,45 @@ public class BiologyAI_Condition
     public static BiologyAI_Condition Instance { get { return _instance; } }
     private Dictionary<string, Command> Conditions;
     internal Biology Target;
-    internal String Action;
+    internal String ActionName, ConditionName;
+    public void Condition(BiologyAI Ai)
+    {
+        BiologyAI = Ai;
+        BiologyAI.Parent.Target = null;
 
+        for (int i = 0; i < Ai.ConditionList.Count; i++)
+        {
+            //清空避免殘留
+            Target = null;
+            ActionName = null;
+
+            //如果生物已死則直接跳出
+            if (BiologyAI.Parent.BiologyAttr.Hp <= 0) return;
+
+            //如果資料庫無此策略跳下一個
+            if (Conditions.ContainsKey(Ai.ConditionList[i]) == false) continue;
+
+            //如果此策略無法執行則跳下一個
+            Func<float, bool> f = Conditions[Ai.ConditionList[i]].Func;
+            float cp = Conditions[Ai.ConditionList[i]].p1;
+            bool ConditionResult = f(cp);
+            if (ConditionResult == false) continue;
+
+            //取得該策略對應的行為
+            ConditionName = Ai.ConditionList[i];
+            ActionName = Ai.ActionList[i];
+
+            //檢查該行為是否可以執行
+            if (BiologyAI_Action.Instance.CheckAction(this) == false) continue;
+
+            //設定生物目標
+            BiologyAI.Parent.Target = Target;
+
+            //持續思考(重頭)
+            return;
+
+        }
+    }
     private BiologyAI_Condition()
     {
         Conditions = new Dictionary<string, Command>();
@@ -47,8 +84,11 @@ public class BiologyAI_Condition
         Conditions.Add("Foe:HP < 30%", new Command(Foe_HP_Less, 0.3f));
         Conditions.Add("Foe:HP < 10%", new Command(Foe_HP_Less, 0.1f));
 
+        Conditions.Add("Foe:Highest HP", new Command(Foe_HP_Highest_Point, 0));
         Conditions.Add("Foe:Lowest HP", new Command(Foe_HP_Lowest_Point, 0));
 
+        Conditions.Add("Foe:Targeting Self", new Command(Foe_Targeting_Self, 0));
+        Conditions.Add("Foe:Targeting Ally", new Command(Foe_Targeting_Ally, 0));
 
         Conditions.Add("Self:HP < 100%", new Command(Self_HP_Less, 1.0f));
         Conditions.Add("Self:HP < 90%", new Command(Self_HP_Less, 0.9f));
@@ -72,43 +112,54 @@ public class BiologyAI_Condition
         Conditions.Add("Self:MP < 20%", new Command(Self_MP_Less, 0.2f));
         Conditions.Add("Self:MP < 10%", new Command(Self_MP_Less, 0.1f));
     }
-    public void Condition(BiologyAI Ai)
+
+    private bool Foe_HP_Highest_Point(float arg)
     {
-        BiologyAI = Ai;
-        BiologyAI.Parent.Target = null;
-
-        for (int i = 0; i < Ai.ConditionList.Count; i++)
-        {
-            //清空避免殘留
-            Target = null;
-            Action = null;
-
-            //如果生物已死則直接跳出
-            if (BiologyAI.Parent.BiologyAttr.Hp <= 0) return;
-
-            //如果資料庫無此策略跳下一個
-            if (Conditions.ContainsKey(Ai.ConditionList[i]) == false) continue;
-
-            //如果此策略無法執行則跳下一個
-            Func<float, bool> f = Conditions[Ai.ConditionList[i]].Func;
-            float cp = Conditions[Ai.ConditionList[i]].p1;
-            bool ConditionResult = f(cp);
-            if (ConditionResult == false) continue;
-
-            //取得該策略對應的行為
-            Action = Ai.ActionList[i];
-
-            //檢查該行為是否可以執行
-            if (BiologyAI_Action.Instance.CheckAction(this) == false) continue;
-
-            //設定生物目標
-            BiologyAI.Parent.Target = Target;
-
-
-            //印出完整行為報告
-            Debug.Log(Ai.Parent.name + "  " + Action + " " + Target + " 因 " + Ai.ConditionList[i]);
-        }
+        return n_HP_Highest_Point(BiologyAI.Visible_Foe_Biologys, arg);
     }
+
+    private bool n_HP_Highest_Point(List<Biology> biologys, float arg)
+    {
+        float Hp_Hp_Highest = Mathf.NegativeInfinity;
+        for (int i = 0; i < biologys.Count; i++)
+        {
+            Biology p = biologys[i];
+            if (IsBiologyDead(p)) continue;
+
+            if (p.BiologyAttr.Hp < Hp_Hp_Highest) continue;
+            Hp_Hp_Highest = p.BiologyAttr.Hp;
+            Target = p;
+        }
+        return true;
+    }
+
+    private bool Foe_Targeting_Self(float arg)
+    {
+        for (int i = 0; i < BiologyAI.Visible_Foe_Biologys.Count; i++)
+        {
+            Biology p = BiologyAI.Visible_Foe_Biologys[i];
+            if (p.Target != BiologyAI.Parent) continue;
+            Target = p;
+            return true;
+        }
+        return false;
+    }
+    private bool Foe_Targeting_Ally(float arg)
+    {
+        for (int i = 0; i < BiologyAI.Visible_Foe_Biologys.Count; i++)
+        {
+            Biology p = BiologyAI.Visible_Foe_Biologys[i];
+            for (int j = 0; j < BiologyAI.Visible_Ally_Biologys.Count; j++)
+            {
+                if (p.Target != BiologyAI.Visible_Ally_Biologys[j]) continue;
+                Target = p;
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     private bool Foe_HP_Lowest_Point(float n)
     {
         return n_HP_Lowest_Point(BiologyAI.Visible_Foe_Biologys, n);
