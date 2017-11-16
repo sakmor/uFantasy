@@ -100,7 +100,7 @@ public class CameraMovement : MonoBehaviour
 
     public void TargetLeader()
     {
-        moveto(GameObject.Find("10001 騎士01").transform);
+        moveto(GameObject.Find("mainGame").GetComponent<mainGame_Sam>().Leader.transform);
     }
 
     public void SetLeader()

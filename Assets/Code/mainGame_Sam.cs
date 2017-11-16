@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class mainGame_Sam : MonoBehaviour
 {
     public float ResolutionScale = 0.5f;
-    private Biology Leader;
+    public Biology Leader; //fixme:暫時改為public的
     public Biology[] Biologys;
     private DotLine DotLine;
 
