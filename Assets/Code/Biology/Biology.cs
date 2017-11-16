@@ -147,7 +147,7 @@ public class Biology : MonoBehaviour
         }
     }
 
-    internal void setAction(uFantasy.Enum.State state)
+    internal void PlayAnimation(uFantasy.Enum.State state)
     {
         State = state;
         switch (state)
@@ -163,12 +163,18 @@ public class Biology : MonoBehaviour
                 Animator.CrossFade("Battle", 0.25f);
                 break;
             case uFantasy.Enum.State.Attack_01:
-                BiologyMovement.Stop();
+                // BiologyMovement.Stop();
                 Animator.CrossFade("Attack_01", 0.25f);
+                Animator.SetInteger("State", 101);
+                break;
+            case uFantasy.Enum.State.Use:
+                // BiologyMovement.Stop();
+                Animator.CrossFade("Use", 0.25f);
                 Animator.SetInteger("State", 101);
                 break;
         }
     }
+
     private void SetBiologyMovement()
     {
         BiologyMovement = new BiologyMovement(this);

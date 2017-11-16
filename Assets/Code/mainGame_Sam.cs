@@ -47,8 +47,6 @@ public class mainGame_Sam : MonoBehaviour
         if (GetInput() == false)
         {
             DotLine.DrawLineStop();
-            Leader.BiologyMovement.NavMeshAgent.velocity *= 0.5f;
-            Leader.BiologyMovement.Stop();
             return;
         }
 
@@ -59,6 +57,12 @@ public class mainGame_Sam : MonoBehaviour
         // // 走訪每一個被Hit到的GameObject
         foreach (RaycastHit hit in hits)
         {
+            if (hit.transform.GetComponent<Biology>())
+            {
+                Leader.BiologyMovement.Stop();
+                Leader = hit.transform.GetComponent<Biology>();
+                return;
+            }
             if (Leader.BiologyMovement.MoveTo(hit.point))
                 DotLine.DrawLine(Leader.BiologyMovement.NavMeshAgent.path.corners);
 

@@ -30,7 +30,7 @@ public class BiologyMovement
     {
         GoalPos = BiologyTransfrom.localPosition;
         NavMeshAgent.isStopped = true;
-        Biology.setAction(uFantasy.Enum.State.Battle);
+        Biology.PlayAnimation(uFantasy.Enum.State.Battle);
     }
 
 
@@ -64,7 +64,7 @@ public class BiologyMovement
         GoalPos = pos;
         NavMeshAgent.SetDestination(GoalPos);
         NavMeshAgent.isStopped = false;
-        Biology.setAction(uFantasy.Enum.State.Run);
+        Biology.PlayAnimation(uFantasy.Enum.State.Run);
         return true;
     }
     private bool IsPathReachDestination(Vector3 GoalPos)

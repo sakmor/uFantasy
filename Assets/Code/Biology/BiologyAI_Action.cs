@@ -57,7 +57,7 @@ public class BiologyAI_Action
         if (current < 1f) { current += Time.deltaTime; return true; }
         current = 0;
         Target.GetDamage(Biology.BiologyAttr.Atk);
-        Biology.Animator.Play("Attack_01");
+        Biology.PlayAnimation(uFantasy.Enum.State.Attack_01);
 
         return true;
     }
@@ -75,7 +75,7 @@ public class BiologyAI_Action
         if (current < 1) { current += Time.deltaTime; return true; }
         current = 0;
         Target.BiologyAttr.Hp += UnityEngine.Random.Range(100, 120);
-        Biology.Animator.Play("Use");
+        Biology.PlayAnimation(uFantasy.Enum.State.Use);
 
         return true;
     }
