@@ -19,7 +19,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4740306825429682}
-  - component: {fileID: 23595943998920962}
   - component: {fileID: 114122445639698486}
   - component: {fileID: 65528310581372726}
   - component: {fileID: 195861287172004058}
@@ -45,38 +44,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23595943998920962
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1243899896812252}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 2100000, guid: b488a6b68832c344a899871e2951e5e5, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
 --- !u!65 &65528310581372726
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -115,10 +82,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2957c2fda0ce42d43844900a9e4cb263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hp: 100
-  Mp: 100
+  Lv: 
+  hp: 0
   HpMax: 100
+  Def: 0
+  Atk: 0
+  ASpeed: 0
+  Mp: 100
   MpMax: 100
+  MSpeed: 0
+  Speed: 0
+  Type: 0
 --- !u!195 &195861287172004058
 NavMeshAgent:
   m_ObjectHideFlags: 1
