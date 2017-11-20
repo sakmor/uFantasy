@@ -111,6 +111,6 @@ public class BiologyAI_Action
 
     private void DebugAction()
     {
-        Debug.Log(Biology.name + "  " + Action + " " + Target + " 因 " + BiologyAI_Condition.ConditionName);
+        // Debug.Log(Biology.name + "  " + Action + " " + Target + " 因 " + BiologyAI_Condition.ConditionName);
     }
 }

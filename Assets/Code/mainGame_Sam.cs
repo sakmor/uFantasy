@@ -73,8 +73,8 @@ public class mainGame_Sam : MonoBehaviour
                 Leader = hit.transform.GetComponent<Biology>();
                 return;
             }
-            if (Leader.BiologyMovement.MoveTo(hit.point))
-                DotLine.DrawLine(Leader.BiologyMovement.NavMeshAgent.path.corners);
+            /*  if (Leader.BiologyMovement.MoveTo(hit.point))
+                  DotLine.DrawLine(Leader.BiologyMovement.NavMeshAgent.path.corners);*/
 
         }
 
@@ -100,8 +100,6 @@ public class mainGame_Sam : MonoBehaviour
             GameObject.Find("Text").GetComponent<UnityEngine.UI.Text>().text = Input.GetTouch(0).position.ToString("F0");
             return Input.GetTouch(0).position;
         }
-
-
         return Vector3.zero;
     }
 
