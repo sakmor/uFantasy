@@ -10,7 +10,7 @@ public class SelectFrame : MonoBehaviour
     private bool IsStart;
     public Image Image { get; private set; }
     private RectTransform RectTransform;
-    private Vector2 StartPos;
+    private Bounds ViewportBounds;
 
     // Use this for initialization
     void Start()
@@ -30,11 +30,32 @@ public class SelectFrame : MonoBehaviour
     private void SelectBio()
     {
         // fixme:選取生物功能
+        ViewportBounds = GetViewportBounds();
+
+        Debug.Log(ViewportBounds.Contains(
+            Camera.main.WorldToViewportPoint(GameObject.Find("10001 騎士01").transform.position)));
+        // OnDrawGizmosSelected();
+
     }
 
+    public Bounds GetViewportBounds()
+    {
+        var v1 = Camera.main.ScreenToViewportPoint(transform.position);
+        var v2 = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+        var min = Vector3.Min(v1, v2);
+        var max = Vector3.Max(v1, v2);
+        min.z = Camera.main.nearClipPlane;
+        max.z = Camera.main.farClipPlane;
+
+        var bounds = new Bounds();
+        bounds.SetMinMax(min, max);
+
+        return bounds;
+    }
     private bool IsNotDraw()
     {
-        if (Input.GetMouseButton(0) == false || EventSystem.current.IsPointerOverGameObject())
+
+        if (Input.GetMouseButton(0) == false || EventSystem.current.IsPointerOverGameObject() && !IsStart)
         {
             Rest();
             Hide();
@@ -63,46 +84,21 @@ public class SelectFrame : MonoBehaviour
     {
         if (IsStart == false)
         {
-            StartPos = transform.position = Input.mousePosition;
+            transform.position = Input.mousePosition;
             IsStart = true;
             Show();
             return;
         }
 
-        if (IsStart == true)
-        {
-            float x = (Input.mousePosition.x - transform.position.x);
-            float y = (transform.position.y - Input.mousePosition.y);
+        float x = (Input.mousePosition.x - transform.position.x);
+        float y = (transform.position.y - Input.mousePosition.y);
+        RectTransform.pivot = new Vector2(x < 0 ? 1 : 0, y > 0 ? 1 : 0);
+        ResizeRect();
 
-            if (x < 0 & y > 0)
-            {
-                RectTransform.pivot = new Vector2(1, 1);
-                ResizeRect();
-                return;
-            }
-            if (x > 0 & y < 0)
-            {
-                RectTransform.pivot = new Vector2(0, 0);
-                ResizeRect();
-                return;
-            }
-            if (x < 0 & y < 0)
-            {
-                RectTransform.pivot = new Vector2(1, 0);
-                ResizeRect();
-                return;
-            }
-            if (x > 0 & y > 0)
-            {
-                RectTransform.pivot = new Vector2(0, 1);
-                ResizeRect();
-                return;
-            }
-        }
     }
 
     private void ResizeRect()
     {
-        RectTransform.sizeDelta = new Vector2(Mathf.Abs(Input.mousePosition.x - StartPos.x), Mathf.Abs(StartPos.y - Input.mousePosition.y));
+        RectTransform.sizeDelta = new Vector2(Mathf.Abs(Input.mousePosition.x - transform.position.x), Mathf.Abs(transform.position.y - Input.mousePosition.y));
     }
 }
