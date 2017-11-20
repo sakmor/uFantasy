@@ -4,22 +4,31 @@
 // original: http://www.unifycommunity.com/wiki/index.php?title=MouseOrbitZoom
 //
 // --01-18-2010 - create temporary target, if none supplied at start
+// - Pan = Ctrl + button 
+// - Orbit = Alt+button
+// - Zoom = Alt + Ctrl + button
+// - Reset = Space
+
 
 using UnityEngine;
 using System.Collections;
 
-
 [AddComponentMenu("Camera-Control/3dsMax Camera Style")]
+
 public class CameraMovement : MonoBehaviour
 {
-
+    public Transform target;
     public Vector3 targetOffset;
-    public float distance = 3.0f;
-    public float maxDistance = 5.0f;
-    public float minDistance = 1.6f;
+    public float distance = 5.0f;
+    public float maxDistance = 20;
+    public float minDistance = .6f;
+    public float xSpeed = 200.0f;
+    public float ySpeed = 200.0f;
+    public int yMinLimit = -80;
+    public int yMaxLimit = 80;
     public int zoomRate = 40;
     public float panSpeed = 0.3f;
-    public float zoomDampening = 1.5f;
+    public float zoomDampening = 5.0f;
 
     private float xDeg = 0.0f;
     private float yDeg = 0.0f;
@@ -29,26 +38,49 @@ public class CameraMovement : MonoBehaviour
     private Quaternion desiredRotation;
     private Quaternion rotation;
     private Vector3 position;
-    private GameObject go;
-    private Transform target;
-    private float smoothTime = 0.5F;
-    private Vector3 velocity = Vector3.zero;
-    private bool isMove = false;
+    private Quaternion initRotation;
+    private Vector3 initPosition;
+    private Vector3 initTargetPosition;
+    private GameObject CamTarget;
+    private int mouseButton = 0; // Left button
 
-    IEnumerator moveCoroutine;
+
     void Start() { Init(); }
+
     void OnEnable() { Init(); }
 
     public void Init()
     {
-
-
+        initPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        initRotation = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
         //If there is no target, create a temporary target at 'distance' from the cameras current viewpoint
-        if (!go) go = new GameObject("Cam Target");
+        if (!target)
+        {
+            CamTarget = new GameObject("Cam Target");
+            CamTarget.transform.position = transform.position + (transform.forward * distance);
+            initTargetPosition = CamTarget.transform.position;
+            target = CamTarget.transform;
+        }
+        doInit();
+    }
+    public void OffsetCamTarget(Vector3 offset, float sensitive)
+    {
+        float x, y, z;
+        x = offset.x * transform.right.x * sensitive;
+        y = offset.y * transform.right.y * sensitive;
+        z = offset.z * transform.right.z * sensitive;
+        Vector3 OffsetRight = new Vector3(x, y, z);
+        x = offset.x * transform.up.x * sensitive;
+        y = offset.y * transform.up.y * sensitive;
+        z = offset.z * transform.up.z * sensitive;
+        Vector3 OffsetUp = new Vector3(x, y, z);
+        CamTarget.transform.localPosition += OffsetRight + OffsetUp;
 
-        go.transform.position = transform.position + (transform.forward * distance);
-        target = go.transform;
+    }
 
+    private void doInit()
+    {
+        distance = Vector3.Distance(transform.position, target.position);
         currentDistance = distance;
         desiredDistance = distance;
 
@@ -60,18 +92,57 @@ public class CameraMovement : MonoBehaviour
 
         xDeg = Vector3.Angle(Vector3.right, transform.right);
         yDeg = Vector3.Angle(Vector3.up, transform.up);
-
-
     }
 
     /*
-     * Camera logic on LateUpdate to only update after all character movement logic has been handled. 
+     * Camera logic on LateUpdate to only update after all character movement logic has been handled.
      */
     void LateUpdate()
     {
+        // If Control and Alt and button? ZOOM!
+        if (Input.GetMouseButton(mouseButton) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftControl))
+        {
+            desiredDistance -= Input.GetAxis("Mouse Y") * Time.deltaTime * zoomRate * 0.125f * Mathf.Abs(desiredDistance);
+        }
 
+        // If mouse button and left alt are selected? ORBIT
+        else if (Input.GetMouseButton(mouseButton) && Input.GetKey(KeyCode.LeftAlt))
+        {
+            xDeg += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
+            yDeg -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
+
+            ////////OrbitAngle
+
+            //Clamp the vertical axis for the orbit
+            yDeg = ClampAngle(yDeg, yMinLimit, yMaxLimit);
+            // set camera rotation
+            desiredRotation = Quaternion.Euler(yDeg, xDeg, 0);
+            currentRotation = transform.rotation;
+
+            rotation = Quaternion.Lerp(currentRotation, desiredRotation, Time.deltaTime * zoomDampening);
+            transform.rotation = rotation;
+        }
+
+        // otherwise if mouse button and left control is selected, we pan by way of transforming the target in screenspace
+        else if (Input.GetMouseButton(2))
+        {
+            //grab the rotation of the camera so we can move in a psuedo local XY space
+            target.rotation = transform.rotation;
+            target.Translate(Vector3.right * -Input.GetAxis("Mouse X") * panSpeed);
+            target.Translate(transform.up * -Input.GetAxis("Mouse Y") * panSpeed, Space.World);
+        }
+
+        // If Space? Reset to initial position and rotation
+        else if (Input.GetKey(KeyCode.Space))
+        {
+            transform.position = initPosition;
+            transform.rotation = initRotation;
+            target.transform.position = initTargetPosition;
+            doInit();
+        }
 
         ////////Orbit Position
+
         // affect the desired Zoom distance if we roll the scrollwheel
         desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance);
         //clamp the zoom min/max
@@ -79,14 +150,9 @@ public class CameraMovement : MonoBehaviour
         // For smoothing of the zoom, lerp distance
         currentDistance = Mathf.Lerp(currentDistance, desiredDistance, Time.deltaTime * zoomDampening);
 
-        GetComponent<Camera>().orthographicSize = currentDistance;
-
-        // calculate position based on the new currentDistance 
-        position = target.position - (rotation * Vector3.forward * 100 + targetOffset);
+        // calculate position based on the new currentDistance
+        position = target.position - (rotation * Vector3.forward * currentDistance + targetOffset);
         transform.position = position;
-
-        TargetLeader();
-
     }
 
     private static float ClampAngle(float angle, float min, float max)
@@ -96,53 +162,5 @@ public class CameraMovement : MonoBehaviour
         if (angle > 360)
             angle -= 360;
         return Mathf.Clamp(angle, min, max);
-    }
-
-    public void TargetLeader()
-    {
-        moveto(GameObject.Find("mainGame").GetComponent<mainGame_Sam>().Leader.transform);
-    }
-
-    public void SetLeader()
-    {
-
-    }
-    public void moveto(Transform pos)
-    {
-        //moveCoroutine
-        moveCoroutine = moving(pos);
-
-        //停止正在進行的 moveCoroutine ，如果沒有預先指定（即14行）會無法通過編譯
-        StopCoroutine(moveCoroutine);
-
-        //指定 moveCoroutine 使用的迭代器與參數 --- IEnumberator moving(vector3,GameObject)
-        moveCoroutine = moving(pos);
-
-        //執行 moveCoroutine
-        StartCoroutine(moveCoroutine);
-    }
-
-    IEnumerator moving(Transform pos)
-    {
-        //這段程式碼只執行一次
-        float dist = Mathf.Infinity;
-        isMove = true;
-
-        // 當「物件位置」與「目的位置」距離差距超過0.1f距離單位以上時，while內的程式買將重複執行
-        while (dist > 0.00125f && isMove == true)
-        {
-            //計算與目標之間的距離差並儲存到dist
-            dist = Vector3.Distance(target.transform.position, pos.position);
-            //Vector3.SmoothDamp (起始位置、目標位置、當前速度、抵達時間)
-            target.transform.position = Vector3.SmoothDamp(target.transform.position, pos.position, ref velocity, smoothTime);
-
-            yield return null;
-        }
-
-        // 當「物件位置」與「目的位置」距離差距低於0.1f距離單位以上時，下面程式碼會執行後跳出 moving 迭代器
-        target.transform.position = pos.position;
-        isMove = false;
-
-
     }
 }
