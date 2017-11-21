@@ -11,12 +11,24 @@ public class SelectFrame : MonoBehaviour
     public Image Image { get; private set; }
     private RectTransform RectTransform;
     private Bounds ViewportBounds;
+    private GameObject SelectBox;
+    public float MagicNumber;
 
     // Use this for initialization
     void Start()
     {
+        //sam: 魔術數字的來源是我用推算取得的
+        //sam: 所以有可能在非電腦環境會有問題
+        MagicNumber = 2048f / Screen.height;
         Image = GetComponent<UnityEngine.UI.Image>();
         RectTransform = GetComponent<RectTransform>();
+        SelectBox = GameObject.Find("SelectBox");
+        SelectBox.transform.SetParent(Camera.main.transform);
+        SelectBox.transform.localPosition = Vector3.zero;
+        SelectBox.transform.localEulerAngles = Vector3.zero;
+
+        ViewportBounds = SelectBox.GetComponent<BoxCollider>().bounds;
+
     }
 
     // Update is called once per frame
@@ -30,28 +42,18 @@ public class SelectFrame : MonoBehaviour
     private void SelectBio()
     {
         // fixme:選取生物功能
-        ViewportBounds = GetViewportBounds();
+        SelectBox.transform.position = Camera.main.ScreenToWorldPoint(transform.position);
+        SelectBox.transform.localScale = new Vector3(RectTransform.sizeDelta.x * MagicNumber, RectTransform.sizeDelta.y * MagicNumber, Camera.main.farClipPlane);
 
         Debug.Log(ViewportBounds.Contains(
             Camera.main.WorldToViewportPoint(GameObject.Find("10001 騎士01").transform.position)));
-        // OnDrawGizmosSelected();
+
+        float x = (Input.mousePosition.x - transform.position.x);
+        float y = (transform.position.y - Input.mousePosition.y);
+
 
     }
 
-    public Bounds GetViewportBounds()
-    {
-        var v1 = Camera.main.ScreenToViewportPoint(transform.position);
-        var v2 = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-        var min = Vector3.Min(v1, v2);
-        var max = Vector3.Max(v1, v2);
-        min.z = Camera.main.nearClipPlane;
-        max.z = Camera.main.farClipPlane;
-
-        var bounds = new Bounds();
-        bounds.SetMinMax(min, max);
-
-        return bounds;
-    }
     private bool IsNotDraw()
     {
 
