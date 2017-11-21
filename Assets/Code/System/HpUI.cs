@@ -18,6 +18,10 @@ public class HpUI : MonoBehaviour
         HPWhite = transform.Find("HPValue/vHPWhite").GetComponent<UnityEngine.UI.Image>();
         HPGreenWidth = HPGreen.rectTransform.sizeDelta.x;
     }
+    private void Start()
+    {
+        Hide();
+    }
 
     // Update is called once per frame
     private void Update()

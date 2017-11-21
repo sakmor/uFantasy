@@ -136,15 +136,7 @@ public class Biology : MonoBehaviour
 
     internal void CheckDead()
     {
-        if (BiologyAttr.Hp <= 0)
-        {
-            HpUI.Hide();
-            Animator.Play("Deading");
-        }
-        if (BiologyAttr.Hp > 0)
-        {
-            HpUI.Show();
-        }
+        if (BiologyAttr.Hp <= 0) Animator.Play("Deading");
     }
 
     internal void PlayAnimation(uFantasy.Enum.State state)

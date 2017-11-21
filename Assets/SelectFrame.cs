@@ -46,18 +46,10 @@ public class SelectFrame : MonoBehaviour
 
     private void SelectBio()
     {
-
         // fixme:選取生物功能
         SelectBox.transform.position = Camera.main.ScreenToWorldPoint(transform.position) + Camera.main.transform.forward * 5;
         Vector3 n = new Vector3(_x < 0 ? -1 : 1, _y < 0 ? -1 : 1, 0);
         SelectBox.transform.localScale = new Vector3(n.x * RectTransform.sizeDelta.x * MagicNum, n.y * RectTransform.sizeDelta.y * MagicNum, Camera.main.farClipPlane);
-
-
-        Debug.Log(ViewportBounds.Contains(
-            Camera.main.WorldToViewportPoint(GameObject.Find("10001 騎士01").transform.position)));
-
-
-
 
     }
 
