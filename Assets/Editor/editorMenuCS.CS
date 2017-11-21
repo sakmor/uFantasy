@@ -66,35 +66,7 @@ public class editorMenuCS : MonoBehaviour
         Debug.Log("整理完畢 " + (Time.realtimeSinceStartup - exeTime).ToString("F2"));
 
     }
-    [MenuItem("我的工具/所有生物衝向目標 %2")]
-    static void GoGoalPos()
-    {
-        if (Application.isPlaying == false)
-        {
-            EditorUtility.DisplayDialog("System", "請在撥放模式下使用", "知道了");
-            return;
-        }
 
-        Biology[] Biology_List = FindObjectsOfType(typeof(Biology)) as Biology[];
-        Vector3 pos;
-        try
-        {
-            pos = GameObject.Find("GoalPos").transform.position;
-        }
-        catch
-        {
-            EditorUtility.DisplayDialog("System", "找不到GoalPos", "好");
-            return;
-        }
-
-        foreach (var Biology in Biology_List)
-        {
-            Biology.BiologyMovement.MoveTo(pos);
-        }
-
-        Camera.main.GetComponent<CameraMovement>().TargetLeader();
-
-    }
     [MenuItem("我的工具/AnimatorController %3")]
     static void SetModelAnimator()
     {
