@@ -60,28 +60,28 @@ public class SelectUnit : MonoBehaviour
     private void DrawBox()
     {
         SelectBoxMesh.vertices = _SelectBoxVerts;
+
         SelectBoxTransform.GetComponent<MeshCollider>().sharedMesh = SelectBoxMesh;
         if (Mathf.Abs(SelectFrameTransform.position.x - Input.mousePosition.x) <= 0.1f) return;
         if (Mathf.Abs(SelectFrameTransform.position.y - Input.mousePosition.y) <= 0.1f) return;
-        if (Mathf.Abs(SelectFrameTransform.position.z - Input.mousePosition.z) <= 0.1f) return;
 
         Ray sRay = Camera.main.ScreenPointToRay(SelectFrameTransform.position);
         SelectBoxVerts[0] = SelectBoxVerts[8] = SelectBoxVerts[23] = SelectBoxTransform.InverseTransformPoint(sRay.origin);
-        SelectBoxVerts[3] = SelectBoxVerts[9] = SelectBoxVerts[12] = SelectBoxTransform.InverseTransformPoint(sRay.origin + sRay.direction * 100);
+        SelectBoxVerts[3] = SelectBoxVerts[9] = SelectBoxVerts[12] = SelectBoxTransform.InverseTransformPoint(sRay.origin + sRay.direction * Camera.main.farClipPlane);
 
 
         Ray eRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         SelectBoxVerts[7] = SelectBoxVerts[18] = SelectBoxVerts[21] = SelectBoxTransform.InverseTransformPoint(eRay.origin);
-        SelectBoxVerts[6] = SelectBoxVerts[14] = SelectBoxVerts[19] = SelectBoxTransform.InverseTransformPoint(eRay.origin + eRay.direction * 100);
+        SelectBoxVerts[6] = SelectBoxVerts[14] = SelectBoxVerts[19] = SelectBoxTransform.InverseTransformPoint(eRay.origin + eRay.direction * Camera.main.farClipPlane);
 
 
         Ray tRay1 = Camera.main.ScreenPointToRay(new Vector3(SelectFrameTransform.position.x, Input.mousePosition.y, SelectFrameTransform.position.z));
         SelectBoxVerts[1] = SelectBoxVerts[17] = SelectBoxVerts[22] = SelectBoxTransform.InverseTransformPoint(tRay1.origin);
-        SelectBoxVerts[2] = SelectBoxVerts[13] = SelectBoxVerts[16] = SelectBoxTransform.InverseTransformPoint(tRay1.origin + tRay1.direction * 100);
+        SelectBoxVerts[2] = SelectBoxVerts[13] = SelectBoxVerts[16] = SelectBoxTransform.InverseTransformPoint(tRay1.origin + tRay1.direction * Camera.main.farClipPlane);
 
         Ray tRay2 = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, SelectFrameTransform.position.y, SelectFrameTransform.position.z));
         SelectBoxVerts[4] = SelectBoxVerts[11] = SelectBoxVerts[20] = SelectBoxTransform.InverseTransformPoint(tRay2.origin);
-        SelectBoxVerts[5] = SelectBoxVerts[10] = SelectBoxVerts[15] = SelectBoxTransform.InverseTransformPoint(tRay2.origin + tRay2.direction * 100);
+        SelectBoxVerts[5] = SelectBoxVerts[10] = SelectBoxVerts[15] = SelectBoxTransform.InverseTransformPoint(tRay2.origin + tRay2.direction * Camera.main.farClipPlane);
 
 
         SelectBoxMesh.vertices = SelectBoxVerts;
