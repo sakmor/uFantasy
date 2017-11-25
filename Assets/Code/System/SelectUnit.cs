@@ -14,13 +14,15 @@ public class SelectUnit : MonoBehaviour
     private Transform SelectBoxTransform, SelectFrameTransform;
     private Vector3[] SelectBoxVerts;
     private Vector3[] _SelectBoxVerts;
+    private MeshCollider MeshCollider;
+    private BoxCollider BoxCollider;
     public Canvas Canvas;
-    private bool n;
 
 
     // Use this for initialization
     void Start()
     {
+        SelectBoxTransform = transform.Find("SelectBox");
         SelectBoxInitialize();
         SelectFrameInitialize();
     }
@@ -35,76 +37,115 @@ public class SelectUnit : MonoBehaviour
 
     private void SelectBoxInitialize()
     {
-        SelectBoxTransform = transform.Find("SelectBox");
+        PerspectiveInitialize();
+        OrthographicInitialize();
+        GetSelectBoxMesh();
+
+    }
+
+    private void GetSelectBoxMesh()
+    {
         SelectBoxMesh = Instantiate(SelectBoxTransform.GetComponent<MeshFilter>().sharedMesh);
         SelectBoxVerts = SelectBoxMesh.vertices;
         _SelectBoxVerts = SelectBoxMesh.vertices;
         SelectBoxMesh.MarkDynamic();
     }
 
+    private void OrthographicInitialize()
+    {
+        if (Camera.main.orthographic == false) return;
+        AddBoxCollider();
+    }
+
+    private void AddBoxCollider()
+    {
+        if (SelectBoxTransform.GetComponent<MeshCollider>()) DestroyImmediate(SelectBoxTransform.GetComponent<MeshCollider>());
+        BoxCollider = SelectBoxTransform.gameObject.AddComponent<BoxCollider>();
+        BoxCollider.isTrigger = true;
+    }
+
+    private void PerspectiveInitialize()
+    {
+        if (Camera.main.orthographic == true) return;
+        AddMeshCollider();
+    }
+
     // Update is called once per frame
     void Update()
     {
-
         if (IsNotDraw()) return;
         DrawFrame();
         DrawBox();
-        SelectBio();
-
-        n = !n;
-        // SelectBoxTransform.GetComponent<MeshCollider>().enabled = n;
-
     }
 
 
     private void DrawBox()
     {
+        OrthographicDrawBox();
+        PerspectiveDrawBox();
+    }
+
+    private void DrawBoxInitialize()
+    {
         SelectBoxMesh.vertices = _SelectBoxVerts;
+        // MeshCollider.sharedMesh = SelectBoxMesh;
+    }
 
-        SelectBoxTransform.GetComponent<MeshCollider>().sharedMesh = SelectBoxMesh;
-        if (Mathf.Abs(SelectFrameTransform.position.x - Input.mousePosition.x) <= 0.1f) return;
-        if (Mathf.Abs(SelectFrameTransform.position.y - Input.mousePosition.y) <= 0.1f) return;
+    private void PerspectiveDrawBox()
+    {
+        if (Camera.main.orthographic == true) return;
+        DrawBoxInitialize();
+        ResizeSelectBoxMesh();
+        MeshCollider.sharedMesh = SelectBoxMesh;
+    }
 
+    private void AddMeshCollider()
+    {
+        if (SelectBoxTransform.GetComponent<BoxCollider>()) DestroyImmediate(SelectBoxTransform.GetComponent<BoxCollider>());
+        MeshCollider = SelectBoxTransform.gameObject.AddComponent<MeshCollider>();
+        MeshCollider.convex = true;
+        MeshCollider.isTrigger = true;
+    }
+
+    private void OrthographicDrawBox()
+    {
+        if (Camera.main.orthographic == false) return;
+        DrawBoxInitialize();
+        ResizeSelectBoxMesh();
+        SelectBoxMesh.RecalculateBounds();
+        BoxCollider.center = SelectBoxMesh.bounds.center;
+        BoxCollider.size = SelectBoxMesh.bounds.size;
+        SelectBoxTransform.rotation = Camera.main.transform.rotation; //可以優化成有轉動鏡頭才更新
+    }
+
+    private void ResizeSelectBoxMesh()
+    {
         Ray sRay = Camera.main.ScreenPointToRay(SelectFrameTransform.position);
-        SelectBoxVerts[0] = SelectBoxVerts[8] = SelectBoxVerts[23] = SelectBoxTransform.InverseTransformPoint(sRay.origin);
-        SelectBoxVerts[3] = SelectBoxVerts[9] = SelectBoxVerts[12] = SelectBoxTransform.InverseTransformPoint(sRay.origin + sRay.direction * Camera.main.farClipPlane);
-
-
         Ray eRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        SelectBoxVerts[7] = SelectBoxVerts[18] = SelectBoxVerts[21] = SelectBoxTransform.InverseTransformPoint(eRay.origin);
-        SelectBoxVerts[6] = SelectBoxVerts[14] = SelectBoxVerts[19] = SelectBoxTransform.InverseTransformPoint(eRay.origin + eRay.direction * Camera.main.farClipPlane);
 
+        if (Mathf.Approximately(sRay.origin.x, eRay.origin.x)) return;
+        if (Mathf.Approximately(sRay.origin.x, eRay.origin.x)) return;
+
+        SelectBoxVerts[0] = SelectBoxVerts[8] = SelectBoxVerts[23] = SelectBoxTransform.InverseTransformPoint(sRay.origin);
+        SelectBoxVerts[3] = SelectBoxVerts[9] = SelectBoxVerts[12] = SelectBoxTransform.InverseTransformPoint(sRay.origin + sRay.direction * 100);
+
+        SelectBoxVerts[7] = SelectBoxVerts[18] = SelectBoxVerts[21] = SelectBoxTransform.InverseTransformPoint(eRay.origin);
+        SelectBoxVerts[6] = SelectBoxVerts[14] = SelectBoxVerts[19] = SelectBoxTransform.InverseTransformPoint(eRay.origin + eRay.direction * 100);
 
         Ray tRay1 = Camera.main.ScreenPointToRay(new Vector3(SelectFrameTransform.position.x, Input.mousePosition.y, SelectFrameTransform.position.z));
         SelectBoxVerts[1] = SelectBoxVerts[17] = SelectBoxVerts[22] = SelectBoxTransform.InverseTransformPoint(tRay1.origin);
-        SelectBoxVerts[2] = SelectBoxVerts[13] = SelectBoxVerts[16] = SelectBoxTransform.InverseTransformPoint(tRay1.origin + tRay1.direction * Camera.main.farClipPlane);
+        SelectBoxVerts[2] = SelectBoxVerts[13] = SelectBoxVerts[16] = SelectBoxTransform.InverseTransformPoint(tRay1.origin + tRay1.direction * 100);
 
         Ray tRay2 = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, SelectFrameTransform.position.y, SelectFrameTransform.position.z));
         SelectBoxVerts[4] = SelectBoxVerts[11] = SelectBoxVerts[20] = SelectBoxTransform.InverseTransformPoint(tRay2.origin);
-        SelectBoxVerts[5] = SelectBoxVerts[10] = SelectBoxVerts[15] = SelectBoxTransform.InverseTransformPoint(tRay2.origin + tRay2.direction * Camera.main.farClipPlane);
-
-
+        SelectBoxVerts[5] = SelectBoxVerts[10] = SelectBoxVerts[15] = SelectBoxTransform.InverseTransformPoint(tRay2.origin + tRay2.direction * 100);
         SelectBoxMesh.vertices = SelectBoxVerts;
-        Debug.Log(Time.time + "===========");
-        foreach (var item in SelectBoxVerts)
-        {
-            Debug.Log(Time.time + "  " + item);
-        }
-
-        SelectBoxTransform.GetComponent<MeshCollider>().sharedMesh = SelectBoxMesh;
-    }
-
-    private void SelectBio()
-    {
-
     }
 
     private bool IsNotDraw()
     {
-
         if (Input.GetMouseButton(0) == false || EventSystem.current.IsPointerOverGameObject() && !IsStart)
         {
-            n = false;
             Rest();
             Hide();
             return true;
@@ -116,7 +157,6 @@ public class SelectUnit : MonoBehaviour
     {
         IsStart = false;
         SelectFrameRectTransform.sizeDelta = Vector2.zero;
-
     }
 
     private void Hide()

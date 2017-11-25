@@ -285,4 +285,13 @@ public class Biology : MonoBehaviour
     {
         DestroyImmediate(gameObject);
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.parent.GetComponent<SelectUnit>()) HpUI.Show();
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.transform.parent.GetComponent<SelectUnit>()) HpUI.Hide();
+    }
 }
