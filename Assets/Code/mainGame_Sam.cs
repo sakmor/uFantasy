@@ -82,12 +82,10 @@ public class mainGame_Sam : MonoBehaviour
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            GameObject.Find("Text").GetComponent<UnityEngine.UI.Text>().text = Input.mousePosition.ToString("F0");
             return Input.mousePosition;
         }
         if (Application.platform == RuntimePlatform.Android)
         {
-            GameObject.Find("Text").GetComponent<UnityEngine.UI.Text>().text = Input.GetTouch(0).position.ToString("F0");
             return Input.GetTouch(0).position;
         }
         return Vector3.zero;
