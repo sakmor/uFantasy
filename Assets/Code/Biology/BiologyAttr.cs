@@ -21,7 +21,7 @@ public class BiologyAttr : MonoBehaviour
 
         set
         {
-            if (hp == value) return;
+            // if (hp == value) return;
 
             hp = value;
             CheckHpHpMax();
@@ -94,7 +94,9 @@ public class BiologyAttr : MonoBehaviour
 
     private int GetHpMax()
     {
-        return int.Parse(GameDB.Instance.Level[Lv][_Hp + TypeStep]);
+        var n = _Hp + TypeStep;
+        var i = GameDB.Instance.Level[Lv][_Hp + TypeStep];
+        return int.Parse(i);
     }
 
 

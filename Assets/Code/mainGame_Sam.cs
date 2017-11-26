@@ -6,10 +6,9 @@ using UnityEngine.EventSystems;
 public class mainGame_Sam : MonoBehaviour
 {
     public float ResolutionScale = 0.5f;
-    public Biology Leader; //fixme:暫時改為public的
+
     public Biology[] Biologys;
     private DotLine DotLine;
-    private HighlightsFX HighlightsFX;
 
     private void Awake()
     {
@@ -18,9 +17,7 @@ public class mainGame_Sam : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        Leader = GameObject.Find("10001 騎士01").GetComponent<Biology>(); //fixme:暫時指定隊長
         DotLine = GameObject.Find("Line").GetComponent<DotLine>();
-        HighlightsFX = Camera.main.GetComponent<HighlightsFX>();
     }
 
     // Update is called once per frame
@@ -54,19 +51,7 @@ public class mainGame_Sam : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(GetInputPostion());
         RaycastHit[] hits = Physics.RaycastAll(ray);
 
-        // // 走訪每一個被Hit到的GameObject
-        foreach (RaycastHit hit in hits)
-        {
-            if (hit.transform.GetComponent<Biology>())
-            {
-                Leader.BiologyMovement.Stop();
-                Leader = hit.transform.GetComponent<Biology>();
-                return;
-            }
-            /*  if (Leader.BiologyMovement.MoveTo(hit.point))
-                  DotLine.DrawLine(Leader.BiologyMovement.NavMeshAgent.path.corners);*/
 
-        }
 
     }
 

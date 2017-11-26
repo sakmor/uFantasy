@@ -53,8 +53,13 @@ public class BiologyBuilder//fixme:名字怪怪的
 
     private uFantasy.Enum.BiologyType GetBioType()
     {
-        var result = int.Parse(GameDB.Instance.BiologyDB[BiologyNum][_Tpye]);
-        return (uFantasy.Enum.BiologyType)result;
+        string t = GameDB.Instance.BiologyDB[BiologyNum][_Tpye];
+        if (t == "玩家") return (uFantasy.Enum.BiologyType)1;
+        if (t == "小怪") return (uFantasy.Enum.BiologyType)2;
+        if (t == "菁英") return (uFantasy.Enum.BiologyType)3;
+        if (t == "王怪") return (uFantasy.Enum.BiologyType)4;
+
+        throw new NotImplementedException();
     }
 
     private string GetBioDrawNum()

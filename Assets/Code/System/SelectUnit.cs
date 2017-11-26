@@ -16,6 +16,7 @@ public class SelectUnit : MonoBehaviour
     private Vector3[] _SelectBoxVerts;
     private MeshCollider MeshCollider;
     private BoxCollider BoxCollider;
+    public visualJoyStick visualJoyStick;
     public Canvas Canvas;
 
 
@@ -54,6 +55,7 @@ public class SelectUnit : MonoBehaviour
     private void OrthographicInitialize()
     {
         if (Camera.main.orthographic == false) return;
+        SelectBoxRoateUpdate();
         AddBoxCollider();
     }
 
@@ -115,7 +117,11 @@ public class SelectUnit : MonoBehaviour
         SelectBoxMesh.RecalculateBounds();
         BoxCollider.center = SelectBoxMesh.bounds.center;
         BoxCollider.size = SelectBoxMesh.bounds.size;
-        SelectBoxTransform.rotation = Camera.main.transform.rotation; //可以優化成有轉動鏡頭才更新
+    }
+
+    public void SelectBoxRoateUpdate()
+    {
+        SelectBoxTransform.rotation = Camera.main.transform.rotation;
     }
 
     private void ResizeSelectBoxMesh()
@@ -144,6 +150,13 @@ public class SelectUnit : MonoBehaviour
 
     private bool IsNotDraw()
     {
+        if (EventSystem.current.currentSelectedGameObject == visualJoyStick.gameObject)
+        {
+            Rest();
+            Hide();
+            return true;
+        }
+
         if (Input.GetMouseButton(0) == false || EventSystem.current.IsPointerOverGameObject() && !IsStart)
         {
             Rest();

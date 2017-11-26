@@ -74,6 +74,7 @@ public class BiologyAI
 
             if (Parent.Type == uFantasy.Enum.BiologyType.Player)
             {
+                if (t.Type == uFantasy.Enum.BiologyType.Item || t.Type == uFantasy.Enum.BiologyType.Npc) continue;
                 if (t.Type == uFantasy.Enum.BiologyType.Player)
                 {
                     Visible_Ally_Biologys.Add(t.gameObject.GetComponent<Biology>());
@@ -85,6 +86,7 @@ public class BiologyAI
             }
             else
             {
+                if (t.Type == uFantasy.Enum.BiologyType.Item || t.Type == uFantasy.Enum.BiologyType.Npc) continue;
                 if (t.Type == uFantasy.Enum.BiologyType.Player)
                 {
                     Visible_Foe_Biologys.Add(t.gameObject.GetComponent<Biology>());

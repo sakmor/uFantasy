@@ -130,13 +130,15 @@ public class Biology : MonoBehaviour
         if (fDamage <= 0) return;
 
         BiologyAttr.Hp -= fDamage;
-        Animator.Play("Hurt");
+        PlayAnimation(uFantasy.Enum.State.Hurt);
 
     }
 
     internal void CheckDead()
     {
-        if (BiologyAttr.Hp <= 0) Animator.Play("Deading");
+        if (BiologyAttr.Hp >= 0) return;
+        PlayAnimation(uFantasy.Enum.State.Dead);
+        HpUI.Hide();
     }
 
     internal void PlayAnimation(uFantasy.Enum.State state)
@@ -144,6 +146,10 @@ public class Biology : MonoBehaviour
         State = state;
         switch (state)
         {
+            case uFantasy.Enum.State.Dead:
+                Animator.SetInteger("State", 302);
+                Animator.Play("Deading");
+                break;
             case uFantasy.Enum.State.Run:
                 if (Animator.GetInteger("State") == 600) break;
                 Animator.SetInteger("State", 600);
@@ -155,13 +161,18 @@ public class Biology : MonoBehaviour
                 Animator.CrossFade("Battle", 0.25f);
                 break;
             case uFantasy.Enum.State.Attack_01:
-                // BiologyMovement.Stop();
+                if (Animator.GetInteger("State") == 302) break;
                 Animator.CrossFade("Attack_01", 0.25f);
                 Animator.SetInteger("State", 101);
                 break;
             case uFantasy.Enum.State.Use:
-                // BiologyMovement.Stop();
+                if (Animator.GetInteger("State") == 302) break;
                 Animator.CrossFade("Use", 0.25f);
+                Animator.SetInteger("State", 101);
+                break;
+            case uFantasy.Enum.State.Hurt:
+                if (Animator.GetInteger("State") == 302) break;
+                Animator.CrossFade("Hurt", 0.25f);
                 Animator.SetInteger("State", 101);
                 break;
         }
@@ -288,10 +299,16 @@ public class Biology : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.transform.parent.GetComponent<SelectUnit>()) HpUI.Show();
+        if (other.transform.parent.GetComponent<SelectUnit>())
+        {
+            if (BiologyAttr.hp > 0) HpUI.Show();
+        }
     }
     void OnTriggerExit(Collider other)
     {
-        if (other.transform.parent.GetComponent<SelectUnit>()) HpUI.Hide();
+        if (other.transform.parent.GetComponent<SelectUnit>())
+        {
+            HpUI.Hide();
+        }
     }
 }
