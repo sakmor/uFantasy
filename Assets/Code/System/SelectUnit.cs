@@ -23,9 +23,11 @@ public class SelectUnit : MonoBehaviour
     public List<Biology> SelectBiologys = new List<Biology>();
 
     public List<Renderer> SelectBiologysRenderer = new List<Renderer>();
+    public mainGame_Sam MainGame;
     // Use this for initialization
     void Start()
     {
+        MainGame = GameObject.Find("mainGame").GetComponent<mainGame_Sam>();
         SelectBoxTransform = transform.Find("SelectBox");
         SelectBoxInitialize();
         SelectFrameInitialize();
@@ -130,7 +132,7 @@ public class SelectUnit : MonoBehaviour
     private void ResizeSelectBoxMesh()
     {
         Ray sRay = Camera.main.ScreenPointToRay(SelectFrameTransform.position);
-        Ray eRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray eRay = Camera.main.ScreenPointToRay(MainGame.GetInputPostion());
 
         if (IsTinyDrawRange()) return;
 
@@ -140,11 +142,11 @@ public class SelectUnit : MonoBehaviour
         SelectBoxVerts[7] = SelectBoxVerts[18] = SelectBoxVerts[21] = SelectBoxTransform.InverseTransformPoint(eRay.origin);
         SelectBoxVerts[6] = SelectBoxVerts[14] = SelectBoxVerts[19] = SelectBoxTransform.InverseTransformPoint(eRay.origin + eRay.direction * 100);
 
-        Ray tRay1 = Camera.main.ScreenPointToRay(new Vector3(SelectFrameTransform.position.x, Input.mousePosition.y, SelectFrameTransform.position.z));
+        Ray tRay1 = Camera.main.ScreenPointToRay(new Vector3(SelectFrameTransform.position.x, MainGame.GetInputPostion().y, SelectFrameTransform.position.z));
         SelectBoxVerts[1] = SelectBoxVerts[17] = SelectBoxVerts[22] = SelectBoxTransform.InverseTransformPoint(tRay1.origin);
         SelectBoxVerts[2] = SelectBoxVerts[13] = SelectBoxVerts[16] = SelectBoxTransform.InverseTransformPoint(tRay1.origin + tRay1.direction * 100);
 
-        Ray tRay2 = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, SelectFrameTransform.position.y, SelectFrameTransform.position.z));
+        Ray tRay2 = Camera.main.ScreenPointToRay(new Vector3(MainGame.GetInputPostion().x, SelectFrameTransform.position.y, SelectFrameTransform.position.z));
         SelectBoxVerts[4] = SelectBoxVerts[11] = SelectBoxVerts[20] = SelectBoxTransform.InverseTransformPoint(tRay2.origin);
         SelectBoxVerts[5] = SelectBoxVerts[10] = SelectBoxVerts[15] = SelectBoxTransform.InverseTransformPoint(tRay2.origin + tRay2.direction * 100);
         SelectBoxMesh.vertices = SelectBoxVerts;
@@ -152,8 +154,8 @@ public class SelectUnit : MonoBehaviour
     private bool IsTinyDrawRange()
     {
 
-        if (Mathf.Abs(SelectFrameTransform.position.x - Input.mousePosition.x) < 0.1f) return true;
-        if (Mathf.Abs(SelectFrameTransform.position.y - Input.mousePosition.y) < 0.1f) return true;
+        if (Mathf.Abs(SelectFrameTransform.position.x - MainGame.GetInputPostion().x) < 0.1f) return true;
+        if (Mathf.Abs(SelectFrameTransform.position.y - MainGame.GetInputPostion().y) < 0.1f) return true;
         return false;
     }
     private bool IsNotDraw()
@@ -194,15 +196,15 @@ public class SelectUnit : MonoBehaviour
     {
         if (IsStart == false)
         {
-            SelectFrameTransform.position = Input.mousePosition;
+            SelectFrameTransform.position = MainGame.GetInputPostion();
             IsStart = true;
             Show();
 
             return;
         }
 
-        float _x = (Input.mousePosition.x - SelectFrameTransform.position.x);
-        float _y = (SelectFrameTransform.position.y - Input.mousePosition.y);
+        float _x = (MainGame.GetInputPostion().x - SelectFrameTransform.position.x);
+        float _y = (SelectFrameTransform.position.y - MainGame.GetInputPostion().y);
         SelectFrameRectTransform.pivot = new Vector2(_x < 0 ? 1 : 0, _y > 0 ? 1 : 0);
         ResizeRect();
 
@@ -210,12 +212,13 @@ public class SelectUnit : MonoBehaviour
 
     private void ResizeRect()
     {
-        SelectFrameRectTransform.sizeDelta = new Vector2(Mathf.Abs(Input.mousePosition.x - SelectFrameTransform.position.x), Mathf.Abs(SelectFrameTransform.position.y - Input.mousePosition.y));
+        SelectFrameRectTransform.sizeDelta = new Vector2(Mathf.Abs(MainGame.GetInputPostion().x - SelectFrameTransform.position.x), Mathf.Abs(SelectFrameTransform.position.y - MainGame.GetInputPostion().y));
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<Biology>() == null) return;
+        if (other.GetComponent<Biology>().Type != uFantasy.Enum.BiologyType.Player) return;
         Biology b = other.GetComponent<Biology>();
         Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
         SelectBiologys.Add(b);
@@ -225,6 +228,7 @@ public class SelectUnit : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         if (other.GetComponent<Biology>() == null) return;
+        if (other.GetComponent<Biology>().Type != uFantasy.Enum.BiologyType.Player) return;
         Biology b = other.GetComponent<Biology>();
         Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
         SelectBiologys.Remove(b);

@@ -51,6 +51,11 @@ public class mainGame_Sam : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(GetInputPostion());
         RaycastHit[] hits = Physics.RaycastAll(ray);
 
+        foreach (var item in hits)
+        {
+
+        }
+
 
 
     }
@@ -63,7 +68,7 @@ public class mainGame_Sam : MonoBehaviour
         return false;
     }
 
-    private Vector3 GetInputPostion()
+    public Vector3 GetInputPostion()
     {
         if (Application.platform == RuntimePlatform.WindowsEditor)
         {
