@@ -17,6 +17,7 @@ ModelImporter:
     100018: Slime_Joint01_001
     100020: Slime_Joint3
     100022: Slime_Joint4
+    100024: M1
     400000: //RootNode
     400002: Model
     400004: Models
@@ -29,6 +30,7 @@ ModelImporter:
     400018: Slime_Joint01_001
     400020: Slime_Joint3
     400022: Slime_Joint4
+    400024: M1
     4300000: Model
     7400000: Default Take
     7400002: B501_Battle

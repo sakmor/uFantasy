@@ -3,7 +3,7 @@ guid: 86c458439d53d92499925c3df25d8b95
 timeCreated: 1505439541
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 21
   fileIDToRecycleName:
     100000: //RootNode
     100002: chest
@@ -111,6 +111,7 @@ ModelImporter:
     100206: Model
     100208: R01
     100210: mixamorig_RightForeArm_001
+    100212: M1
     400000: //RootNode
     400002: chest
     400004: f_index_01_L
@@ -217,6 +218,7 @@ ModelImporter:
     400206: Model
     400208: R01
     400210: mixamorig_RightForeArm_001
+    400212: M1
     2300000: Knight
     2300002: Shadow
     2300004: Sword02
@@ -337,6 +339,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -344,7 +347,10 @@ ModelImporter:
     globalScale: 4
     meshCompression: 0
     addColliders: 0
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -360,6 +366,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
+    normalCalculationMode: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:

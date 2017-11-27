@@ -9,6 +9,8 @@ public class HpUI : MonoBehaviour
     private Biology Biology;
     private BiologyAttr biologyAttr;
     private float HPRed_t, HPWhite_t, HPGreenWidth;
+    private Transform M1;
+
     // Use this for initialization
     private void Awake()
     {
@@ -17,10 +19,11 @@ public class HpUI : MonoBehaviour
         HPHeader = transform.Find("HPHeader").GetComponent<UnityEngine.UI.Image>();
         HPWhite = transform.Find("HPValue/vHPWhite").GetComponent<UnityEngine.UI.Image>();
         HPGreenWidth = HPGreen.rectTransform.sizeDelta.x;
+
     }
     private void Start()
     {
-        Hide();
+        M1 = Biology.transform.Find("Model/M1");
     }
 
     // Update is called once per frame
@@ -64,7 +67,7 @@ public class HpUI : MonoBehaviour
     }
     private void ChangePos()
     {
-        transform.position = Camera.main.WorldToScreenPoint(Biology.transform.position + Vector3.up * 2f);//fixme:應該抓綁點
+        transform.position = Camera.main.WorldToScreenPoint(M1.position);//fixme:應該抓綁點
     }
 
     internal void SetBio(Biology Biology)

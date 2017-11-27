@@ -18,8 +18,11 @@ public class SelectUnit : MonoBehaviour
     private BoxCollider BoxCollider;
     public visualJoyStick visualJoyStick;
     public Canvas Canvas;
+    public HighlightsFX HighlightsFX;
 
+    public List<Biology> SelectBiologys = new List<Biology>();
 
+    public List<Renderer> SelectBiologysRenderer = new List<Renderer>();
     // Use this for initialization
     void Start()
     {
@@ -129,8 +132,7 @@ public class SelectUnit : MonoBehaviour
         Ray sRay = Camera.main.ScreenPointToRay(SelectFrameTransform.position);
         Ray eRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Mathf.Approximately(sRay.origin.x, eRay.origin.x)) return;
-        if (Mathf.Approximately(sRay.origin.x, eRay.origin.x)) return;
+        if (IsTinyDrawRange()) return;
 
         SelectBoxVerts[0] = SelectBoxVerts[8] = SelectBoxVerts[23] = SelectBoxTransform.InverseTransformPoint(sRay.origin);
         SelectBoxVerts[3] = SelectBoxVerts[9] = SelectBoxVerts[12] = SelectBoxTransform.InverseTransformPoint(sRay.origin + sRay.direction * 100);
@@ -147,7 +149,13 @@ public class SelectUnit : MonoBehaviour
         SelectBoxVerts[5] = SelectBoxVerts[10] = SelectBoxVerts[15] = SelectBoxTransform.InverseTransformPoint(tRay2.origin + tRay2.direction * 100);
         SelectBoxMesh.vertices = SelectBoxVerts;
     }
+    private bool IsTinyDrawRange()
+    {
 
+        if (Mathf.Abs(SelectFrameTransform.position.x - Input.mousePosition.x) < 0.1f) return true;
+        if (Mathf.Abs(SelectFrameTransform.position.y - Input.mousePosition.y) < 0.1f) return true;
+        return false;
+    }
     private bool IsNotDraw()
     {
         if (EventSystem.current.currentSelectedGameObject == visualJoyStick.gameObject)
@@ -205,4 +213,28 @@ public class SelectUnit : MonoBehaviour
         SelectFrameRectTransform.sizeDelta = new Vector2(Mathf.Abs(Input.mousePosition.x - SelectFrameTransform.position.x), Mathf.Abs(SelectFrameTransform.position.y - Input.mousePosition.y));
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<Biology>() == null) return;
+        Biology b = other.GetComponent<Biology>();
+        Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
+        SelectBiologys.Add(b);
+        SelectBiologysRenderer.Add(r);
+        HighlightsFXUpdate();
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<Biology>() == null) return;
+        Biology b = other.GetComponent<Biology>();
+        Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
+        SelectBiologys.Remove(b);
+        SelectBiologysRenderer.Remove(r);
+        HighlightsFXUpdate();
+
+    }
+    void HighlightsFXUpdate()
+    {
+        HighlightsFX.ClearOutlineData();
+        HighlightsFX.AddRenderers(SelectBiologysRenderer);
+    }
 }

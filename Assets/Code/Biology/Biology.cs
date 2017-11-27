@@ -301,14 +301,14 @@ public class Biology : MonoBehaviour
     {
         if (other.transform.parent.GetComponent<SelectUnit>())
         {
-            if (BiologyAttr.hp > 0) HpUI.Show();
+            // if (BiologyAttr.hp > 0) HpUI.Show();
         }
     }
     void OnTriggerExit(Collider other)
     {
         if (other.transform.parent.GetComponent<SelectUnit>())
         {
-            HpUI.Hide();
+            // HpUI.Hide();
         }
     }
 }
