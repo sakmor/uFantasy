@@ -45,10 +45,31 @@ public class SelectUnit : MonoBehaviour
     internal void ButtonDown(Vector2 pos)
     {
         if (IsSelectOtherUI()) return;
-
         Input = pos;
+        Click();
+        Drag();
+    }
+
+    private void Drag()
+    {
         DrawFrame();
         DrawBox();
+    }
+
+    private void Click()
+    {
+        if (IsStart == true) return;
+        SelectFrameTransform.position = Input;
+        IsStart = true;
+        Show();
+        SelectedHideCircleLine();
+        ClearSelectedBiologys();
+
+    }
+
+    private void ClearSelectedBiologys()
+    {
+        SelectBiologys.Clear();
     }
 
     internal void SelectedMoveTo(Vector3 vector3)
@@ -74,6 +95,13 @@ public class SelectUnit : MonoBehaviour
         foreach (var item in SelectBiologys)
         {
             item.CircleLine.Show();
+        };
+    }
+    private void SelectedHideCircleLine()
+    {
+        foreach (var item in SelectBiologys)
+        {
+            item.CircleLine.Hide();
         };
     }
 
@@ -216,15 +244,6 @@ public class SelectUnit : MonoBehaviour
 
     private void DrawFrame()
     {
-        if (IsStart == false)
-        {
-            SelectFrameTransform.position = Input;
-            IsStart = true;
-            Show();
-
-            return;
-        }
-
         float _x = (Input.x - SelectFrameTransform.position.x);
         float _y = (SelectFrameTransform.position.y - Input.y);
         SelectFrameRectTransform.pivot = new Vector2(_x < 0 ? 1 : 0, _y > 0 ? 1 : 0);

@@ -49,7 +49,6 @@ public class mainGame_Sam : MonoBehaviour
 
         SelectUnit.ButtonDown(GetInputPostion());
 
-
     }
 
     private void IsTouchUp()

@@ -93,6 +93,7 @@ public class CircleLine : MonoBehaviour
 
     void Update()
     {
+        transform.Rotate(Vector3.up * 300 * Time.deltaTime, Space.World);
         if (_checkValuesChanged)
         {
             if (_previousSegmentsValue != _segments ||
@@ -107,6 +108,7 @@ public class CircleLine : MonoBehaviour
 
             UpdateValuesChanged();
         }
+
     }
 
     void UpdateValuesChanged()
