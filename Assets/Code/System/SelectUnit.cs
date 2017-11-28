@@ -7,28 +7,29 @@ using UnityEngine.UI;
 
 public class SelectUnit : MonoBehaviour
 {
+    private Vector2 Input;
     private bool IsStart;
     public Image SelectFrameImage { get; private set; }
     private RectTransform SelectFrameRectTransform;
     private Mesh SelectBoxMesh;
     private Transform SelectBoxTransform, SelectFrameTransform;
     private Vector3[] SelectBoxVerts;
-    private Vector3[] _SelectBoxVerts;
+    private List<Vector3> _SelectBoxVerts;
     private MeshCollider MeshCollider;
     private BoxCollider BoxCollider;
     public visualJoyStick visualJoyStick;
     public Canvas Canvas;
-    public HighlightsFX HighlightsFX;
+    private HighlightsFX HighlightsFX;
 
     public List<Biology> SelectBiologys = new List<Biology>();
 
-    public List<Renderer> SelectBiologysRenderer = new List<Renderer>();
-    public mainGame_Sam MainGame;
+    private List<Renderer> SelectBiologysRenderer = new List<Renderer>();
+
     // Use this for initialization
     void Start()
     {
-        MainGame = GameObject.Find("mainGame").GetComponent<mainGame_Sam>();
         SelectBoxTransform = transform.Find("SelectBox");
+        HighlightsFX = Camera.main.GetComponent<HighlightsFX>();
         SelectBoxInitialize();
         SelectFrameInitialize();
     }
@@ -39,6 +40,41 @@ public class SelectUnit : MonoBehaviour
         SelectFrameTransform.SetParent(Canvas.transform);
         SelectFrameImage = SelectFrameTransform.GetComponent<UnityEngine.UI.Image>();
         SelectFrameRectTransform = SelectFrameTransform.GetComponent<RectTransform>();
+    }
+
+    internal void ButtonDown(Vector2 pos)
+    {
+        if (IsSelectOtherUI()) return;
+
+        Input = pos;
+        DrawFrame();
+        DrawBox();
+    }
+
+    internal void SelectedMoveTo(Vector3 vector3)
+    {
+        foreach (var item in SelectBiologys)
+        {
+            item.BiologyMovement.MoveTo(vector3);
+        }
+    }
+
+
+    internal void ButtonUP()
+    {
+        if (IsStart == false) return;
+        SelectedShowCircleLine();
+        DrawBoxInitialize();
+        Rest();
+        Hide();
+    }
+
+    private void SelectedShowCircleLine()
+    {
+        foreach (var item in SelectBiologys)
+        {
+            item.CircleLine.Show();
+        };
     }
 
     private void SelectBoxInitialize()
@@ -53,7 +89,7 @@ public class SelectUnit : MonoBehaviour
     {
         SelectBoxMesh = Instantiate(SelectBoxTransform.GetComponent<MeshFilter>().sharedMesh);
         SelectBoxVerts = SelectBoxMesh.vertices;
-        _SelectBoxVerts = SelectBoxMesh.vertices;
+        _SelectBoxVerts = new List<Vector3>(SelectBoxMesh.vertices);
         SelectBoxMesh.MarkDynamic();
     }
 
@@ -77,15 +113,6 @@ public class SelectUnit : MonoBehaviour
         AddMeshCollider();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (IsNotDraw()) return;
-        DrawFrame();
-        DrawBox();
-    }
-
-
     private void DrawBox()
     {
         OrthographicDrawBox();
@@ -94,8 +121,12 @@ public class SelectUnit : MonoBehaviour
 
     private void DrawBoxInitialize()
     {
-        SelectBoxMesh.vertices = _SelectBoxVerts;
         // MeshCollider.sharedMesh = SelectBoxMesh;
+        SelectBoxVerts = _SelectBoxVerts.ToArray();
+        SelectBoxMesh.vertices = SelectBoxVerts;
+        BoxCollider.size = Vector3.zero;
+        BoxCollider.center = SelectBoxMesh.bounds.center;
+
     }
 
     private void PerspectiveDrawBox()
@@ -117,7 +148,7 @@ public class SelectUnit : MonoBehaviour
     private void OrthographicDrawBox()
     {
         if (Camera.main.orthographic == false) return;
-        DrawBoxInitialize();
+
         ResizeSelectBoxMesh();
         SelectBoxMesh.RecalculateBounds();
         BoxCollider.center = SelectBoxMesh.bounds.center;
@@ -132,7 +163,7 @@ public class SelectUnit : MonoBehaviour
     private void ResizeSelectBoxMesh()
     {
         Ray sRay = Camera.main.ScreenPointToRay(SelectFrameTransform.position);
-        Ray eRay = Camera.main.ScreenPointToRay(MainGame.GetInputPostion());
+        Ray eRay = Camera.main.ScreenPointToRay(Input);
 
         if (IsTinyDrawRange()) return;
 
@@ -142,11 +173,11 @@ public class SelectUnit : MonoBehaviour
         SelectBoxVerts[7] = SelectBoxVerts[18] = SelectBoxVerts[21] = SelectBoxTransform.InverseTransformPoint(eRay.origin);
         SelectBoxVerts[6] = SelectBoxVerts[14] = SelectBoxVerts[19] = SelectBoxTransform.InverseTransformPoint(eRay.origin + eRay.direction * 100);
 
-        Ray tRay1 = Camera.main.ScreenPointToRay(new Vector3(SelectFrameTransform.position.x, MainGame.GetInputPostion().y, SelectFrameTransform.position.z));
+        Ray tRay1 = Camera.main.ScreenPointToRay(new Vector3(SelectFrameTransform.position.x, Input.y, SelectFrameTransform.position.z));
         SelectBoxVerts[1] = SelectBoxVerts[17] = SelectBoxVerts[22] = SelectBoxTransform.InverseTransformPoint(tRay1.origin);
         SelectBoxVerts[2] = SelectBoxVerts[13] = SelectBoxVerts[16] = SelectBoxTransform.InverseTransformPoint(tRay1.origin + tRay1.direction * 100);
 
-        Ray tRay2 = Camera.main.ScreenPointToRay(new Vector3(MainGame.GetInputPostion().x, SelectFrameTransform.position.y, SelectFrameTransform.position.z));
+        Ray tRay2 = Camera.main.ScreenPointToRay(new Vector3(Input.x, SelectFrameTransform.position.y, SelectFrameTransform.position.z));
         SelectBoxVerts[4] = SelectBoxVerts[11] = SelectBoxVerts[20] = SelectBoxTransform.InverseTransformPoint(tRay2.origin);
         SelectBoxVerts[5] = SelectBoxVerts[10] = SelectBoxVerts[15] = SelectBoxTransform.InverseTransformPoint(tRay2.origin + tRay2.direction * 100);
         SelectBoxMesh.vertices = SelectBoxVerts;
@@ -154,23 +185,14 @@ public class SelectUnit : MonoBehaviour
     private bool IsTinyDrawRange()
     {
 
-        if (Mathf.Abs(SelectFrameTransform.position.x - MainGame.GetInputPostion().x) < 0.1f) return true;
-        if (Mathf.Abs(SelectFrameTransform.position.y - MainGame.GetInputPostion().y) < 0.1f) return true;
+        if (Mathf.Abs(SelectFrameTransform.position.x - Input.x) < 0.1f) return true;
+        if (Mathf.Abs(SelectFrameTransform.position.y - Input.y) < 0.1f) return true;
         return false;
     }
-    private bool IsNotDraw()
+    private bool IsSelectOtherUI()
     {
         if (EventSystem.current.currentSelectedGameObject == visualJoyStick.gameObject)
         {
-            Rest();
-            Hide();
-            return true;
-        }
-
-        if (Input.GetMouseButton(0) == false || EventSystem.current.IsPointerOverGameObject() && !IsStart)
-        {
-            Rest();
-            Hide();
             return true;
         }
         return false;
@@ -196,15 +218,15 @@ public class SelectUnit : MonoBehaviour
     {
         if (IsStart == false)
         {
-            SelectFrameTransform.position = MainGame.GetInputPostion();
+            SelectFrameTransform.position = Input;
             IsStart = true;
             Show();
 
             return;
         }
 
-        float _x = (MainGame.GetInputPostion().x - SelectFrameTransform.position.x);
-        float _y = (SelectFrameTransform.position.y - MainGame.GetInputPostion().y);
+        float _x = (Input.x - SelectFrameTransform.position.x);
+        float _y = (SelectFrameTransform.position.y - Input.y);
         SelectFrameRectTransform.pivot = new Vector2(_x < 0 ? 1 : 0, _y > 0 ? 1 : 0);
         ResizeRect();
 
@@ -212,7 +234,7 @@ public class SelectUnit : MonoBehaviour
 
     private void ResizeRect()
     {
-        SelectFrameRectTransform.sizeDelta = new Vector2(Mathf.Abs(MainGame.GetInputPostion().x - SelectFrameTransform.position.x), Mathf.Abs(SelectFrameTransform.position.y - MainGame.GetInputPostion().y));
+        SelectFrameRectTransform.sizeDelta = new Vector2(Mathf.Abs(Input.x - SelectFrameTransform.position.x), Mathf.Abs(SelectFrameTransform.position.y - Input.y));
     }
 
     void OnTriggerEnter(Collider other)
@@ -231,7 +253,6 @@ public class SelectUnit : MonoBehaviour
         if (other.GetComponent<Biology>().Type != uFantasy.Enum.BiologyType.Player) return;
         Biology b = other.GetComponent<Biology>();
         Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
-        SelectBiologys.Remove(b);
         SelectBiologysRenderer.Remove(r);
         HighlightsFXUpdate();
 

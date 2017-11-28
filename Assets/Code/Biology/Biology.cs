@@ -29,6 +29,7 @@ public class Biology : MonoBehaviour
     internal BiologyAI BiologyAI;
     internal Biology[] Biologys;
     internal HpUI HpUI;
+    internal CircleLine CircleLine;
     public Biology Target;
 
     [SerializeField] public uFantasy.Enum.State State;
@@ -39,6 +40,7 @@ public class Biology : MonoBehaviour
         LoadDB();
         AddLine();
         AddHpUI();
+        AddCircleLine();
     }
 
     void Start()
@@ -109,7 +111,15 @@ public class Biology : MonoBehaviour
         HpUI = HP.GetComponent<HpUI>();
         HpUI.SetBio(this);
     }
+    private void AddCircleLine()
+    {
+        GameObject c = null;
+        c = Instantiate(Resources.Load("Prefab/CircleLine", typeof(GameObject)) as GameObject);
+        c.transform.SetParent(transform);
+        c.transform.localPosition = Vector3.zero;
+        CircleLine = c.GetComponent<CircleLine>();
 
+    }
     private void SetBiologyAttr()
     {
         //讀取Level資料

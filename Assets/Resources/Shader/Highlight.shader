@@ -44,6 +44,7 @@
 					// 在輸出至WebGL時發生錯誤，暫時註解掉
 					// 若您在特定裝置發現光暈位置與物體有距離誤差
 					// 很可能需要把這行程式碼仔細看懂來.....
+					// ...延伸閱讀 https://zhuanlan.zhihu.com/p/26331356
 					// #if !UNITY_UV_STARTS_AT_TOP
 	      			// IN.uv.y = 1.0 - IN.uv.y;
 					// #endif
@@ -72,9 +73,13 @@
 				{
 					fixed4 mCol = tex2D (_MainTex, IN.uv);
 
-					#if !UNITY_UV_STARTS_AT_TOP
-        			IN.uv.y = 1.0 - IN.uv.y;
-					#endif
+					// 在輸出至WebGL時發生錯誤，暫時註解掉
+					// 若您在特定裝置發現光暈位置與物體有距離誤差
+					// 很可能需要把這行程式碼仔細看懂來.....
+					// ...延伸閱讀 https://zhuanlan.zhihu.com/p/26331356
+					// #if !UNITY_UV_STARTS_AT_TOP
+        			// IN.uv.y = 1.0 - IN.uv.y;
+					// #endif
 
 					fixed4 oCol = tex2D (_SecondaryTex, IN.uv);
 					

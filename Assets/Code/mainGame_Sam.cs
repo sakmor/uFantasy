@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,8 +7,8 @@ using UnityEngine.EventSystems;
 public class mainGame_Sam : MonoBehaviour
 {
     public float ResolutionScale = 0.5f;
-
-    public Biology[] Biologys;
+    public SelectUnit SelectUnit;
+    public Biology[] Biologys; //紀錄場景上所有的生物
     private DotLine DotLine;
 
     private void Awake()
@@ -38,14 +39,31 @@ public class mainGame_Sam : MonoBehaviour
 
     private void InputProcess()
     {
-        //當玩家點選到UI物件時跳出
-        if (IsPointerOverUIObject()) return;
+        IsTouchDown();
+        IsTouchUp();
+    }
 
-        if (GetInput() == false)
-        {
-            DotLine.DrawLineStop();
-            return;
-        }
+    private void IsTouchDown()
+    {
+        if (IsTouch() == false) return;
+
+        SelectUnit.ButtonDown(GetInputPostion());
+
+
+    }
+
+    private void IsTouchUp()
+    {
+        if (IsTouch() == true) return;
+
+        DotLine.DrawLineStop();
+        SelectUnit.ButtonUP();
+        // SelectUnit.SelectedMoveTo(GetRayCastHitPos());
+
+    }
+
+    Vector3 GetRayCastHitPos()
+    {
 
         //由攝影機產生一條射線
         Ray ray = Camera.main.ScreenPointToRay(GetInputPostion());
@@ -53,14 +71,13 @@ public class mainGame_Sam : MonoBehaviour
 
         foreach (var item in hits)
         {
-
+            return item.point;
         }
 
-
-
+        return Vector3.negativeInfinity;
     }
 
-    private bool GetInput()
+    private bool IsTouch()
     {
         if (Application.platform == RuntimePlatform.WindowsEditor ||
             Application.platform == RuntimePlatform.WebGLPlayer)
