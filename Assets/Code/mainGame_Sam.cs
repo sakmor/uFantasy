@@ -46,9 +46,8 @@ public class mainGame_Sam : MonoBehaviour
     private void IsTouchDown()
     {
         if (IsTouch() == false) return;
-
+        SelectUnit.SelectedMoveTo(GetRayCastHitPos());
         SelectUnit.ButtonDown(GetInputPostion());
-
     }
 
     private void IsTouchUp()
@@ -57,7 +56,7 @@ public class mainGame_Sam : MonoBehaviour
 
         DotLine.DrawLineStop();
         SelectUnit.ButtonUP();
-        // SelectUnit.SelectedMoveTo(GetRayCastHitPos());
+
 
     }
 

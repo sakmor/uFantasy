@@ -74,6 +74,7 @@ public class SelectUnit : MonoBehaviour
 
     internal void SelectedMoveTo(Vector3 vector3)
     {
+        if (IsStart == true) return;
         foreach (var item in SelectBiologys)
         {
             item.BiologyMovement.MoveTo(vector3);
@@ -268,10 +269,12 @@ public class SelectUnit : MonoBehaviour
     }
     void OnTriggerExit(Collider other)
     {
+
         if (other.GetComponent<Biology>() == null) return;
         if (other.GetComponent<Biology>().Type != uFantasy.Enum.BiologyType.Player) return;
         Biology b = other.GetComponent<Biology>();
         Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
+        if (IsStart) SelectBiologys.Remove(b);
         SelectBiologysRenderer.Remove(r);
         HighlightsFXUpdate();
 
