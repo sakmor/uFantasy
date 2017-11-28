@@ -62,7 +62,11 @@ public class mainGame_Sam : MonoBehaviour
 
     private bool GetInput()
     {
-        if (Application.platform == RuntimePlatform.WindowsEditor) if (Input.GetMouseButton(0)) return true;
+        if (Application.platform == RuntimePlatform.WindowsEditor ||
+            Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            if (Input.GetMouseButton(0)) return true;
+        }
         if (Application.platform == RuntimePlatform.Android) if (Input.touchCount > 0 && (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(0).phase == TouchPhase.Stationary)) return true;
 
         return false;
@@ -70,7 +74,8 @@ public class mainGame_Sam : MonoBehaviour
 
     public Vector3 GetInputPostion()
     {
-        if (Application.platform == RuntimePlatform.WindowsEditor)
+        if (Application.platform == RuntimePlatform.WindowsEditor ||
+            Application.platform == RuntimePlatform.WebGLPlayer)
         {
             return Input.mousePosition;
         }
