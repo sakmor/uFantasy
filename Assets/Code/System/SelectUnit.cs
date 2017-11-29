@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class SelectUnit : MonoBehaviour
 {
     private Vector2 Input;
-    private bool IsDrage;
     public Image SelectFrameImage { get; private set; }
     private RectTransform SelectFrameRectTransform;
     private Mesh SelectBoxMesh;
@@ -41,81 +40,52 @@ public class SelectUnit : MonoBehaviour
         SelectFrameImage = SelectFrameTransform.GetComponent<UnityEngine.UI.Image>();
         SelectFrameRectTransform = SelectFrameTransform.GetComponent<RectTransform>();
     }
-    internal void InputNone(Vector2 pos)
+    internal void SetInputPos(Vector2 pos)
+    {
+        Input = pos;
+    }
+    internal void InputNone()
     {
 
     }
-    internal void InputHold(Vector2 pos)
+    internal void InputHold()
     {
         if (IsSelectOtherUI()) return;
-        Input = pos;
-        Drag();
     }
-    internal void InputUp(Vector2 pos)
+    internal void InputUp()
     {
-
     }
-    internal void InputDown(Vector2 pos)
+    internal void InputDown()
     {
         if (IsSelectOtherUI()) return;
-        Input = pos;
-        Click();
+        SelectFrameTransform.position = Input;
     }
-
-
-    private void Drag()
+    internal void InputDrag()
     {
-        if (IsDrage == false) return;
+        Show();
         DrawFrame();
         DrawBox();
     }
-
-    private void Click()
+    internal void InputDragUp()
     {
-        if (IsDrage == true) return;
-        SelectFrameTransform.position = Input;
-        IsDrage = true;
-        Show();
-        ClearSelectedBiologys();
-
+        SelectBiologysShowCircleLine();
+        DrawBoxInitialize();
+        Rest();
+        Hide();
     }
-
-    private void ClearSelectedBiologys()
-    {
-        HighlightsFX.ClearAllRenders();
-        SelectBiologys.Clear();
-
-    }
-
     internal void SelectedMoveTo(Vector3 vector3)
     {
-        if (IsDrage == true) return;
         foreach (var item in SelectBiologys)
         {
             item.BiologyMovement.MoveTo(vector3);
         }
     }
-
-
-    internal void ButtonUP()
-    {
-        if (IsDrage == false) return;
-        DrawBoxInitialize();
-        Rest();
-        Hide();
-    }
-
-
-
-
     private void SelectBoxInitialize()
     {
         PerspectiveInitialize();
         OrthographicInitialize();
         GetSelectBoxMesh();
-
     }
-
     private void GetSelectBoxMesh()
     {
         SelectBoxMesh = Instantiate(SelectBoxTransform.GetComponent<MeshFilter>().sharedMesh);
@@ -123,33 +93,28 @@ public class SelectUnit : MonoBehaviour
         _SelectBoxVerts = new List<Vector3>(SelectBoxMesh.vertices);
         SelectBoxMesh.MarkDynamic();
     }
-
     private void OrthographicInitialize()
     {
         if (Camera.main.orthographic == false) return;
         SelectBoxRoateUpdate();
         AddBoxCollider();
     }
-
     private void AddBoxCollider()
     {
         if (SelectBoxTransform.GetComponent<MeshCollider>()) DestroyImmediate(SelectBoxTransform.GetComponent<MeshCollider>());
         BoxCollider = SelectBoxTransform.gameObject.AddComponent<BoxCollider>();
         BoxCollider.isTrigger = true;
     }
-
     private void PerspectiveInitialize()
     {
         if (Camera.main.orthographic == true) return;
         AddMeshCollider();
     }
-
     private void DrawBox()
     {
         OrthographicDrawBox();
         PerspectiveDrawBox();
     }
-
     private void DrawBoxInitialize()
     {
         // MeshCollider.sharedMesh = SelectBoxMesh;
@@ -157,9 +122,7 @@ public class SelectUnit : MonoBehaviour
         SelectBoxMesh.vertices = SelectBoxVerts;
         BoxCollider.size = Vector3.zero;
         BoxCollider.center = SelectBoxMesh.bounds.center;
-
     }
-
     private void PerspectiveDrawBox()
     {
         if (Camera.main.orthographic == true) return;
@@ -167,7 +130,6 @@ public class SelectUnit : MonoBehaviour
         ResizeSelectBoxMesh();
         MeshCollider.sharedMesh = SelectBoxMesh;
     }
-
     private void AddMeshCollider()
     {
         if (SelectBoxTransform.GetComponent<BoxCollider>()) DestroyImmediate(SelectBoxTransform.GetComponent<BoxCollider>());
@@ -175,7 +137,6 @@ public class SelectUnit : MonoBehaviour
         MeshCollider.convex = true;
         MeshCollider.isTrigger = true;
     }
-
     private void OrthographicDrawBox()
     {
         if (Camera.main.orthographic == false) return;
@@ -231,7 +192,6 @@ public class SelectUnit : MonoBehaviour
 
     private void Rest()
     {
-        IsDrage = false;
         SelectFrameRectTransform.sizeDelta = Vector2.zero;
     }
 
@@ -272,7 +232,7 @@ public class SelectUnit : MonoBehaviour
         if (other.GetComponent<Biology>() == null) return;
         if (other.GetComponent<Biology>().Type != uFantasy.Enum.BiologyType.Player) return;
         Biology b = other.GetComponent<Biology>();
-        if (IsDrage) SelectBiologysRemove(b);
+        SelectBiologysRemove(b);
     }
     void HighlightsFXUpdate()
     {
@@ -293,6 +253,23 @@ public class SelectUnit : MonoBehaviour
         SelectBiologysRenderer.Remove(r);
         SelectBiologys.Remove(b);
         HighlightsFXUpdate();
+    }
+
+    void SelectBiologysShowCircleLine()
+    {
+        foreach (var b in SelectBiologys)
+        {
+            b.CircleLine.Show();
+        }
+    }
+
+
+    void SelectBiologysHideCircleLine()
+    {
+        foreach (var b in SelectBiologys)
+        {
+            b.CircleLine.Hide();
+        }
     }
 
 }

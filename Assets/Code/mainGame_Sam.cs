@@ -12,8 +12,9 @@ public class mainGame_Sam : MonoBehaviour
     private DotLine DotLine;
     private enum InputState { Down, Hold, Up, None }
     private mainGame_Sam.InputState CurrentInputState, LastInputState;
+    public bool IsDrag;
 
-    public Vector3 InputPos { get; private set; }
+    private Vector3 InputPos, _InputPos;
 
     private void Awake()
     {
@@ -45,49 +46,81 @@ public class mainGame_Sam : MonoBehaviour
     private void InputProcess()
     {
         InputPosUpdate();
+        SetSelectUnitInputPos();
+        DragStateUpdate();
         InputStateUpdate();
-        InputNone();
-        InputHold();
-        InputUp();
+
+        // InputNone();
+        // InputHold();
+        InputDrag();
+        // InputUp();
+        InputDragUp();
         InputDown();
+    }
+
+    private void SetSelectUnitInputPos()
+    {
+        SelectUnit.SetInputPos(InputPos);
+    }
+
+    private void InputDragUp()
+    {
+        if (CurrentInputState != InputState.Up && IsDrag == true) return;
+        SelectUnit.InputDragUp();
+    }
+
+    private void InputDrag()
+    {
+        if (CurrentInputState != InputState.Hold && IsDrag == false) return;
+        SelectUnit.InputDrag();
+    }
+
+    private void DragStateUpdate()
+    {
+        if (CurrentInputState == InputState.Down) _InputPos = InputPos;
+        if (CurrentInputState == InputState.Up) IsDrag = false;
+        if (CurrentInputState == InputState.Hold && InputPos != _InputPos) IsDrag = true;
+
     }
 
     private void InputStateUpdate()
     {
-        if (IsTouch() == true && LastInputState == InputState.None || LastInputState == InputState.Up) CurrentInputState = InputState.Down;
-        if (IsTouch() == false && LastInputState == InputState.Hold || LastInputState == InputState.Down) CurrentInputState = InputState.Up;
-
-        if (IsTouch() == true && LastInputState == InputState.Hold || LastInputState == InputState.Down) CurrentInputState = InputState.Hold;
-        if (IsTouch() == false && LastInputState == InputState.None || LastInputState == InputState.Up) CurrentInputState = InputState.None;
+        if (IsTouch() == true)
+        {
+            if (LastInputState == InputState.None || LastInputState == InputState.Up) CurrentInputState = InputState.Down;
+            if (LastInputState == InputState.Hold || LastInputState == InputState.Down) CurrentInputState = InputState.Hold;
+        }
+        if (IsTouch() == false)
+        {
+            if (LastInputState == InputState.Hold || LastInputState == InputState.Down) CurrentInputState = InputState.Up;
+            if (LastInputState == InputState.None || LastInputState == InputState.Up) CurrentInputState = InputState.None;
+        }
         LastInputState = CurrentInputState;
     }
 
     private void InputDown()
     {
         if (CurrentInputState != InputState.Down) return;
-        SelectUnit.InputDown(InputPos);
+        SelectUnit.InputDown();
     }
-
     private void InputNone()
     {
         if (CurrentInputState != InputState.None) return;
-        SelectUnit.InputNone(InputPos);
+        SelectUnit.InputNone();
 
     }
     private void InputUp()
     {
-        if (CurrentInputState != InputState.Up) return;
+        if (CurrentInputState != InputState.Up && IsDrag == false) return;
 
-        SelectUnit.InputUp(InputPos);
+        SelectUnit.InputUp();
         SelectUnit.SelectedMoveTo(GetRayCastHitPos());
         DotLine.DrawLineStop();
-        SelectUnit.ButtonUP();
     }
-
     private void InputHold()
     {
-        if (CurrentInputState != InputState.Hold) return;
-        SelectUnit.InputHold(InputPos);
+        if (CurrentInputState != InputState.Hold && IsDrag == true) return;
+        SelectUnit.InputHold();
 
     }
 
@@ -119,8 +152,6 @@ public class mainGame_Sam : MonoBehaviour
         return false;
     }
 
-
-
     public void InputPosUpdate()
     {
         if (Application.platform == RuntimePlatform.WindowsEditor ||
@@ -133,5 +164,6 @@ public class mainGame_Sam : MonoBehaviour
             InputPos = Input.GetTouch(0).position;
         }
     }
+
 
 }
