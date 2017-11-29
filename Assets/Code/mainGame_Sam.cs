@@ -50,10 +50,10 @@ public class mainGame_Sam : MonoBehaviour
         DragStateUpdate();
         InputStateUpdate();
 
-        // InputNone();
-        // InputHold();
+        InputNone();
+        InputHold();
         InputDrag();
-        // InputUp();
+        InputUp();
         InputDragUp();
         InputDown();
     }
@@ -65,13 +65,13 @@ public class mainGame_Sam : MonoBehaviour
 
     private void InputDragUp()
     {
-        if (CurrentInputState != InputState.Up && IsDrag == true) return;
+        if (CurrentInputState != InputState.Up || IsDrag == false) return;
         SelectUnit.InputDragUp();
     }
 
     private void InputDrag()
     {
-        if (CurrentInputState != InputState.Hold && IsDrag == false) return;
+        if (CurrentInputState != InputState.Hold || IsDrag == false) return;
         SelectUnit.InputDrag();
     }
 
@@ -80,7 +80,6 @@ public class mainGame_Sam : MonoBehaviour
         if (CurrentInputState == InputState.Down) _InputPos = InputPos;
         if (CurrentInputState == InputState.Up) IsDrag = false;
         if (CurrentInputState == InputState.Hold && InputPos != _InputPos) IsDrag = true;
-
     }
 
     private void InputStateUpdate()
@@ -100,8 +99,8 @@ public class mainGame_Sam : MonoBehaviour
 
     private void InputDown()
     {
-        if (CurrentInputState != InputState.Down) return;
-        SelectUnit.InputDown();
+        if (CurrentInputState == InputState.Down)
+            SelectUnit.InputDown();
     }
     private void InputNone()
     {

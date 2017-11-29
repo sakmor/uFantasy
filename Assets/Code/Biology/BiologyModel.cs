@@ -7,10 +7,11 @@ class BiologyModel
     public float WalkStep;
     public float CollisionSizeXZ;
     public float CollisionPostionY;
+    public float CollisionHeight;
     private int _WalkStep = 1;
     private int _CollisionSizeXZ = 2;
     private int _CollisionPostionY = 3;
-
+    private int _CollisionHeight = 4;
     private string ModelName;
     public BiologyModel(string ModelName)
     {
@@ -23,6 +24,7 @@ class BiologyModel
         WalkStep = GetWalkStep();
         CollisionSizeXZ = GetCollisionPostionXZ();
         CollisionPostionY = GetCollisionPostionY();
+        CollisionHeight = GetCollisionHeight();
     }
 
     private float GetWalkStep()
@@ -31,10 +33,15 @@ class BiologyModel
     }
     private float GetCollisionPostionXZ()
     {
-        return float.Parse(GameDB.Instance.BiologyModel[ModelName][_CollisionSizeXZ]);
+        return 0.1f * float.Parse(GameDB.Instance.BiologyModel[ModelName][_CollisionSizeXZ]);
     }
     private float GetCollisionPostionY()
     {
-        return float.Parse(GameDB.Instance.BiologyModel[ModelName][_CollisionPostionY]);
+        var i = GameDB.Instance.BiologyModel[ModelName][_CollisionPostionY];
+        return 0.1f * float.Parse(i);
+    }
+    private float GetCollisionHeight()
+    {
+        return 0.1f * float.Parse(GameDB.Instance.BiologyModel[ModelName][_CollisionHeight]);
     }
 }

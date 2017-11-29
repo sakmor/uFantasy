@@ -245,8 +245,10 @@ public class Biology : MonoBehaviour
     private void SetBiologyModel()
     {
         BiologyModel BiologyModel = new BiologyModel(ModelName);
-        GetComponent<BoxCollider>().center = Vector3.up * BiologyModel.CollisionPostionY;//fixme: 之後碰撞交給Nav Mesh Agent ，這裡可移除了
-        GetComponent<BoxCollider>().size = new Vector3(BiologyModel.CollisionSizeXZ, 1, BiologyModel.CollisionSizeXZ);
+        CapsuleCollider CapsuleCollider = gameObject.AddComponent<CapsuleCollider>();
+        CapsuleCollider.isTrigger = true;
+        CapsuleCollider.center = Vector3.up * BiologyModel.CollisionPostionY;
+        CapsuleCollider.height = BiologyModel.CollisionHeight;
     }
 
     private void SetBiology()
@@ -309,16 +311,12 @@ public class Biology : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.transform.parent.GetComponent<SelectUnit>())
-        {
-            // if (BiologyAttr.hp > 0) HpUI.Show();
-        }
+        Debug.Log(other);
+
     }
     void OnTriggerExit(Collider other)
     {
-        if (other.transform.parent.GetComponent<SelectUnit>())
-        {
-            // HpUI.Hide();
-        }
+        if (other.transform.GetComponent<Biology>() == false) return;
+        other.transform.GetComponent<Biology>().BiologyMovement.ReturnPost();
     }
 }

@@ -20,7 +20,8 @@ public class SelectUnit : MonoBehaviour
     public Canvas Canvas;
     private HighlightsFX HighlightsFX;
 
-    public List<Biology> SelectBiologys = new List<Biology>();
+    public List<Biology> SelectBiologys;
+    public List<Biology> _SelectBiologys = new List<Biology>();
 
     private List<Renderer> SelectBiologysRenderer = new List<Renderer>();
 
@@ -55,6 +56,8 @@ public class SelectUnit : MonoBehaviour
     internal void InputUp()
     {
     }
+
+
     internal void InputDown()
     {
         if (IsSelectOtherUI()) return;
@@ -62,17 +65,30 @@ public class SelectUnit : MonoBehaviour
     }
     internal void InputDrag()
     {
+        SelectBiologysHideCircleLine();
+        SelectBiologysClear();
         Show();
         DrawFrame();
         DrawBox();
     }
     internal void InputDragUp()
     {
+        SelectBiologysUpdate();
         SelectBiologysShowCircleLine();
         DrawBoxInitialize();
         Rest();
         Hide();
     }
+
+    private void SelectBiologysUpdate()
+    {
+        SelectBiologys = new List<Biology>(_SelectBiologys);
+    }
+    private void SelectBiologysClear()
+    {
+        SelectBiologys.Clear();
+    }
+
     internal void SelectedMoveTo(Vector3 vector3)
     {
         foreach (var item in SelectBiologys)
@@ -224,7 +240,7 @@ public class SelectUnit : MonoBehaviour
         if (other.GetComponent<Biology>() == null) return;
         if (other.GetComponent<Biology>().Type != uFantasy.Enum.BiologyType.Player) return;
         Biology b = other.GetComponent<Biology>();
-        SelectBiologysAdd(b);
+        _SelectBiologysAdd(b);
     }
     void OnTriggerExit(Collider other)
     {
@@ -232,7 +248,7 @@ public class SelectUnit : MonoBehaviour
         if (other.GetComponent<Biology>() == null) return;
         if (other.GetComponent<Biology>().Type != uFantasy.Enum.BiologyType.Player) return;
         Biology b = other.GetComponent<Biology>();
-        SelectBiologysRemove(b);
+        _SelectBiologysRemove(b);
     }
     void HighlightsFXUpdate()
     {
@@ -240,18 +256,18 @@ public class SelectUnit : MonoBehaviour
         HighlightsFX.AddRenderers(SelectBiologysRenderer);
     }
 
-    void SelectBiologysAdd(Biology b)
+    void _SelectBiologysAdd(Biology b)
     {
         Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
         SelectBiologysRenderer.Add(r);
-        SelectBiologys.Add(b);
+        _SelectBiologys.Add(b);
         HighlightsFXUpdate();
     }
-    void SelectBiologysRemove(Biology b)
+    void _SelectBiologysRemove(Biology b)
     {
         Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
         SelectBiologysRenderer.Remove(r);
-        SelectBiologys.Remove(b);
+        _SelectBiologys.Remove(b);
         HighlightsFXUpdate();
     }
 
@@ -262,8 +278,6 @@ public class SelectUnit : MonoBehaviour
             b.CircleLine.Show();
         }
     }
-
-
     void SelectBiologysHideCircleLine()
     {
         foreach (var b in SelectBiologys)
@@ -271,5 +285,4 @@ public class SelectUnit : MonoBehaviour
             b.CircleLine.Hide();
         }
     }
-
 }

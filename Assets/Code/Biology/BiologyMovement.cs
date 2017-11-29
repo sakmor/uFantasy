@@ -10,6 +10,7 @@ public class BiologyMovement
     private Transform BiologyTransfrom;
     private Biology Biology;
     private Vector3 GoalPos;
+    private float _ReturnPostTime;
 
     private float Closest = 0.125f;
 
@@ -28,8 +29,9 @@ public class BiologyMovement
 
     public void Stop()
     {
-        GoalPos = BiologyTransfrom.localPosition;
+        GoalPos = BiologyTransfrom.position;
         NavMeshAgent.isStopped = true;
+        NavMeshAgent.avoidancePriority = 99;
         Biology.PlayAnimation(uFantasy.Enum.State.Battle);
     }
 
@@ -62,10 +64,24 @@ public class BiologyMovement
         if (IsPathReachDestination(pos) == false) return false;
 
         GoalPos = pos;
+        NavMeshAgent.avoidancePriority = 50;
         NavMeshAgent.SetDestination(GoalPos);
         NavMeshAgent.isStopped = false;
         Biology.PlayAnimation(uFantasy.Enum.State.Run);
         return true;
+    }
+    public bool MoveTo(Vector3 pos, int avoidancePriority)
+    {
+        MoveTo(pos);
+        NavMeshAgent.avoidancePriority = avoidancePriority;
+        return true;
+    }
+
+
+    internal void ReturnPost()
+    {
+        if (NavMeshAgent.avoidancePriority == 50) return;
+        MoveTo(GoalPos, 80);
     }
     private bool IsPathReachDestination(Vector3 GoalPos)
     {
