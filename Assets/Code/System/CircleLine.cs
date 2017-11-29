@@ -21,7 +21,7 @@ public class CircleLine : MonoBehaviour
 
     [SerializeField]
     [Tooltip("The offset will be applied in the direction of the axis.")]
-    private float _offset = 0.75f;
+    private float _offset = 0.1f;
 
     [SerializeField]
     [Tooltip("The axis about which the circle is drawn.")]

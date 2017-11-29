@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class SelectUnit : MonoBehaviour
 {
     private Vector2 Input;
-    private bool IsStart;
+    private bool IsDrage;
     public Image SelectFrameImage { get; private set; }
     private RectTransform SelectFrameRectTransform;
     private Mesh SelectBoxMesh;
@@ -41,40 +41,55 @@ public class SelectUnit : MonoBehaviour
         SelectFrameImage = SelectFrameTransform.GetComponent<UnityEngine.UI.Image>();
         SelectFrameRectTransform = SelectFrameTransform.GetComponent<RectTransform>();
     }
+    internal void InputNone(Vector2 pos)
+    {
 
-    internal void ButtonDown(Vector2 pos)
+    }
+    internal void InputHold(Vector2 pos)
+    {
+        if (IsSelectOtherUI()) return;
+        Input = pos;
+        Drag();
+    }
+    internal void InputUp(Vector2 pos)
+    {
+
+    }
+    internal void InputDown(Vector2 pos)
     {
         if (IsSelectOtherUI()) return;
         Input = pos;
         Click();
-        Drag();
     }
+
 
     private void Drag()
     {
+        if (IsDrage == false) return;
         DrawFrame();
         DrawBox();
     }
 
     private void Click()
     {
-        if (IsStart == true) return;
+        if (IsDrage == true) return;
         SelectFrameTransform.position = Input;
-        IsStart = true;
+        IsDrage = true;
         Show();
-        SelectedHideCircleLine();
         ClearSelectedBiologys();
 
     }
 
     private void ClearSelectedBiologys()
     {
+        HighlightsFX.ClearAllRenders();
         SelectBiologys.Clear();
+
     }
 
     internal void SelectedMoveTo(Vector3 vector3)
     {
-        if (IsStart == true) return;
+        if (IsDrage == true) return;
         foreach (var item in SelectBiologys)
         {
             item.BiologyMovement.MoveTo(vector3);
@@ -84,27 +99,14 @@ public class SelectUnit : MonoBehaviour
 
     internal void ButtonUP()
     {
-        if (IsStart == false) return;
-        SelectedShowCircleLine();
+        if (IsDrage == false) return;
         DrawBoxInitialize();
         Rest();
         Hide();
     }
 
-    private void SelectedShowCircleLine()
-    {
-        foreach (var item in SelectBiologys)
-        {
-            item.CircleLine.Show();
-        };
-    }
-    private void SelectedHideCircleLine()
-    {
-        foreach (var item in SelectBiologys)
-        {
-            item.CircleLine.Hide();
-        };
-    }
+
+
 
     private void SelectBoxInitialize()
     {
@@ -229,7 +231,7 @@ public class SelectUnit : MonoBehaviour
 
     private void Rest()
     {
-        IsStart = false;
+        IsDrage = false;
         SelectFrameRectTransform.sizeDelta = Vector2.zero;
     }
 
@@ -262,10 +264,7 @@ public class SelectUnit : MonoBehaviour
         if (other.GetComponent<Biology>() == null) return;
         if (other.GetComponent<Biology>().Type != uFantasy.Enum.BiologyType.Player) return;
         Biology b = other.GetComponent<Biology>();
-        Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
-        SelectBiologys.Add(b);
-        SelectBiologysRenderer.Add(r);
-        HighlightsFXUpdate();
+        SelectBiologysAdd(b);
     }
     void OnTriggerExit(Collider other)
     {
@@ -273,15 +272,27 @@ public class SelectUnit : MonoBehaviour
         if (other.GetComponent<Biology>() == null) return;
         if (other.GetComponent<Biology>().Type != uFantasy.Enum.BiologyType.Player) return;
         Biology b = other.GetComponent<Biology>();
-        Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
-        if (IsStart) SelectBiologys.Remove(b);
-        SelectBiologysRenderer.Remove(r);
-        HighlightsFXUpdate();
-
+        if (IsDrage) SelectBiologysRemove(b);
     }
     void HighlightsFXUpdate()
     {
         HighlightsFX.ClearOutlineData();
         HighlightsFX.AddRenderers(SelectBiologysRenderer);
     }
+
+    void SelectBiologysAdd(Biology b)
+    {
+        Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
+        SelectBiologysRenderer.Add(r);
+        SelectBiologys.Add(b);
+        HighlightsFXUpdate();
+    }
+    void SelectBiologysRemove(Biology b)
+    {
+        Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
+        SelectBiologysRenderer.Remove(r);
+        SelectBiologys.Remove(b);
+        HighlightsFXUpdate();
+    }
+
 }

@@ -10,9 +10,14 @@ public class mainGame_Sam : MonoBehaviour
     public SelectUnit SelectUnit;
     public Biology[] Biologys; //紀錄場景上所有的生物
     private DotLine DotLine;
+    private enum InputState { Down, Hold, Up, None }
+    private mainGame_Sam.InputState CurrentInputState, LastInputState;
+
+    public Vector3 InputPos { get; private set; }
 
     private void Awake()
     {
+        CurrentInputState = LastInputState = InputState.None;
         Biologys = (Biology[])FindObjectsOfType(typeof(Biology));
     }
     // Use this for initialization
@@ -39,32 +44,59 @@ public class mainGame_Sam : MonoBehaviour
 
     private void InputProcess()
     {
-        IsTouchDown();
-        IsTouchUp();
+        InputPosUpdate();
+        InputStateUpdate();
+        InputNone();
+        InputHold();
+        InputUp();
+        InputDown();
     }
 
-    private void IsTouchDown()
+    private void InputStateUpdate()
     {
-        if (IsTouch() == false) return;
+        if (IsTouch() == true && LastInputState == InputState.None || LastInputState == InputState.Up) CurrentInputState = InputState.Down;
+        if (IsTouch() == false && LastInputState == InputState.Hold || LastInputState == InputState.Down) CurrentInputState = InputState.Up;
+
+        if (IsTouch() == true && LastInputState == InputState.Hold || LastInputState == InputState.Down) CurrentInputState = InputState.Hold;
+        if (IsTouch() == false && LastInputState == InputState.None || LastInputState == InputState.Up) CurrentInputState = InputState.None;
+        LastInputState = CurrentInputState;
+    }
+
+    private void InputDown()
+    {
+        if (CurrentInputState != InputState.Down) return;
+        SelectUnit.InputDown(InputPos);
+    }
+
+    private void InputNone()
+    {
+        if (CurrentInputState != InputState.None) return;
+        SelectUnit.InputNone(InputPos);
+
+    }
+    private void InputUp()
+    {
+        if (CurrentInputState != InputState.Up) return;
+
+        SelectUnit.InputUp(InputPos);
         SelectUnit.SelectedMoveTo(GetRayCastHitPos());
-        SelectUnit.ButtonDown(GetInputPostion());
-    }
-
-    private void IsTouchUp()
-    {
-        if (IsTouch() == true) return;
-
         DotLine.DrawLineStop();
         SelectUnit.ButtonUP();
+    }
 
+    private void InputHold()
+    {
+        if (CurrentInputState != InputState.Hold) return;
+        SelectUnit.InputHold(InputPos);
 
     }
+
 
     Vector3 GetRayCastHitPos()
     {
 
         //由攝影機產生一條射線
-        Ray ray = Camera.main.ScreenPointToRay(GetInputPostion());
+        Ray ray = Camera.main.ScreenPointToRay(InputPos);
         RaycastHit[] hits = Physics.RaycastAll(ray);
 
         foreach (var item in hits)
@@ -87,18 +119,19 @@ public class mainGame_Sam : MonoBehaviour
         return false;
     }
 
-    public Vector3 GetInputPostion()
+
+
+    public void InputPosUpdate()
     {
         if (Application.platform == RuntimePlatform.WindowsEditor ||
             Application.platform == RuntimePlatform.WebGLPlayer)
         {
-            return Input.mousePosition;
+            InputPos = Input.mousePosition;
         }
         if (Application.platform == RuntimePlatform.Android)
         {
-            return Input.GetTouch(0).position;
+            InputPos = Input.GetTouch(0).position;
         }
-        return Vector3.zero;
     }
 
 }

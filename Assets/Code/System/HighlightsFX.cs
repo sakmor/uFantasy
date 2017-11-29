@@ -110,6 +110,11 @@ public class HighlightsFX : MonoBehaviour
         m_objectRenderers.Remove(renderers);
         RecreateCommandBuffer();
     }
+    public void ClearAllRenders()
+    {
+        m_objectRenderers.Clear();
+        RecreateCommandBuffer();
+    }
 
     public void AddExcluders(List<Renderer> renderers)
     {
