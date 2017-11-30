@@ -20,8 +20,8 @@ public class SelectUnit : MonoBehaviour
     public Canvas Canvas;
     private HighlightsFX HighlightsFX;
 
-    public List<Biology> SelectBiologys;
-    public List<Biology> _SelectBiologys = new List<Biology>();
+    private List<Biology> SelectBiologys;
+    private List<Biology> _SelectBiologys = new List<Biology>();
 
     private List<Renderer> SelectBiologysRenderer = new List<Renderer>();
 
@@ -86,11 +86,13 @@ public class SelectUnit : MonoBehaviour
     }
     private void SelectBiologysClear()
     {
+        if (SelectBiologys == null) return;
         SelectBiologys.Clear();
     }
 
     internal void SelectedMoveTo(Vector3 vector3)
     {
+        if (SelectBiologys == null) return;
         foreach (var item in SelectBiologys)
         {
             item.BiologyMovement.MoveTo(vector3);
@@ -143,11 +145,15 @@ public class SelectUnit : MonoBehaviour
     {
         if (Camera.main.orthographic == true) return;
         SelectBoxMesh.vertices = _SelectBoxVerts.ToArray();
+        MeshCollider.sharedMesh = SelectBoxMesh;
     }
 
     private void OrthographicDrawBoxInitialize()
     {
         if (Camera.main.orthographic == false) return;
+        SelectBoxMesh.vertices = SelectBoxVerts;
+        BoxCollider.size = Vector3.zero;
+        BoxCollider.center = SelectBoxMesh.bounds.center;
     }
     private void PerspectiveDrawBox()
     {
@@ -288,6 +294,7 @@ public class SelectUnit : MonoBehaviour
     }
     void SelectBiologysHideCircleLine()
     {
+        if (SelectBiologys == null) return;
         foreach (var b in SelectBiologys)
         {
             b.CircleLine.Hide();
