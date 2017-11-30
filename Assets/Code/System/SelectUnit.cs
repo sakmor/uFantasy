@@ -133,15 +133,26 @@ public class SelectUnit : MonoBehaviour
     }
     private void DrawBoxInitialize()
     {
-        // MeshCollider.sharedMesh = SelectBoxMesh;
         SelectBoxVerts = _SelectBoxVerts.ToArray();
-        SelectBoxMesh.vertices = SelectBoxVerts;
-        BoxCollider.size = Vector3.zero;
-        BoxCollider.center = SelectBoxMesh.bounds.center;
+
+        PerspectiveDrawBoxInitialize();
+        OrthographicDrawBoxInitialize();
+    }
+
+    private void PerspectiveDrawBoxInitialize()
+    {
+        if (Camera.main.orthographic == true) return;
+        SelectBoxMesh.vertices = _SelectBoxVerts.ToArray();
+    }
+
+    private void OrthographicDrawBoxInitialize()
+    {
+        if (Camera.main.orthographic == false) return;
     }
     private void PerspectiveDrawBox()
     {
         if (Camera.main.orthographic == true) return;
+        if (IsTinyDrawRange()) return;
         DrawBoxInitialize();
         ResizeSelectBoxMesh();
         MeshCollider.sharedMesh = SelectBoxMesh;
@@ -173,8 +184,6 @@ public class SelectUnit : MonoBehaviour
         Ray sRay = Camera.main.ScreenPointToRay(SelectFrameTransform.position);
         Ray eRay = Camera.main.ScreenPointToRay(Input);
 
-        if (IsTinyDrawRange()) return;
-
         SelectBoxVerts[0] = SelectBoxVerts[8] = SelectBoxVerts[23] = SelectBoxTransform.InverseTransformPoint(sRay.origin);
         SelectBoxVerts[3] = SelectBoxVerts[9] = SelectBoxVerts[12] = SelectBoxTransform.InverseTransformPoint(sRay.origin + sRay.direction * 100);
 
@@ -192,9 +201,8 @@ public class SelectUnit : MonoBehaviour
     }
     private bool IsTinyDrawRange()
     {
-
-        if (Mathf.Abs(SelectFrameTransform.position.x - Input.x) < 0.1f) return true;
-        if (Mathf.Abs(SelectFrameTransform.position.y - Input.y) < 0.1f) return true;
+        if (Mathf.Abs(SelectFrameTransform.position.x - Input.x) < 5f) return true;
+        if (Mathf.Abs(SelectFrameTransform.position.y - Input.y) < 5f) return true;
         return false;
     }
     private bool IsSelectOtherUI()

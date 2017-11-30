@@ -311,56 +311,51 @@ public class Biology : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        //如果我撞開我的是個生物撞..
         if (other.transform.GetComponent<Biology>() == false) return;
         RunHitRun(other);
+        BackHitBack(other);
+        BackHitRun(other);
     }
     void OnTriggerExit(Collider other)
     {
-        //如果我撞開我的是個生物撞..
         if (other.transform.GetComponent<Biology>() == false) return;
         RunHitStop(other);
     }
 
     private void RunHitRun(Collider other)
     {
-        //而且這個生物正在跑...
         if (other.transform.GetComponent<Biology>().BiologyMovement.CurrentMoveType != BiologyMovement.MoveType.Run) return;
-
-        //而且我也正在跑...
         if (BiologyMovement.CurrentMoveType != BiologyMovement.MoveType.Run) return;
-
-        //問他是誰
         BiologyMovement otherMovement = other.transform.GetComponent<Biology>().BiologyMovement;
-
-        //比較我們兩個誰離終點較近，更新我的優先瘸
-        if (BiologyMovement.CurrentMoveType == BiologyMovement.MoveType.Run) BiologyMovement.PriorityCompare(otherMovement);
+        if (BiologyMovement.GetSteeringTargetDist() <= otherMovement.GetSteeringTargetDist()) BiologyMovement.SetAvoidancePriority(BiologyMovement.NavMeshAgent.avoidancePriority - 1);
+    }
+    private void BackHitRun(Collider other)
+    {
+        if (other.transform.GetComponent<Biology>().BiologyMovement.CurrentMoveType != BiologyMovement.MoveType.Back) return;
+        if (BiologyMovement.CurrentMoveType != BiologyMovement.MoveType.Run) return;
+        BiologyMovement.SetAvoidancePriority(BiologyMovement.NavMeshAgent.avoidancePriority - 1);
     }
 
 
     private void RunHitStop(Collider other)
     {
-        //而且這個生物正在跑...
         if (other.transform.GetComponent<Biology>().BiologyMovement.CurrentMoveType != BiologyMovement.MoveType.Run) return;
-
-        //而且這我是在靜止狀態下
         if (BiologyMovement.CurrentMoveType != BiologyMovement.MoveType.Stop) return;
-
-        //跑回崗位
         BiologyMovement.ReturnPost();
+    }
+    private void BackHitStop(Collider other)
+    {
+        if (other.transform.GetComponent<Biology>().BiologyMovement.CurrentMoveType != BiologyMovement.MoveType.Back) return;
+        if (BiologyMovement.CurrentMoveType != BiologyMovement.MoveType.Back) return;
+        //Do Nothing ...
+
     }
     private void BackHitBack(Collider other)
     {
-        //而且這個生物正在返回...
         if (other.transform.GetComponent<Biology>().BiologyMovement.CurrentMoveType != BiologyMovement.MoveType.Back) return;
-
-        //而且這我是正在返回
         if (BiologyMovement.CurrentMoveType != BiologyMovement.MoveType.Back) return;
-
-        //問他是誰
         BiologyMovement otherMovement = other.transform.GetComponent<Biology>().BiologyMovement;
+        if (BiologyMovement.GetSteeringTargetDist() <= otherMovement.GetSteeringTargetDist()) BiologyMovement.Stop();
 
-        //比較我們兩個誰離終點較近，更新我的優先瘸
-        if (BiologyMovement.CurrentMoveType == BiologyMovement.MoveType.Run) BiologyMovement.PriorityCompare(otherMovement);
     }
 }

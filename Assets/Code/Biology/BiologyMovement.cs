@@ -91,25 +91,27 @@ public class BiologyMovement
     private void SetMoveType_MoveTo()
     {
         CurrentMoveType = MoveType.Run;
-        NavMeshAgent.avoidancePriority = 50;
+        SetAvoidancePriority(97);
     }
     private void SetMoveType_Stop()
     {
         CurrentMoveType = MoveType.Stop;
-        NavMeshAgent.avoidancePriority = 99;
+        SetAvoidancePriority(99);
 
     }
     private void SetMoveType_ReturnPost()
     {
         CurrentMoveType = MoveType.Back;
-        NavMeshAgent.avoidancePriority = 98;
+        SetAvoidancePriority(98);
     }
 
-    internal void PriorityCompare(BiologyMovement otherMovement)
+    internal float GetSteeringTargetDist()
     {
-        float myDist = Vector3.Distance(Biology.transform.position, NavMeshAgent.steeringTarget);
-        float otherDist = Vector3.Distance(otherMovement.Biology.transform.position, otherMovement.NavMeshAgent.steeringTarget);
-        if (otherDist > myDist) NavMeshAgent.avoidancePriority = otherMovement.NavMeshAgent.avoidancePriority - 1;
-        Debug.Log(Biology.name + "===" + NavMeshAgent.avoidancePriority);
+        return Vector3.Distance(Biology.transform.position, NavMeshAgent.steeringTarget);
+    }
+
+    internal void SetAvoidancePriority(int value)
+    {
+        NavMeshAgent.avoidancePriority = value;
     }
 }
