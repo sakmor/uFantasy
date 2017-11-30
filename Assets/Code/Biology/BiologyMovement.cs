@@ -11,8 +11,9 @@ public class BiologyMovement
     private Biology Biology;
     private Vector3 GoalPos;
     private float _ReturnPostTime;
-
     private float Closest = 0.125f;
+    internal enum MoveType { Run, Back, Stop }
+    internal MoveType CurrentMoveType;
 
     public BiologyMovement(Biology biology)
     {
@@ -22,19 +23,14 @@ public class BiologyMovement
         NavMeshAgent.stoppingDistance = Closest;
         NavMeshAgent.speed = Biology.Speed;
         Stop();
-
     }
-
-
-
     public void Stop()
     {
         GoalPos = BiologyTransfrom.position;
         NavMeshAgent.isStopped = true;
-        NavMeshAgent.avoidancePriority = 99;
         Biology.PlayAnimation(uFantasy.Enum.State.Battle);
+        SetMoveType_Stop();
     }
-
 
     public void Update()
     {
@@ -55,33 +51,33 @@ public class BiologyMovement
 
     private void RunFpsAdjustment()
     {
-        // Debug.Log(NavMeshAgent.GetComponent<Animation>().name);
         Biology.Animator.speed = 1 + NavMeshAgent.velocity.magnitude * 0.08f;
     }
-
     public bool MoveTo(Vector3 pos)
     {
         if (IsPathReachDestination(pos) == false) return false;
+        SetGoalPos(pos);
+        SetMoveType_MoveTo();
+        return _MoveTo();
+    }
 
+    private void SetGoalPos(Vector3 pos)
+    {
         GoalPos = pos;
-        NavMeshAgent.avoidancePriority = 50;
+    }
+
+    public bool _MoveTo()
+    {
         NavMeshAgent.SetDestination(GoalPos);
         NavMeshAgent.isStopped = false;
         Biology.PlayAnimation(uFantasy.Enum.State.Run);
         return true;
     }
-    public bool MoveTo(Vector3 pos, int avoidancePriority)
-    {
-        MoveTo(pos);
-        NavMeshAgent.avoidancePriority = avoidancePriority;
-        return true;
-    }
-
 
     internal void ReturnPost()
     {
-        if (NavMeshAgent.avoidancePriority == 50) return;
-        MoveTo(GoalPos, 80);
+        SetMoveType_ReturnPost();
+        _MoveTo();
     }
     private bool IsPathReachDestination(Vector3 GoalPos)
     {
@@ -90,5 +86,30 @@ public class BiologyMovement
         if (path.status == UnityEngine.AI.NavMeshPathStatus.PathPartial) return false;
 
         return true;
+    }
+
+    private void SetMoveType_MoveTo()
+    {
+        CurrentMoveType = MoveType.Run;
+        NavMeshAgent.avoidancePriority = 50;
+    }
+    private void SetMoveType_Stop()
+    {
+        CurrentMoveType = MoveType.Stop;
+        NavMeshAgent.avoidancePriority = 99;
+
+    }
+    private void SetMoveType_ReturnPost()
+    {
+        CurrentMoveType = MoveType.Back;
+        NavMeshAgent.avoidancePriority = 98;
+    }
+
+    internal void PriorityCompare(BiologyMovement otherMovement)
+    {
+        float myDist = Vector3.Distance(Biology.transform.position, NavMeshAgent.steeringTarget);
+        float otherDist = Vector3.Distance(otherMovement.Biology.transform.position, otherMovement.NavMeshAgent.steeringTarget);
+        if (otherDist > myDist) NavMeshAgent.avoidancePriority = otherMovement.NavMeshAgent.avoidancePriority - 1;
+        Debug.Log(Biology.name + "===" + NavMeshAgent.avoidancePriority);
     }
 }
