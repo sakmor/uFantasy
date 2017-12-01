@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class mainGame_Sam : MonoBehaviour
 {
-    public float ResolutionScale = 0.5f;
+    public float ResolutionScale = 0.5f, ButtonProcessTime;
     public SelectUnit SelectUnit;
     public Biology[] Biologys; //紀錄場景上所有的生物
     private DotLine DotLine;
@@ -30,10 +30,20 @@ public class mainGame_Sam : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-
         InputProcess();
-
+        ButtonProcess();
     }
+
+    private void ButtonProcess()
+    {
+        if (!Input.anyKey) { ButtonProcessTime = 1; }
+        ButtonProcessTime += Time.deltaTime * 2;
+        if (Input.GetKey("w")) Camera.main.GetComponent<CameraMovement>().OffsetCamTarget(Vector2.up, ButtonProcessTime * Time.deltaTime);
+        if (Input.GetKey("a")) Camera.main.GetComponent<CameraMovement>().OffsetCamTarget(Vector2.left, ButtonProcessTime * Time.deltaTime);
+        if (Input.GetKey("s")) Camera.main.GetComponent<CameraMovement>().OffsetCamTarget(Vector2.down, ButtonProcessTime * Time.deltaTime);
+        if (Input.GetKey("d")) Camera.main.GetComponent<CameraMovement>().OffsetCamTarget(Vector2.right, ButtonProcessTime * Time.deltaTime);
+    }
+
     private bool IsPointerOverUIObject()
     {
         PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);

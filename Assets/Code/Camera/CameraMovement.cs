@@ -57,24 +57,20 @@ public class CameraMovement : MonoBehaviour
         if (!target)
         {
             CamTarget = new GameObject("Cam Target");
+            Rigidbody Rigidbody = CamTarget.AddComponent<Rigidbody>();
+            Rigidbody.useGravity = false;
             CamTarget.transform.position = transform.position + (transform.forward * distance);
             initTargetPosition = CamTarget.transform.position;
             target = CamTarget.transform;
+            target.transform.rotation = transform.rotation;
         }
         doInit();
     }
     public void OffsetCamTarget(Vector3 offset, float sensitive)
     {
-        float x, y, z;
-        x = offset.x * transform.right.x * sensitive;
-        y = offset.y * transform.right.y * sensitive;
-        z = offset.z * transform.right.z * sensitive;
-        Vector3 OffsetRight = new Vector3(x, y, z);
-        x = offset.x * transform.up.x * sensitive;
-        y = offset.y * transform.up.y * sensitive;
-        z = offset.z * transform.up.z * sensitive;
-        Vector3 OffsetUp = new Vector3(x, y, z);
-        CamTarget.transform.localPosition += OffsetRight + OffsetUp;
+
+        target.Translate(Vector3.right * offset.x * sensitive);
+        target.Translate(transform.up * offset.y * sensitive, Space.World);
 
     }
 

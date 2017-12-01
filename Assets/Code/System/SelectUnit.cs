@@ -51,11 +51,11 @@ public class SelectUnit : MonoBehaviour
     }
     internal void InputHold()
     {
-        if (IsSelectOtherUI()) return;
+
     }
     internal void InputUp(Vector3 pos)
     {
-        SelectedMoveTo(pos);
+        SelectBiologyMoveTo(pos);
     }
 
     internal void InputDown()
@@ -65,6 +65,7 @@ public class SelectUnit : MonoBehaviour
     }
     internal void InputDrag()
     {
+        if (IsSelectOtherUI()) return;
         Show();
         DrawFrame();
         DrawBox();
@@ -99,10 +100,6 @@ public class SelectUnit : MonoBehaviour
     internal void SelectedMoveTo(Vector3 vector3)
     {
         if (SelectBiologys == null) return;
-        foreach (var item in SelectBiologys)
-        {
-            item.BiologyMovement.MoveTo(vector3);
-        }
     }
     private void SelectBoxInitialize()
     {
@@ -255,7 +252,7 @@ public class SelectUnit : MonoBehaviour
         SelectFrameRectTransform.sizeDelta = new Vector2(Mathf.Abs(Input.x - SelectFrameTransform.position.x), Mathf.Abs(SelectFrameTransform.position.y - Input.y));
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<Biology>() == null) return;
         if (other.GetComponent<Biology>().Type != uFantasy.Enum.BiologyType.Player) return;
@@ -263,7 +260,7 @@ public class SelectUnit : MonoBehaviour
         Biology b = other.GetComponent<Biology>();
         _SelectBiologysAdd(b);
     }
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
 
         if (other.GetComponent<Biology>() == null) return;
@@ -277,7 +274,7 @@ public class SelectUnit : MonoBehaviour
         HighlightsFX.AddRenderers(SelectBiologysRenderer);
     }
 
-    void _SelectBiologysAdd(Biology b)
+    private void _SelectBiologysAdd(Biology b)
     {
         Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
         SelectBiologysRenderer.Add(r);
@@ -294,17 +291,67 @@ public class SelectUnit : MonoBehaviour
 
     void SelectBiologysShowCircleLine()
     {
+        if (SelectBiologys == null) return;
         foreach (var b in SelectBiologys)
         {
             b.CircleLine.Show();
         }
     }
-    void SelectBiologysHideCircleLine()
+    private void SelectBiologysHideCircleLine()
     {
         if (SelectBiologys == null) return;
         foreach (var b in SelectBiologys)
         {
             b.CircleLine.Hide();
+        }
+    }
+
+    private Vector3 GetSelectBiologysCenter()
+    {
+        float x = 0, y = 0, z = 0;
+        float count = SelectBiologys.Count;
+        for (int i = 0; i < SelectBiologys.Count; i++)
+        {
+            Biology b = SelectBiologys[i];
+            x += b.transform.position.x;
+            y += b.transform.position.y;
+            z += b.transform.position.z;
+        }
+        x /= count; y /= count; z /= count;
+        return new Vector3(x, y, z);
+    }
+
+    private Vector3[] GetSelectBiologysToCenters()
+    {
+        Vector3 center = GetSelectBiologysCenter();
+        Vector3[] BiologysToCenters = new Vector3[SelectBiologys.Count];
+        for (int i = 0; i < SelectBiologys.Count; i++)
+        {
+            Biology b = SelectBiologys[i];
+            BiologysToCenters[i] = b.transform.position - center;
+        }
+        return BiologysToCenters;
+    }
+
+    private Vector3[] GetSelectBiologyGoal(Vector3 inputPos)
+    {
+        Vector3[] SelectBiologyGoal = new Vector3[SelectBiologys.Count]; ;
+        Vector3[] BiologysToCenters = GetSelectBiologysToCenters();
+        for (int i = 0; i < SelectBiologys.Count; i++)
+        {
+            SelectBiologyGoal[i] = BiologysToCenters[i] + inputPos;
+        }
+        return SelectBiologyGoal;
+    }
+
+    private void SelectBiologyMoveTo(Vector3 inputPos)
+    {
+        if (SelectBiologys == null) return;
+        Vector3[] SelectBiologyGoal = GetSelectBiologyGoal(inputPos);
+        for (int i = 0; i < SelectBiologys.Count; i++)
+        {
+            Vector3 goal = SelectBiologyGoal[i];
+            SelectBiologys[i].BiologyMovement.MoveTo(goal);
         }
     }
 }
