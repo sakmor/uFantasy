@@ -53,10 +53,10 @@ public class SelectUnit : MonoBehaviour
     {
         if (IsSelectOtherUI()) return;
     }
-    internal void InputUp()
+    internal void InputUp(Vector3 pos)
     {
+        SelectedMoveTo(pos);
     }
-
 
     internal void InputDown()
     {
@@ -65,12 +65,17 @@ public class SelectUnit : MonoBehaviour
     }
     internal void InputDrag()
     {
-        SelectBiologysHideCircleLine();
-        SelectBiologysClear();
         Show();
         DrawFrame();
         DrawBox();
     }
+
+    private void ClearLastSelectBiology()
+    {
+        SelectBiologysHideCircleLine();
+        SelectBiologysClear();
+    }
+
     internal void InputDragUp()
     {
         SelectBiologysUpdate();
@@ -82,6 +87,7 @@ public class SelectUnit : MonoBehaviour
 
     private void SelectBiologysUpdate()
     {
+        if (_SelectBiologys.Count == 0) return;
         SelectBiologys = new List<Biology>(_SelectBiologys);
     }
     private void SelectBiologysClear()
@@ -253,6 +259,7 @@ public class SelectUnit : MonoBehaviour
     {
         if (other.GetComponent<Biology>() == null) return;
         if (other.GetComponent<Biology>().Type != uFantasy.Enum.BiologyType.Player) return;
+        ClearLastSelectBiology();
         Biology b = other.GetComponent<Biology>();
         _SelectBiologysAdd(b);
     }

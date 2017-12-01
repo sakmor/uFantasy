@@ -110,10 +110,9 @@ public class mainGame_Sam : MonoBehaviour
     }
     private void InputUp()
     {
-        if (CurrentInputState != InputState.Up && IsDrag == false) return;
+        if (CurrentInputState != InputState.Up || IsDrag || false) return;
 
-        SelectUnit.InputUp();
-        SelectUnit.SelectedMoveTo(GetRayCastHitPos());
+        SelectUnit.InputUp(GetRayCastHitPos());
         DotLine.DrawLineStop();
     }
     private void InputHold()
