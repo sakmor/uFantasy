@@ -36,7 +36,7 @@ public class mainGame_Sam : MonoBehaviour
 
     private void ButtonProcess()
     {
-        if (!Input.anyKey) { ButtonProcessTime = 1; }
+        if (!Input.anyKey) { ButtonProcessTime = 1; return; }
         ButtonProcessTime += Time.deltaTime * 2;
         if (Input.GetKey("w")) Camera.main.GetComponent<CameraMovement>().OffsetCamTarget(Vector2.up, ButtonProcessTime * Time.deltaTime);
         if (Input.GetKey("a")) Camera.main.GetComponent<CameraMovement>().OffsetCamTarget(Vector2.left, ButtonProcessTime * Time.deltaTime);
@@ -129,13 +129,11 @@ public class mainGame_Sam : MonoBehaviour
     {
         if (CurrentInputState != InputState.Hold && IsDrag == true) return;
         SelectUnit.InputHold();
-
     }
 
 
-    Vector3 GetRayCastHitPos()
+    private Vector3 GetRayCastHitPos()
     {
-
         //由攝影機產生一條射線
         Ray ray = Camera.main.ScreenPointToRay(InputPos);
         RaycastHit[] hits = Physics.RaycastAll(ray);
@@ -144,7 +142,6 @@ public class mainGame_Sam : MonoBehaviour
         {
             return item.point;
         }
-
         return Vector3.negativeInfinity;
     }
 

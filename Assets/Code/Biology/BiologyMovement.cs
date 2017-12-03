@@ -57,8 +57,19 @@ public class BiologyMovement
     {
         if (IsPathReachDestination(pos) == false) return false;
         SetGoalPos(pos);
+        SetGoalPosHitGround();
         SetMoveType_MoveTo();
         return _MoveTo();
+    }
+
+    private void SetGoalPosHitGround()
+    {
+        float x, y, z;
+        x = GoalPos.x; y = GoalPos.y + 1; z = GoalPos.z;
+        Vector3 origin = new Vector3(x, y, z);
+        RaycastHit hit;
+        Physics.Raycast(origin, Vector3.down, out hit);
+        SetGoalPos(hit.point);
     }
 
     private void SetGoalPos(Vector3 pos)
@@ -82,7 +93,7 @@ public class BiologyMovement
     private bool IsPathReachDestination(Vector3 GoalPos)
     {
         UnityEngine.AI.NavMeshPath path = new UnityEngine.AI.NavMeshPath();
-        NavMeshAgent.CalculatePath(GoalPos, path);
+        // NavMeshAgent.CalculatePath(GoalPos, path);
         if (path.status == UnityEngine.AI.NavMeshPathStatus.PathPartial) return false;
 
         return true;
