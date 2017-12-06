@@ -9,6 +9,7 @@ public class SelectUnit : MonoBehaviour
 {
     private Vector2 Input;
     public Image SelectFrameImage { get; private set; }
+    public Transform TouchDownCursor;
     private RectTransform SelectFrameRectTransform;
     private Mesh SelectBoxMesh;
     private Transform SelectBoxTransform, SelectFrameTransform;
@@ -55,18 +56,19 @@ public class SelectUnit : MonoBehaviour
     }
     internal void InputUp(Vector3 pos)
     {
-        Transform hitTransform = GetHitTransform();
-        if (hitTransform.tag == "Terrain") SelectBiologyMoveTo(pos);
-        if (hitTransform.tag == "Player") SetSingleBiologySelected(hitTransform.GetComponent<Biology>());
+        RaycastHit hit = GetHitTransform();
+        if (hit.transform == null) return;
+        if (hit.transform.tag == "Terrain") { TouchDownCursor.position = hit.point; SelectBiologyMoveTo(pos); }
+        if (hit.transform.tag == "Player") SetSingleBiologySelected(hit.transform.GetComponent<Biology>());
     }
 
 
-    private Transform GetHitTransform()
+    private RaycastHit GetHitTransform()
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input);
         Physics.Raycast(ray, out hit, 100.0f);
-        return hit.transform;
+        return hit;
     }
 
     private void SetSingleBiologySelected(Biology biology)
@@ -117,10 +119,6 @@ public class SelectUnit : MonoBehaviour
         SelectBiologys.Clear();
     }
 
-    internal void SelectedMoveTo(Vector3 vector3)
-    {
-        if (SelectBiologys == null) return;
-    }
     private void SelectBoxInitialize()
     {
         PerspectiveInitialize();
