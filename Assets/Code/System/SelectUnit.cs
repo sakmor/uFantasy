@@ -55,7 +55,27 @@ public class SelectUnit : MonoBehaviour
     }
     internal void InputUp(Vector3 pos)
     {
-        SelectBiologyMoveTo(pos);
+        Transform hitTransform = GetHitTransform();
+        if (hitTransform.tag == "Terrain") SelectBiologyMoveTo(pos);
+        if (hitTransform.tag == "Player") SetSingleBiologySelected(hitTransform.GetComponent<Biology>());
+    }
+
+
+    private Transform GetHitTransform()
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input);
+        Physics.Raycast(ray, out hit, 100.0f);
+        return hit.transform;
+    }
+
+    private void SetSingleBiologySelected(Biology biology)
+    {
+        if (SelectBiologys == null) SelectBiologys = new List<Biology>();
+        SelectBiologysHideCircleLine();
+        SelectBiologys.Clear();
+        SelectBiologys.Add(biology);
+        biology.CircleLine.Show();
     }
 
     internal void InputDown()

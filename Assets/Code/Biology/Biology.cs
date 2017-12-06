@@ -87,10 +87,20 @@ public class Biology : MonoBehaviour
         SetBiologyWeaponModel();
         SetBiologyAnimator();
         SetBiologyAI();
+        SetGameObjectTag();
         Rename();
         // AddShadow();
         SetBiologyMovement();
         SetBiologyAttr();
+
+    }
+
+    private void SetGameObjectTag()
+    {
+        if (Type == uFantasy.Enum.BiologyType.Player) { tag = "Player"; return; }
+        if (Type == uFantasy.Enum.BiologyType.Elite) { tag = "Enemy"; return; }
+        if (Type == uFantasy.Enum.BiologyType.Monster) { tag = "Enemy"; return; }
+        if (Type == uFantasy.Enum.BiologyType.Boss) { tag = "Enemy"; return; }
 
     }
 

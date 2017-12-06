@@ -44,6 +44,7 @@ public class CircleLine : MonoBehaviour
     private LineRenderer _line;
     private Renderer rend;
     private float lastBlinkTime;
+    private bool isShow;
 
     void Start()
     {
@@ -93,6 +94,8 @@ public class CircleLine : MonoBehaviour
 
     void Update()
     {
+        if (isShow == false) return;
+
         transform.Rotate(Vector3.up * 300 * Time.deltaTime, Space.World);
         if (_checkValuesChanged)
         {
@@ -161,10 +164,10 @@ public class CircleLine : MonoBehaviour
     }
     public void Hide()
     {
-        _line.enabled = false;
+        _line.enabled = isShow = false;
     }
     public void Show()
     {
-        _line.enabled = true;
+        _line.enabled = isShow = true;
     }
 }

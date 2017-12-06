@@ -53,6 +53,9 @@ public class BiologyAI_Action
 
         //如果自己動作不能(石化、混亂...)則回傳false
 
+        //朝目標前進
+        Biology.BiologyMovement.MoveTo(Target.transform.position);
+
         //fixme:測試用
         if (current < 1f) { current += Time.deltaTime; return true; }
         current = 0;
