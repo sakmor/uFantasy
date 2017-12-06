@@ -10,6 +10,7 @@ public class SelectUnit : MonoBehaviour
     private Vector2 Input;
     public Image SelectFrameImage { get; private set; }
     public Transform TouchDownCursor;
+    private Animator TouchDownCursorAnimatior;
     private RectTransform SelectFrameRectTransform;
     private Mesh SelectBoxMesh;
     private Transform SelectBoxTransform, SelectFrameTransform;
@@ -20,10 +21,8 @@ public class SelectUnit : MonoBehaviour
     public visualJoyStick visualJoyStick;
     public Canvas Canvas;
     private HighlightsFX HighlightsFX;
-
     private List<Biology> SelectBiologys;
     private List<Biology> _SelectBiologys = new List<Biology>();
-
     private List<Renderer> SelectBiologysRenderer = new List<Renderer>();
 
     // Use this for initialization
@@ -31,6 +30,7 @@ public class SelectUnit : MonoBehaviour
     {
         SelectBoxTransform = transform.Find("SelectBox");
         HighlightsFX = Camera.main.GetComponent<HighlightsFX>();
+        TouchDownCursorAnimatior = TouchDownCursor.Find("Model").GetComponent<Animator>();
         SelectBoxInitialize();
         SelectFrameInitialize();
     }
@@ -58,10 +58,16 @@ public class SelectUnit : MonoBehaviour
     {
         RaycastHit hit = GetHitTransform();
         if (hit.transform == null) return;
-        if (hit.transform.tag == "Terrain") { TouchDownCursor.position = hit.point; SelectBiologyMoveTo(pos); }
+        if (hit.transform.tag == "Terrain") TerrainHit(pos, hit);
         if (hit.transform.tag == "Player") SetSingleBiologySelected(hit.transform.GetComponent<Biology>());
     }
 
+    private void TerrainHit(Vector3 pos, RaycastHit hit)
+    {
+        TouchDownCursor.position = hit.point;
+        TouchDownCursorAnimatior.Play("Play", 0, 0);
+        SelectBiologyMoveTo(pos);
+    }
 
     private RaycastHit GetHitTransform()
     {
