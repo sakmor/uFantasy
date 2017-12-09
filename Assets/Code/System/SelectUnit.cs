@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 public class SelectUnit : MonoBehaviour
 {
-    private Vector2 Input;
+    private mainGame_Sam mainGame;
+    private Vector2 Input { get { return mainGame.GetInputPos(); } set { } }
     public Image SelectFrameImage { get; private set; }
     public Transform TouchDownCursor;
     private Animator TouchDownCursorAnimatior;
@@ -24,13 +25,19 @@ public class SelectUnit : MonoBehaviour
     private List<Biology> SelectBiologys;
     private List<Biology> _SelectBiologys = new List<Biology>();
     private List<Renderer> SelectBiologysRenderer = new List<Renderer>();
+    private float Depth;
+    private Toggle DragModelToggle;
+    public bool IsDragModel;
 
     // Use this for initialization
     void Start()
     {
+        mainGame = GameObject.Find("mainGame").GetComponent<mainGame_Sam>(); //fixme:應該減少使用GameObject.find
         SelectBoxTransform = transform.Find("SelectBox");
         HighlightsFX = Camera.main.GetComponent<HighlightsFX>();
         TouchDownCursorAnimatior = TouchDownCursor.Find("Model").GetComponent<Animator>();
+        Depth = Camera.main.farClipPlane;
+        IsDragModel = false;
         SelectBoxInitialize();
         SelectFrameInitialize();
     }
@@ -42,10 +49,6 @@ public class SelectUnit : MonoBehaviour
         SelectFrameImage = SelectFrameTransform.GetComponent<UnityEngine.UI.Image>();
         SelectFrameRectTransform = SelectFrameTransform.GetComponent<RectTransform>();
     }
-    internal void SetInputPos(Vector2 pos)
-    {
-        Input = pos;
-    }
     internal void InputNone()
     {
 
@@ -56,24 +59,63 @@ public class SelectUnit : MonoBehaviour
     }
     internal void InputUp(Vector3 pos)
     {
+        if (IsSelectOtherUI()) return;
+        if (SelectBiologys == null || SelectBiologys.Count == 0) return;
+        SelectBioOrMoveBio(pos);
+        SetDragModelOff();
+    }
+
+    private void SelectBioOrMoveBio(Vector3 pos)
+    {
         RaycastHit hit = GetHitTransform();
+        if (IsDragModel == true) return;
         if (hit.transform == null) return;
         if (hit.transform.tag == "Terrain") TerrainHit(pos, hit);
         if (hit.transform.tag == "Player") SetSingleBiologySelected(hit.transform.GetComponent<Biology>());
     }
 
+    internal void InputDown()
+    {
+        if (IsSelectOtherUI()) return;
+        SelectFrameTransform.position = Input;
+    }
+    internal void InputDrag()
+    {
+        if (IsSelectOtherUI()) return;
+        if (IsDragModel == true) DrawFrameStart();
+        if (IsDragModel == false) DragCameraMovement();
+    }
+    internal void InputDragUp(Vector3 pos)
+    {
+        SelectBiologysUpdate();
+        SelectBiologysShowCircleLine();
+        DrawBoxInitialize();
+        Rest();
+        Hide();
+        SetDragModelOff();
+    }
+    private void DragCameraMovement()
+    {
+        Camera.main.transform.GetComponent<CameraMovement>().DragCameraMovement(Input);
+    }
+
+    private void DrawFrameStart()
+    {
+        Show();
+        DrawFrame();
+        DrawBox();
+    }
     private void TerrainHit(Vector3 pos, RaycastHit hit)
     {
         TouchDownCursor.position = hit.point;
-        TouchDownCursorAnimatior.Play("Play", 0, 0);
+        TouchDownCursorAnimatior.Play("Show", 0, 0);
         SelectBiologyMoveTo(pos);
     }
-
     private RaycastHit GetHitTransform()
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input);
-        Physics.Raycast(ray, out hit, 100.0f);
+        Physics.Raycast(ray, out hit, Depth);
         return hit;
     }
 
@@ -86,34 +128,12 @@ public class SelectUnit : MonoBehaviour
         biology.CircleLine.Show();
     }
 
-    internal void InputDown()
-    {
-        if (IsSelectOtherUI()) return;
-        SelectFrameTransform.position = Input;
-    }
-    internal void InputDrag()
-    {
-        if (IsSelectOtherUI()) return;
-        Show();
-        DrawFrame();
-        DrawBox();
-    }
 
     private void ClearLastSelectBiology()
     {
         SelectBiologysHideCircleLine();
         SelectBiologysClear();
     }
-
-    internal void InputDragUp()
-    {
-        SelectBiologysUpdate();
-        SelectBiologysShowCircleLine();
-        DrawBoxInitialize();
-        Rest();
-        Hide();
-    }
-
     private void SelectBiologysUpdate()
     {
         if (_SelectBiologys.Count == 0) return;
@@ -218,18 +238,18 @@ public class SelectUnit : MonoBehaviour
         Ray eRay = Camera.main.ScreenPointToRay(Input);
 
         SelectBoxVerts[0] = SelectBoxVerts[8] = SelectBoxVerts[23] = SelectBoxTransform.InverseTransformPoint(sRay.origin);
-        SelectBoxVerts[3] = SelectBoxVerts[9] = SelectBoxVerts[12] = SelectBoxTransform.InverseTransformPoint(sRay.origin + sRay.direction * 100);
+        SelectBoxVerts[3] = SelectBoxVerts[9] = SelectBoxVerts[12] = SelectBoxTransform.InverseTransformPoint(sRay.origin + sRay.direction * Depth);
 
         SelectBoxVerts[7] = SelectBoxVerts[18] = SelectBoxVerts[21] = SelectBoxTransform.InverseTransformPoint(eRay.origin);
-        SelectBoxVerts[6] = SelectBoxVerts[14] = SelectBoxVerts[19] = SelectBoxTransform.InverseTransformPoint(eRay.origin + eRay.direction * 100);
+        SelectBoxVerts[6] = SelectBoxVerts[14] = SelectBoxVerts[19] = SelectBoxTransform.InverseTransformPoint(eRay.origin + eRay.direction * Depth);
 
         Ray tRay1 = Camera.main.ScreenPointToRay(new Vector3(SelectFrameTransform.position.x, Input.y, SelectFrameTransform.position.z));
         SelectBoxVerts[1] = SelectBoxVerts[17] = SelectBoxVerts[22] = SelectBoxTransform.InverseTransformPoint(tRay1.origin);
-        SelectBoxVerts[2] = SelectBoxVerts[13] = SelectBoxVerts[16] = SelectBoxTransform.InverseTransformPoint(tRay1.origin + tRay1.direction * 100);
+        SelectBoxVerts[2] = SelectBoxVerts[13] = SelectBoxVerts[16] = SelectBoxTransform.InverseTransformPoint(tRay1.origin + tRay1.direction * Depth);
 
         Ray tRay2 = Camera.main.ScreenPointToRay(new Vector3(Input.x, SelectFrameTransform.position.y, SelectFrameTransform.position.z));
         SelectBoxVerts[4] = SelectBoxVerts[11] = SelectBoxVerts[20] = SelectBoxTransform.InverseTransformPoint(tRay2.origin);
-        SelectBoxVerts[5] = SelectBoxVerts[10] = SelectBoxVerts[15] = SelectBoxTransform.InverseTransformPoint(tRay2.origin + tRay2.direction * 100);
+        SelectBoxVerts[5] = SelectBoxVerts[10] = SelectBoxVerts[15] = SelectBoxTransform.InverseTransformPoint(tRay2.origin + tRay2.direction * Depth);
         SelectBoxMesh.vertices = SelectBoxVerts;
     }
     private bool IsTinyDrawRange()
@@ -240,11 +260,27 @@ public class SelectUnit : MonoBehaviour
     }
     private bool IsSelectOtherUI()
     {
-        if (EventSystem.current.currentSelectedGameObject == visualJoyStick.gameObject)
+        if (EventSystem.current.currentSelectedGameObject)
         {
             return true;
         }
         return false;
+    }
+
+    public void AllPlayerSelected()
+    {
+        if (SelectBiologys == null) SelectBiologys = new List<Biology>();
+        SelectBiologysHideCircleLine();
+        SelectBiologys.Clear();
+        var AllBiologys = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (var b in AllBiologys)
+        {
+            Biology biology = b.GetComponent<Biology>();
+            if (biology.Type != uFantasy.Enum.BiologyType.Player) continue;
+            SelectBiologys.Add(biology);
+            biology.CircleLine.Show();
+        }
     }
 
     private void Rest()
@@ -378,4 +414,16 @@ public class SelectUnit : MonoBehaviour
             SelectBiologys[i].BiologyMovement.MoveTo(goal);
         }
     }
+    public void DragModelChange(Toggle t)
+    {
+        DragModelToggle = t;
+        IsDragModel = t.isOn;
+    }
+
+    public void SetDragModelOff()
+    {
+        IsDragModel = false;
+        if (DragModelToggle) DragModelToggle.isOn = false;
+    }
+
 }

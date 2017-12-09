@@ -13,6 +13,7 @@ public class mainGame_Sam : MonoBehaviour
     private enum InputState { Down, Hold, Up, None }
     private mainGame_Sam.InputState CurrentInputState, LastInputState;
     public bool IsDrag;
+    private float DragDist = 30;
 
     private Vector3 InputPos, _InputPos;
 
@@ -56,7 +57,6 @@ public class mainGame_Sam : MonoBehaviour
     private void InputProcess()
     {
         InputPosUpdate();
-        SetSelectUnitInputPos();
         DragStateUpdate();
         InputStateUpdate();
 
@@ -68,15 +68,15 @@ public class mainGame_Sam : MonoBehaviour
         InputDown();
     }
 
-    private void SetSelectUnitInputPos()
+    public Vector3 GetInputPos()
     {
-        SelectUnit.SetInputPos(InputPos);
+        return InputPos;
     }
 
     private void InputDragUp()
     {
         if (CurrentInputState != InputState.Up || IsDrag == false) return;
-        SelectUnit.InputDragUp();
+        SelectUnit.InputDragUp(GetRayCastHitPos());
     }
 
     private void InputDrag()
@@ -89,7 +89,7 @@ public class mainGame_Sam : MonoBehaviour
     {
         if (CurrentInputState == InputState.Down) _InputPos = InputPos;
         if (CurrentInputState == InputState.Up) IsDrag = false;
-        if (CurrentInputState == InputState.Hold && InputPos != _InputPos) IsDrag = true;
+        if (CurrentInputState == InputState.Hold && Vector3.Distance(InputPos, _InputPos) > DragDist) IsDrag = true;
     }
 
     private void InputStateUpdate()

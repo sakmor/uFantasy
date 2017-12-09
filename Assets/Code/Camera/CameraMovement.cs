@@ -27,7 +27,7 @@ public class CameraMovement : MonoBehaviour
     public int yMinLimit = -80;
     public int yMaxLimit = 80;
     public int zoomRate = 40;
-    public float panSpeed = 0.3f;
+    public float panSpeed = 1111f;
     public float zoomDampening = 5.0f;
 
     private float xDeg = 0.0f;
@@ -158,5 +158,12 @@ public class CameraMovement : MonoBehaviour
         if (angle > 360)
             angle -= 360;
         return Mathf.Clamp(angle, min, max);
+    }
+
+    public void DragCameraMovement(Vector2 InputOffset)
+    {
+        target.rotation = transform.rotation;
+        target.Translate(Vector3.right * -Input.GetAxis("Mouse X") * panSpeed); //fixme：串到一半
+        target.Translate(transform.up * -Input.GetAxis("Mouse Y") * panSpeed, Space.World);//fixme：串到一半
     }
 }

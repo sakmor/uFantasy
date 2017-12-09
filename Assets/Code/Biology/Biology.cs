@@ -9,7 +9,6 @@ using UnityEngine;
 
 public class Biology : MonoBehaviour
 {
-
     [Header("生物編號")] public string BiologyNum = null;
     [Header("生物名稱")] private string Nname;
     [Header("生物名稱")] private string Name;
@@ -24,7 +23,7 @@ public class Biology : MonoBehaviour
     private GameObject _model, Shadow; //fixme:這個有點壞設計
     private BezierLine BezierLine;
     internal Animator Animator;
-    public BiologyMovement BiologyMovement;
+    internal BiologyMovement BiologyMovement;
     internal BiologyAttr BiologyAttr;
     internal BiologyAI BiologyAI;
     internal Biology[] Biologys;
@@ -366,6 +365,5 @@ public class Biology : MonoBehaviour
         if (BiologyMovement.CurrentMoveType != BiologyMovement.MoveType.Back) return;
         BiologyMovement otherMovement = other.transform.GetComponent<Biology>().BiologyMovement;
         if (BiologyMovement.GetSteeringTargetDist() <= otherMovement.GetSteeringTargetDist()) BiologyMovement.Stop();
-
     }
 }
