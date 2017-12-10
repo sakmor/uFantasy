@@ -12,6 +12,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System;
 
 [AddComponentMenu("Camera-Control/3dsMax Camera Style")]
 
@@ -29,7 +30,7 @@ public class CameraMovement : MonoBehaviour
     public int zoomRate = 40;
     public float panSpeed = 1111f;
     public float zoomDampening = 5.0f;
-
+    private Vector3 DragStartPos;
     private float xDeg = 0.0f;
     private float yDeg = 0.0f;
     private float currentDistance;
@@ -43,7 +44,7 @@ public class CameraMovement : MonoBehaviour
     private Vector3 initTargetPosition;
     private GameObject CamTarget;
     private int mouseButton = 0; // Left button
-
+    Vector2 _Input;
 
     void Start() { Init(); }
 
@@ -88,6 +89,11 @@ public class CameraMovement : MonoBehaviour
 
         xDeg = Vector3.Angle(Vector3.right, transform.right);
         yDeg = Vector3.Angle(Vector3.up, transform.up);
+    }
+
+    public void SetDragStartPos()
+    {
+        DragStartPos = target.position;
     }
 
     /*
@@ -160,10 +166,14 @@ public class CameraMovement : MonoBehaviour
         return Mathf.Clamp(angle, min, max);
     }
 
-    public void DragCameraMovement(Vector2 InputOffset)
+    public void CameraMovementDrag(Vector3 Input)
     {
-        target.rotation = transform.rotation;
-        target.Translate(Vector3.right * -Input.GetAxis("Mouse X") * panSpeed); //fixme：串到一半
-        target.Translate(transform.up * -Input.GetAxis("Mouse Y") * panSpeed, Space.World);//fixme：串到一半
+        Vector2 newTouchPosition = Input;
+        target.position += target.TransformDirection((Vector3)((_Input - newTouchPosition) * Camera.main.orthographicSize / Camera.main.pixelHeight * 2f));
+        _Input = newTouchPosition;
+    }
+    public void CameraMovementInit(Vector3 Input)
+    {
+        _Input = Input;
     }
 }

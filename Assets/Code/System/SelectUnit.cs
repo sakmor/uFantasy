@@ -8,8 +8,8 @@ using UnityEngine.UI;
 public class SelectUnit : MonoBehaviour
 {
     private mainGame_Sam mainGame;
-    private Vector2 Input { get { return mainGame.GetInputPos(); } set { } }
     public Image SelectFrameImage { get; private set; }
+    private Vector2 Input { get { return mainGame.GetInputPos(); } set { } }
     public Transform TouchDownCursor;
     private Animator TouchDownCursorAnimatior;
     private RectTransform SelectFrameRectTransform;
@@ -28,10 +28,12 @@ public class SelectUnit : MonoBehaviour
     private float Depth;
     private Toggle DragModelToggle;
     public bool IsDragModel;
+    private CameraMovement CameraMovement;
 
     // Use this for initialization
     void Start()
     {
+        CameraMovement = Camera.main.GetComponent<CameraMovement>();
         mainGame = GameObject.Find("mainGame").GetComponent<mainGame_Sam>(); //fixme:應該減少使用GameObject.find
         SelectBoxTransform = transform.Find("SelectBox");
         HighlightsFX = Camera.main.GetComponent<HighlightsFX>();
@@ -78,6 +80,7 @@ public class SelectUnit : MonoBehaviour
     {
         if (IsSelectOtherUI()) return;
         SelectFrameTransform.position = Input;
+        CameraMovement.CameraMovementInit(Input);
     }
     internal void InputDrag()
     {
@@ -96,7 +99,7 @@ public class SelectUnit : MonoBehaviour
     }
     private void DragCameraMovement()
     {
-        Camera.main.transform.GetComponent<CameraMovement>().DragCameraMovement(Input);
+        CameraMovement.CameraMovementDrag(Input);
     }
 
     private void DrawFrameStart()
