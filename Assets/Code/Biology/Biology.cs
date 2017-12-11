@@ -30,6 +30,7 @@ public class Biology : MonoBehaviour
     internal HpUI HpUI;
     internal CircleLine CircleLine;
     public Biology Target;
+    private GameObject MovtoProjector;
 
     [SerializeField] public uFantasy.Enum.State State;
 
@@ -87,11 +88,42 @@ public class Biology : MonoBehaviour
         SetBiologyAnimator();
         SetBiologyAI();
         SetGameObjectTag();
+        SetModelIgnoreProjectorFX();
         Rename();
+        AddMovetoProjector();
         // AddShadow();
         SetBiologyMovement();
         SetBiologyAttr();
 
+    }
+
+    private void AddMovetoProjector()
+    {
+        MovtoProjector = Instantiate(Resources.Load("Prefab/MovetoProjector", typeof(GameObject)) as GameObject);
+        MovtoProjector.name = "MovetoProjector";
+        DeactivateMovetoProjector();
+    }
+    internal void HideMovetoProjector()
+    {
+        MovtoProjector.GetComponent<Animator>().SetTrigger("Hide"); ;
+    }
+    internal void ActiveMovetoProjector()
+    {
+        MovtoProjector.GetComponent<Animator>().Play("Show");
+        MovtoProjector.SetActive(true);
+    }
+    internal void DeactivateMovetoProjector()
+    {
+        MovtoProjector.SetActive(false);
+    }
+    internal void SetMovetoProjectorPos(Vector3 pos)
+    {
+        MovtoProjector.transform.position = pos;
+    }
+
+    private void SetModelIgnoreProjectorFX()
+    {
+        transform.Find("Model/Model").gameObject.layer = 8;
     }
 
     private void SetGameObjectTag()
@@ -350,7 +382,7 @@ public class Biology : MonoBehaviour
     {
         if (other.transform.GetComponent<Biology>().BiologyMovement.CurrentMoveType != BiologyMovement.MoveType.Run) return;
         if (BiologyMovement.CurrentMoveType != BiologyMovement.MoveType.Stop) return;
-        BiologyMovement.ReturnPost();
+        BiologyMovement.ReturnPostMoveto();
     }
     private void BackHitStop(Collider other)
     {

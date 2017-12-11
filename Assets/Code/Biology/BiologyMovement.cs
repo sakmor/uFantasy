@@ -23,6 +23,7 @@ public class BiologyMovement
         NavMeshAgent.stoppingDistance = Closest;
         NavMeshAgent.speed = Biology.Speed;
         Stop();
+
     }
     public void Stop()
     {
@@ -30,6 +31,7 @@ public class BiologyMovement
         NavMeshAgent.isStopped = true;
         Biology.PlayAnimation(uFantasy.Enum.State.Battle);
         SetMoveType_Stop();
+        Biology.HideMovetoProjector();
     }
 
     public void Update()
@@ -53,15 +55,29 @@ public class BiologyMovement
     {
         Biology.Animator.speed = 1 + NavMeshAgent.velocity.magnitude * 0.08f;
     }
-    public bool MoveTo(Vector3 pos)
+
+    //使用者叫生物移動
+    public bool InputMoveto(Vector3 pos)
     {
         if (IsPathReachDestination(pos) == false) return false;
         SetGoalPos(pos);
         SetGoalPosHitGround();
         SetMoveType_MoveTo();
-        return _MoveTo();
+        Biology.ActiveMovetoProjector();
+        Biology.SetMovetoProjectorPos(pos);
+        return MoveTo();
     }
 
+    //生物的AI:Action叫生物移動
+    public bool ActionMoveto(Vector3 pos)
+    {
+        if (IsPathReachDestination(pos) == false) return false;
+        InputMoveto(pos);
+        Biology.DeactivateMovetoProjector();
+        return MoveTo();
+    }
+
+    //生物的AI:Action叫生物移動
     private void SetGoalPosHitGround()
     {
         float x, y, z;
@@ -70,14 +86,22 @@ public class BiologyMovement
         RaycastHit hit;
         Physics.Raycast(origin, Vector3.down, out hit);
         SetGoalPos(hit.point);
+        Biology.DeactivateMovetoProjector();
     }
 
+    //生物被撞開返回原始位置
+    internal void ReturnPostMoveto()
+    {
+        Biology.DeactivateMovetoProjector();
+        SetMoveType_ReturnPost();
+        MoveTo();
+    }
     private void SetGoalPos(Vector3 pos)
     {
         GoalPos = pos;
     }
 
-    public bool _MoveTo()
+    public bool MoveTo()
     {
         NavMeshAgent.SetDestination(GoalPos);
         NavMeshAgent.isStopped = false;
@@ -85,11 +109,6 @@ public class BiologyMovement
         return true;
     }
 
-    internal void ReturnPost()
-    {
-        SetMoveType_ReturnPost();
-        _MoveTo();
-    }
     private bool IsPathReachDestination(Vector3 GoalPos)
     {
         UnityEngine.AI.NavMeshPath path = new UnityEngine.AI.NavMeshPath();

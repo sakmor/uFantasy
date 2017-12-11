@@ -10,7 +10,6 @@ public class SelectUnit : MonoBehaviour
     private mainGame_Sam mainGame;
     public Image SelectFrameImage { get; private set; }
     private Vector2 Input { get { return mainGame.GetInputPos(); } set { } }
-    public Transform TouchDownCursor;
     private Animator TouchDownCursorAnimatior;
     private RectTransform SelectFrameRectTransform;
     private Mesh SelectBoxMesh;
@@ -37,7 +36,6 @@ public class SelectUnit : MonoBehaviour
         mainGame = GameObject.Find("mainGame").GetComponent<mainGame_Sam>(); //fixme:應該減少使用GameObject.find
         SelectBoxTransform = transform.Find("SelectBox");
         HighlightsFX = Camera.main.GetComponent<HighlightsFX>();
-        TouchDownCursorAnimatior = TouchDownCursor.Find("Model").GetComponent<Animator>();
         Depth = Camera.main.farClipPlane;
         IsDragModel = false;
         SelectBoxInitialize();
@@ -109,8 +107,6 @@ public class SelectUnit : MonoBehaviour
     }
     private void TerrainHit(Vector3 pos, RaycastHit hit)
     {
-        TouchDownCursor.position = hit.point;
-        TouchDownCursorAnimatior.Play("Show", 0, 0);
         SelectBiologyMoveTo(pos);
     }
     private RaycastHit GetHitTransform()
@@ -413,7 +409,7 @@ public class SelectUnit : MonoBehaviour
         for (int i = 0; i < SelectBiologys.Count; i++)
         {
             Vector3 goal = SelectBiologyGoal[i];
-            SelectBiologys[i].BiologyMovement.MoveTo(goal);
+            SelectBiologys[i].BiologyMovement.InputMoveto(goal);
         }
     }
     public void DragModelChange(Toggle t)
