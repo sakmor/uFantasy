@@ -62,7 +62,6 @@ public class SelectUnit : MonoBehaviour
     internal void InputUp(Vector3 pos)
     {
         if (IsSelectOtherUI()) return;
-        if (SelectBiologys == null || SelectBiologys.Count == 0) return;
         SelectBioOrMoveBio(pos);
         SetDragModelOff();
     }
