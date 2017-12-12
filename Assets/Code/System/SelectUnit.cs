@@ -57,20 +57,20 @@ public class SelectUnit : MonoBehaviour
     {
 
     }
-    internal void InputUp(Vector3 pos)
+    internal void InputUp(RaycastHit raycastHit)
     {
         if (IsSelectOtherUI()) return;
-        SelectBioOrMoveBio(pos);
+        SelectBioOrMoveBio(raycastHit);
         SetDragModelOff();
     }
 
-    private void SelectBioOrMoveBio(Vector3 pos)
+    private void SelectBioOrMoveBio(RaycastHit raycastHit)
     {
-        RaycastHit hit = GetHitTransform();
         if (IsDragModel == true) return;
-        if (hit.transform == null) return;
-        if (hit.transform.tag == "Terrain") TerrainHit(pos, hit);
-        if (hit.transform.tag == "Player") SetSingleBiologySelected(hit.transform.GetComponent<Biology>());
+        if (raycastHit.transform == null) return;
+
+        if (raycastHit.transform.tag == "Terrain") TerrainHit(raycastHit.point);
+        if (raycastHit.transform.tag == "Player") SetSingleBiologySelected(raycastHit.transform.GetComponent<Biology>());
     }
 
     internal void InputDown()
@@ -85,7 +85,7 @@ public class SelectUnit : MonoBehaviour
         if (IsDragModel == true) DrawFrameStart();
         if (IsDragModel == false) DragCameraMovement();
     }
-    internal void InputDragUp(Vector3 pos)
+    internal void InputDragUp()
     {
         SelectBiologysUpdate();
         SelectBiologysShowCircleLine();
@@ -105,17 +105,11 @@ public class SelectUnit : MonoBehaviour
         DrawFrame();
         DrawBox();
     }
-    private void TerrainHit(Vector3 pos, RaycastHit hit)
+    private void TerrainHit(Vector3 pos)
     {
         SelectBiologyMoveTo(pos);
     }
-    private RaycastHit GetHitTransform()
-    {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input);
-        Physics.Raycast(ray, out hit, Depth);
-        return hit;
-    }
+
 
     private void SetSingleBiologySelected(Biology biology)
     {
@@ -392,6 +386,17 @@ public class SelectUnit : MonoBehaviour
     }
 
     private Vector3[] GetSelectBiologyGoal(Vector3 inputPos)
+    {
+        Vector3[] SelectBiologyGoal = new Vector3[SelectBiologys.Count]; ;
+        Vector3[] BiologysToCenters = GetSelectBiologysToCenters();
+        for (int i = 0; i < SelectBiologys.Count; i++)
+        {
+            SelectBiologyGoal[i] = BiologysToCenters[i] + inputPos;
+        }
+        return SelectBiologyGoal;
+    }
+
+    private Vector3[] GetSelectBiologyFormationl(Vector3 inputPos)
     {
         Vector3[] SelectBiologyGoal = new Vector3[SelectBiologys.Count]; ;
         Vector3[] BiologysToCenters = GetSelectBiologysToCenters();

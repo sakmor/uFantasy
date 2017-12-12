@@ -13,7 +13,7 @@ public class mainGame_Sam : MonoBehaviour
     private enum InputState { Down, Hold, Up, None }
     private mainGame_Sam.InputState CurrentInputState, LastInputState;
     public bool IsDrag;
-    private float DragDist = 30;
+    private float DragDist = 30, Depth;
 
     private Vector3 InputPos, _InputPos;
 
@@ -21,6 +21,7 @@ public class mainGame_Sam : MonoBehaviour
     {
         CurrentInputState = LastInputState = InputState.None;
         Biologys = (Biology[])FindObjectsOfType(typeof(Biology));
+        Depth = Camera.main.farClipPlane;
     }
     // Use this for initialization
     private void Start()
@@ -76,7 +77,7 @@ public class mainGame_Sam : MonoBehaviour
     private void InputDragUp()
     {
         if (CurrentInputState != InputState.Up || IsDrag == false) return;
-        SelectUnit.InputDragUp(GetRayCastHitPos());
+        SelectUnit.InputDragUp();
     }
 
     private void InputDrag()
@@ -122,7 +123,7 @@ public class mainGame_Sam : MonoBehaviour
     {
         if (CurrentInputState != InputState.Up || IsDrag || false) return;
 
-        SelectUnit.InputUp(GetRayCastHitPos());
+        SelectUnit.InputUp(GetInputRaycastHit());
         DotLine.DrawLineStop();
     }
     private void InputHold()
@@ -132,17 +133,12 @@ public class mainGame_Sam : MonoBehaviour
     }
 
 
-    private Vector3 GetRayCastHitPos()
+    private RaycastHit GetInputRaycastHit()
     {
-        //由攝影機產生一條射線
+        RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(InputPos);
-        RaycastHit[] hits = Physics.RaycastAll(ray);
-
-        foreach (var item in hits)
-        {
-            return item.point;
-        }
-        return Vector3.negativeInfinity;
+        Physics.Raycast(ray, out hit, Depth);
+        return hit;
     }
 
     private bool IsTouch()
