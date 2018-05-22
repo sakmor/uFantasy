@@ -34,6 +34,11 @@ public class BiologyMovement
         Biology.HideMovetoProjector();
     }
 
+    public void Dead()
+    {
+        NavMeshAgent.enabled = false;
+    }
+
     public void Update()
     {
         UpdateBiologyState();

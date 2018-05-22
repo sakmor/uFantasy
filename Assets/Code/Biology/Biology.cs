@@ -29,6 +29,7 @@ public class Biology : MonoBehaviour
     internal Biology[] Biologys;
     internal HpUI HpUI;
     internal CircleLine CircleLine;
+    internal SelectUnit SelectUnit;
     public Biology Target;
     private GameObject MovtoProjector;
 
@@ -46,11 +47,16 @@ public class Biology : MonoBehaviour
     void Start()
     {
         GetBiologys();
+        GetSelectUnit();
     }
 
     private void GetBiologys()
     {
         Biologys = GameObject.Find("mainGame").GetComponent<mainGame_Sam>().Biologys; //fixme: 不知道有沒有更好的寫法
+    }
+    private void GetSelectUnit()
+    {
+        SelectUnit = GameObject.Find("mainGame").GetComponent<mainGame_Sam>().SelectUnit; //fixme: 不知道有沒有更好的寫法
     }
 
     public void Update()
@@ -188,8 +194,10 @@ public class Biology : MonoBehaviour
     internal void CheckDead()
     {
         if (BiologyAttr.Hp >= 0) return;
-        PlayAnimation(uFantasy.Enum.State.Dead);
         HpUI.Hide();
+        PlayAnimation(uFantasy.Enum.State.Dead);
+        SelectUnit.SelectBiologys.Remove(this);
+        BiologyMovement.Stop();
     }
 
     internal void PlayAnimation(uFantasy.Enum.State state)
@@ -286,7 +294,8 @@ public class Biology : MonoBehaviour
     private void SetBiologyModel()
     {
         BiologyModel BiologyModel = new BiologyModel(ModelName);
-        CapsuleCollider CapsuleCollider = gameObject.AddComponent<CapsuleCollider>();
+        CapsuleCollider CapsuleCollider = new CapsuleCollider();
+        if (gameObject.GetComponent<CapsuleCollider>() == null) CapsuleCollider = gameObject.AddComponent<CapsuleCollider>();
         CapsuleCollider.isTrigger = true;
         CapsuleCollider.center = Vector3.up * BiologyModel.CollisionPostionY;
         CapsuleCollider.height = BiologyModel.CollisionHeight;

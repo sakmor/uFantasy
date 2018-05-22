@@ -21,7 +21,7 @@ public class SelectUnit : MonoBehaviour
     public visualJoyStick visualJoyStick;
     public Canvas Canvas;
     private HighlightsFX HighlightsFX;
-    private List<Biology> SelectBiologys;
+    [SerializeField] internal List<Biology> SelectBiologys;
     private List<Biology> _SelectBiologys = new List<Biology>();
     private List<Renderer> SelectBiologysRenderer = new List<Renderer>();
     private float Depth;
@@ -308,6 +308,7 @@ public class SelectUnit : MonoBehaviour
     {
         if (other.GetComponent<Biology>() == null) return;
         if (other.GetComponent<Biology>().Type != uFantasy.Enum.BiologyType.Player) return;
+        if (other.GetComponent<Biology>().BiologyAttr.Hp <= 0) return;
         ClearLastSelectBiology();
         Biology b = other.GetComponent<Biology>();
         _SelectBiologysAdd(b);
@@ -333,7 +334,7 @@ public class SelectUnit : MonoBehaviour
         _SelectBiologys.Add(b);
         HighlightsFXUpdate();
     }
-    void _SelectBiologysRemove(Biology b)
+    internal void _SelectBiologysRemove(Biology b)
     {
         Renderer r = b.transform.Find("Model/Model").GetComponent<Renderer>();
         SelectBiologysRenderer.Remove(r);
