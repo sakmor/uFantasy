@@ -14,8 +14,9 @@ public class mainGame_Sam : MonoBehaviour
     private mainGame_Sam.InputState CurrentInputState, LastInputState;
     public bool IsDrag;
     private float DragDist = 30, Depth;
+    private CameraMovement CameraMovement;
 
-    private Vector3 InputPos, _InputPos;
+    [SerializeField] private Vector3 InputPos, _InputPos;
 
     private void Awake()
     {
@@ -27,6 +28,7 @@ public class mainGame_Sam : MonoBehaviour
     private void Start()
     {
         DotLine = GameObject.Find("Line").GetComponent<DotLine>();
+        CameraMovement = Camera.main.GetComponent<CameraMovement>();
     }
 
     // Update is called once per frame
@@ -40,10 +42,10 @@ public class mainGame_Sam : MonoBehaviour
     {
         if (!Input.anyKey) { ButtonProcessTime = 1; return; }
         ButtonProcessTime += Time.deltaTime * 2;
-        if (Input.GetKey("w")) Camera.main.GetComponent<CameraMovement>().OffsetCamTarget(Vector2.up, ButtonProcessTime * Time.deltaTime);
-        if (Input.GetKey("a")) Camera.main.GetComponent<CameraMovement>().OffsetCamTarget(Vector2.left, ButtonProcessTime * Time.deltaTime);
-        if (Input.GetKey("s")) Camera.main.GetComponent<CameraMovement>().OffsetCamTarget(Vector2.down, ButtonProcessTime * Time.deltaTime);
-        if (Input.GetKey("d")) Camera.main.GetComponent<CameraMovement>().OffsetCamTarget(Vector2.right, ButtonProcessTime * Time.deltaTime);
+        if (Input.GetKey("w")) CameraMovement.OffsetCamTarget(Vector2.up, ButtonProcessTime * Time.deltaTime);
+        if (Input.GetKey("a")) CameraMovement.OffsetCamTarget(Vector2.left, ButtonProcessTime * Time.deltaTime);
+        if (Input.GetKey("s")) CameraMovement.OffsetCamTarget(Vector2.down, ButtonProcessTime * Time.deltaTime);
+        if (Input.GetKey("d")) CameraMovement.OffsetCamTarget(Vector2.right, ButtonProcessTime * Time.deltaTime);
     }
 
     private bool IsPointerOverUIObject()
@@ -61,12 +63,22 @@ public class mainGame_Sam : MonoBehaviour
         DragStateUpdate();
         InputStateUpdate();
 
+        ScreenEdgeMove();
+
         InputNone();
         InputHold();
         InputDrag();
         InputUp();
         InputDragUp();
         InputDown();
+    }
+
+    private void ScreenEdgeMove()
+    {
+        if (InputPos.x <= 0) Camera.main.GetComponent<CameraMovement>().targetOffset += Camera.main.transform.right * Time.deltaTime * 5f;
+        if (InputPos.x >= Screen.width) Camera.main.GetComponent<CameraMovement>().targetOffset -= Camera.main.transform.right * Time.deltaTime * 5f;
+        if (InputPos.y <= 0) Camera.main.GetComponent<CameraMovement>().targetOffset += Camera.main.transform.up * Time.deltaTime * 5f;
+        if (InputPos.y >= Screen.height) Camera.main.GetComponent<CameraMovement>().targetOffset -= Camera.main.transform.up * Time.deltaTime * 5f;
     }
 
     public Vector3 GetInputPos()
