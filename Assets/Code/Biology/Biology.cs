@@ -30,6 +30,7 @@ public class Biology : MonoBehaviour
     internal HpUI HpUI;
     internal CircleLine CircleLine;
     internal SelectUnit SelectUnit;
+    internal CapsuleCollider CapsuleCollider;
     public Biology Target;
     private GameObject MovtoProjector;
 
@@ -197,7 +198,10 @@ public class Biology : MonoBehaviour
         HpUI.Hide();
         PlayAnimation(uFantasy.Enum.State.Dead);
         SelectUnit.SelectBiologys.Remove(this);
-        BiologyMovement.Stop();
+        SelectUnit._SelectBiologysRemove(this);
+        BiologyMovement.Dead();
+        CapsuleCollider.enabled = false;
+        CircleLine.Hide();
     }
 
     internal void PlayAnimation(uFantasy.Enum.State state)
@@ -294,7 +298,7 @@ public class Biology : MonoBehaviour
     private void SetBiologyModel()
     {
         BiologyModel BiologyModel = new BiologyModel(ModelName);
-        CapsuleCollider CapsuleCollider = new CapsuleCollider();
+        CapsuleCollider = new CapsuleCollider();
         if (gameObject.GetComponent<CapsuleCollider>() == null) CapsuleCollider = gameObject.AddComponent<CapsuleCollider>();
         CapsuleCollider.isTrigger = true;
         CapsuleCollider.center = Vector3.up * BiologyModel.CollisionPostionY;

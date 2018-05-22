@@ -52,6 +52,7 @@ public class BiologyMovement
 
     private void Move()
     {
+        if (NavMeshAgent.enabled == false) return;
         RunFpsAdjustment();
         if (NavMeshAgent.isStopped == false && Vector3.Distance(BiologyTransfrom.position, GoalPos) < Closest) Stop();
     }
