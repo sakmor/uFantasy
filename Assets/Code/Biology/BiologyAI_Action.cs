@@ -57,6 +57,10 @@ public class BiologyAI_Action
         Biology.BiologyMovement.ActionMoveto(Target.transform.position);
 
         //fixme:測試用
+        //測試用攻擊距離為1、
+        if (IsTargetTooFar(3.0f)) return false;
+
+        //測試用攻速為1
         if (current < 1f) { current += Time.deltaTime; return true; }
         current = 0;
         Target.GetDamage(Biology.BiologyAttr.Atk);
@@ -99,6 +103,13 @@ public class BiologyAI_Action
     {
         if (Target.BiologyAttr.Hp <= 0) return true;
         return false;
+    }
+
+    private bool IsTargetTooFar(float dist)
+    {
+        float d = Vector3.Distance(Target.transform.position, Biology.transform.position);
+        if (d <= dist) return false;
+        return true;
     }
 
     private class Command
