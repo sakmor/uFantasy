@@ -76,7 +76,7 @@ public class mainGame_Sam : MonoBehaviour
         InputStateUpdate();
 
 
-        ScreenEdgeMove();
+        ScreenEdgeMove(10f);
 
         InputNone();
         InputHold();
@@ -93,12 +93,12 @@ public class mainGame_Sam : MonoBehaviour
         // SelectUnit.InputRightKeyUp();
     }
 
-    private void ScreenEdgeMove()
+    private void ScreenEdgeMove(float speed)
     {
-        if (InputPos.x <= 0) Camera.main.GetComponent<CameraMovement>().targetOffset += Camera.main.transform.right * Time.deltaTime * 5f;
-        if (InputPos.x >= Screen.width) Camera.main.GetComponent<CameraMovement>().targetOffset -= Camera.main.transform.right * Time.deltaTime * 5f;
-        if (InputPos.y <= 0) Camera.main.GetComponent<CameraMovement>().targetOffset += Camera.main.transform.up * Time.deltaTime * 5f;
-        if (InputPos.y >= Screen.height) Camera.main.GetComponent<CameraMovement>().targetOffset -= Camera.main.transform.up * Time.deltaTime * 5f;
+        if (InputPos.x <= 0) Camera.main.GetComponent<CameraMovement>().targetOffset += Camera.main.transform.right * Time.deltaTime * speed;
+        if (InputPos.x >= Screen.width) Camera.main.GetComponent<CameraMovement>().targetOffset -= Camera.main.transform.right * Time.deltaTime * speed;
+        if (InputPos.y <= 0) Camera.main.GetComponent<CameraMovement>().targetOffset += Camera.main.transform.up * Time.deltaTime * speed;
+        if (InputPos.y >= Screen.height) Camera.main.GetComponent<CameraMovement>().targetOffset -= Camera.main.transform.up * Time.deltaTime * speed;
     }
 
     public Vector3 GetInputPos()
