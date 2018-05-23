@@ -63,12 +63,12 @@ public class SelectUnit : MonoBehaviour
     {
         if (IsSelectOtherUI()) return;
         SelectBioOrMoveBio(raycastHit);
-        SetDragModelOff();
+        if (IsDragModel == false) SetDragModelOff();
     }
 
     private void SelectBioOrMoveBio(RaycastHit raycastHit)
     {
-        if (IsDragModel == true) return;
+        if (IsDragModel == false) if (IsDragModel == true) return;
         if (raycastHit.transform == null) return;
 
         if (raycastHit.transform.tag == "Terrain") TerrainHit(raycastHit.point);
