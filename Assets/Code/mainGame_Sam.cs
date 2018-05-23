@@ -16,6 +16,8 @@ public class mainGame_Sam : MonoBehaviour
     private float DragDist = 30, Depth;
     private CameraMovement CameraMovement;
 
+    [SerializeField] public bool IsPcControl = true;
+
     [SerializeField] private Vector3 InputPos, _InputPos;
 
     private void Awake()
@@ -48,6 +50,16 @@ public class mainGame_Sam : MonoBehaviour
         if (Input.GetKey("d")) CameraMovement.OffsetCamTarget(Vector2.right, ButtonProcessTime * Time.deltaTime);
     }
 
+    internal void SetMobileControl()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal void SetPcControl()
+    {
+        throw new NotImplementedException();
+    }
+
     private bool IsPointerOverUIObject()
     {
         PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
@@ -63,14 +75,22 @@ public class mainGame_Sam : MonoBehaviour
         DragStateUpdate();
         InputStateUpdate();
 
+
         ScreenEdgeMove();
 
         InputNone();
         InputHold();
         InputDrag();
         InputUp();
+        InputRightKeyUp();
         InputDragUp();
         InputDown();
+    }
+
+    private void InputRightKeyUp()
+    {
+        if (Input.GetMouseButtonUp(1)) SelectUnit.InputUp(GetInputRaycastHit());
+        // SelectUnit.InputRightKeyUp();
     }
 
     private void ScreenEdgeMove()

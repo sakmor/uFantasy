@@ -38,4 +38,11 @@ public class myDropdown : MonoBehaviour
     {
         PostProcessingBehaviour.profile.ambientOcclusion.enabled = !PostProcessingBehaviour.profile.ambientOcclusion.enabled;
     }
+    public void TogglePcControl()
+    {
+        mainGame_Sam mainGame_Sam = GameObject.Find("mainGame").GetComponent<mainGame_Sam>();
+        if (mainGame_Sam.IsPcControl == true) mainGame_Sam.SetPcControl();
+        if (mainGame_Sam.IsPcControl == false) mainGame_Sam.SetMobileControl();
+
+    }
 }

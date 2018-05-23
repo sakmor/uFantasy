@@ -26,6 +26,7 @@ public class SelectUnit : MonoBehaviour
     private List<Renderer> SelectBiologysRenderer = new List<Renderer>();
     private float Depth;
     private Toggle DragModelToggle;
+    public bool IsPcControl = true;
     public bool IsDragModel;
     private CameraMovement CameraMovement;
 
@@ -38,6 +39,7 @@ public class SelectUnit : MonoBehaviour
         HighlightsFX = Camera.main.GetComponent<HighlightsFX>();
         Depth = Camera.main.farClipPlane;
         IsDragModel = false;
+        if (IsPcControl) IsDragModel = true;
         SelectBoxInitialize();
         SelectFrameInitialize();
     }
@@ -79,6 +81,12 @@ public class SelectUnit : MonoBehaviour
         SelectFrameTransform.position = Input;
         CameraMovement.CameraMovementInit(Input);
     }
+
+    internal void InputRightKeyUp()
+    {
+        throw new NotImplementedException();
+    }
+
     internal void InputDrag()
     {
         if (IsSelectOtherUI()) return;
@@ -427,6 +435,7 @@ public class SelectUnit : MonoBehaviour
     public void SetDragModelOff()
     {
         IsDragModel = false;
+        if (IsPcControl) IsDragModel = true;
         if (DragModelToggle) DragModelToggle.isOn = false;
     }
 
