@@ -68,7 +68,7 @@ public class SelectUnit : MonoBehaviour
 
     private void SelectBioOrMoveBio(RaycastHit raycastHit)
     {
-        if (IsDragModel == false) if (IsDragModel == true) return;
+        if (IsPcControl == false) if (IsDragModel == true) return;
         if (raycastHit.transform == null) return;
 
         if (raycastHit.transform.tag == "Terrain") TerrainHit(raycastHit.point);
