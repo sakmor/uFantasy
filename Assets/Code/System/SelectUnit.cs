@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class SelectUnit : MonoBehaviour
 {
-	private mainGame_Sam mainGame;
+	private mainGame mainGame;
 	public Image SelectFrameImage { get; private set; }
 	private Vector2 Input { get { return mainGame.GetInputPos(); } set { } }
 	private Animator TouchDownCursorAnimatior;
@@ -34,7 +34,7 @@ public class SelectUnit : MonoBehaviour
 	void Start()
 	{
 		CameraMovement = Camera.main.GetComponent<CameraMovement>();
-		mainGame = GameObject.Find("mainGame").GetComponent<mainGame_Sam>(); //fixme:應該減少使用GameObject.find
+		mainGame = GameObject.Find("mainGame").GetComponent<mainGame>(); //fixme:應該減少使用GameObject.find
 		SelectBoxTransform = transform.Find("SelectBox");
 		HighlightsFX = Camera.main.GetComponent<HighlightsFX>();
 		Depth = Camera.main.farClipPlane;

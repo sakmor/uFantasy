@@ -53,11 +53,11 @@ public class Biology : MonoBehaviour
 
 	private void GetBiologys()
 	{
-		Biologys = GameObject.Find("mainGame").GetComponent<mainGame_Sam>().Biologys; //fixme: 不知道有沒有更好的寫法
+		Biologys = GameObject.Find("mainGame").GetComponent<mainGame>().Biologys; //fixme: 不知道有沒有更好的寫法
 	}
 	private void GetSelectUnit()
 	{
-		SelectUnit = GameObject.Find("mainGame").GetComponent<mainGame_Sam>().SelectUnit; //fixme: 不知道有沒有更好的寫法
+		SelectUnit = GameObject.Find("mainGame").GetComponent<mainGame>().SelectUnit; //fixme: 不知道有沒有更好的寫法
 	}
 
 	public void Update()
@@ -301,9 +301,7 @@ public class Biology : MonoBehaviour
 	private void SetBiologyModel()
 	{
 		BiologyModel BiologyModel = new BiologyModel(ModelName);
-		CapsuleCollider = new CapsuleCollider();
-		if (gameObject.GetComponent<CapsuleCollider>() == null) CapsuleCollider = gameObject.AddComponent<CapsuleCollider>();
-		CapsuleCollider.isTrigger = true;
+		CapsuleCollider = gameObject.GetComponent<CapsuleCollider>();
 		CapsuleCollider.center = Vector3.up * BiologyModel.CollisionPostionY;
 		CapsuleCollider.height = BiologyModel.CollisionHeight;
 	}
