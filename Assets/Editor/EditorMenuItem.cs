@@ -1,18 +1,49 @@
-using UnityEditor;
-using UnityEngine;
+﻿
 using UnityEngine.AI;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class editorMenuCS : MonoBehaviour
+
+public static class EditorMenuItem
 {
+    [MenuItem("編輯工具/執行遊戲 %`")]
+    private static void PlayFromPrelaunchScene()
+    {
+        if (EditorApplication.isPlaying)
+        {
+            EditorApplication.isPlaying = false;
+            EditorWindow.GetWindow<OpenPreviousScene>();
+        }
+        else
+        {
+            string openScene = SceneUtility.GetScenePathByBuildIndex(0);
+            Scene activeScene = EditorSceneManager.GetActiveScene();
+            if (activeScene.IsValid() && (activeScene.path != openScene))
+            {
+                PlayerPrefs.SetString("PreviousScene", activeScene.path);
+            }
+            else
+            {
+                PlayerPrefs.SetString("PreviousScene", string.Empty);
+            }
+            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+            EditorSceneManager.OpenScene(openScene);
+            EditorApplication.isPlaying = true;
+        }
+    }
+
     public static float exeTime;
     public static Dictionary<Vector3, GameObject> CleanMap;
 
 
-    [MenuItem("我的工具/場景整理 %1")]
+
+    [MenuItem("編輯工具/場景整理 %9")]
     static void SetNavigationBake()
     {
         exeTime = Time.realtimeSinceStartup;
@@ -27,32 +58,6 @@ public class editorMenuCS : MonoBehaviour
 
     }
 
-    [MenuItem("我的工具/AnimatorController %3")]
-    static void SetModelAnimator()
-    {
-        var biologys = Resources.LoadAll("Biology/", typeof(GameObject));
-        foreach (var i in biologys)
-        {
-            SetAnimator(i.name);
-        }
-    }
-    static void SetAnimator(string modelName)
-    {
-        if (modelName == "Empty" || modelName == "Shadow") return;
-        Dictionary<string, Motion> Motions = GetMotions(modelName);
-        exeTime = Time.realtimeSinceStartup;
-        UnityEditor.Animations.AnimatorController AnimatorController = Resources.Load("Biology/Motions/" + modelName, typeof(UnityEditor.Animations.AnimatorController)) as UnityEditor.Animations.AnimatorController;
-        var states = AnimatorController.layers[0].stateMachine.states;
-        foreach (var state in states)
-        {
-            Debug.Log(state.state.name);
-            if (Motions.ContainsKey(modelName + "_" + state.state.name))
-            {
-                state.state.motion = Motions[modelName + "_" + state.state.name];
-            }
-        }
-        Debug.Log("AnimatorController 整理完畢 " + (Time.realtimeSinceStartup - exeTime).ToString("F2"));
-    }
     static Dictionary<string, Motion> GetMotions(string modelName)
     {
         var MotionArray = Resources.LoadAll("Biology/" + modelName, typeof(AnimationClip));
@@ -66,7 +71,7 @@ public class editorMenuCS : MonoBehaviour
     }
     static void GetCleanMap()
     {
-        CUBE[] CUBE_list = FindObjectsOfType(typeof(CUBE)) as CUBE[];
+        CUBE[] CUBE_list = Object.FindObjectsOfType(typeof(CUBE)) as CUBE[];
         Dictionary<Vector3, GameObject> NewMap = new Dictionary<Vector3, GameObject>();
 
         // 消除重複取得無重複場景
@@ -75,7 +80,7 @@ public class editorMenuCS : MonoBehaviour
             item.name = item.transform.position.ToString("F0");
             if (NewMap.ContainsKey(item.transform.position))
             {
-                DestroyImmediate(item.gameObject);
+                Object.DestroyImmediate(item.gameObject);
             }
             else
             {
@@ -106,7 +111,7 @@ public class editorMenuCS : MonoBehaviour
         for (var i = 0; i < DestoryList.Count; i++)
         {
             CleanMap.Remove(DestoryList[i].transform.position);
-            DestroyImmediate(DestoryList[i]);
+            Object.DestroyImmediate(DestoryList[i]);
         }
     }
 
@@ -131,7 +136,7 @@ public class editorMenuCS : MonoBehaviour
         mesh.name = "ExportedNavMesh";
         mesh.vertices = triangulatedNavMesh.vertices;
         mesh.triangles = triangulatedNavMesh.indices;
-        DestroyImmediate(GameObject.Find("n"));
+        Object.DestroyImmediate(GameObject.Find("n"));
         GameObject n = new GameObject("n");
         n.AddComponent<MeshCollider>().sharedMesh = mesh;
         n.AddComponent<MeshFilter>().mesh = mesh;
@@ -182,6 +187,34 @@ public class editorMenuCS : MonoBehaviour
         using (StreamWriter sw = new StreamWriter(filename))
         {
             sw.Write(MeshToString(mesh));
+        }
+    }
+}
+
+[ExecuteInEditMode]
+public class OpenPreviousScene : EditorWindow
+{
+    private float _time;
+
+    private void OnEnable()
+    {
+        _time = Time.realtimeSinceStartup;
+    }
+
+    private void Update()
+    {
+        if (_time - Time.realtimeSinceStartup > 1.0f)
+        {
+            string openScene = PlayerPrefs.GetString("PreviousScene");
+            if (!string.IsNullOrEmpty(openScene))
+            {
+                Scene activeScene = EditorSceneManager.GetActiveScene();
+                if (activeScene.IsValid() && (activeScene.path != openScene))
+                {
+                    EditorSceneManager.OpenScene(openScene);
+                }
+            }
+            Close();
         }
     }
 }
