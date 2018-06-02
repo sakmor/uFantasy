@@ -58,7 +58,7 @@ public class BiologyAI_Action
 
         //fixme:測試用
         //測試用攻擊距離為1、
-        if (IsTargetTooFar(3.0f)) return false;
+        if (IsTargetTooFar(2.0f)) return false;
 
         //測試用攻速為1
         if (current < 1f) { current += Time.deltaTime; return true; }

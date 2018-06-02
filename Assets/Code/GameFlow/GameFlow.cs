@@ -21,12 +21,12 @@ public partial class GameFlow : MonoBehaviour
 
     public void Loading(string sceneName)
     {
+        LoadingMask.GetComponent<Animator>().Play("Loading@Run");
         StartCoroutine(LoadingSceneRealProgress(sceneName));
     }
 
     private void LoadingEnd()
     {
-        Debug.Log(LoadingMask.GetComponent<Animator>().gameObject.name);
         LoadingMask.GetComponent<Animator>().SetTrigger("IsFinished");
     }
 
@@ -40,12 +40,7 @@ public partial class GameFlow : MonoBehaviour
 
         while (!sceneAO.isDone)
         {
-            if (sceneAO.progress >= 0.9f)
-            {
-                sceneAO.allowSceneActivation = true;
-                LoadingEnd();
-            }
-            Debug.Log(sceneAO.progress);
+            if (sceneAO.progress >= 0.9f) { sceneAO.allowSceneActivation = true; LoadingEnd(); }
             yield return null;
         }
     }

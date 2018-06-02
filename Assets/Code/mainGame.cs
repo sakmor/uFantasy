@@ -89,7 +89,8 @@ public class mainGame : MonoBehaviour
 
     private void InputRightKeyUp()
     {
-        if (Input.GetMouseButtonUp(1)) SelectUnit.InputLeftKeyUp(GetInputRaycastHit());
+        if (!Input.GetMouseButtonUp(1)) return;
+        SelectUnit.InputRightKeyUp(GetInputRaycastHit());
         // SelectUnit.InputRightKeyUp();
     }
 
@@ -155,6 +156,7 @@ public class mainGame : MonoBehaviour
     private void InputUp()
     {
         if (CurrentInputState != InputState.Up || IsDrag || false) return;
+        SelectUnit.InputLeftKeyUp(GetInputRaycastHit());
         DotLine.DrawLineStop();
     }
     private void InputHold()

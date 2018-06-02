@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 
 public static class EditorMenuItem
 {
-    [MenuItem("編輯工具/執行遊戲 %`")]
+    [MenuItem("編輯工具/完整執行遊戲 %`")]
     private static void PlayFromPrelaunchScene()
     {
         if (EditorApplication.isPlaying)
@@ -38,10 +38,18 @@ public static class EditorMenuItem
         }
     }
 
+    [MenuItem("編輯工具/執行遊戲快捷鍵 _F1")]
+    private static void PlayScene()
+    {
+        if (!Application.isPlaying)
+        {
+            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), "", false);
+        }
+        EditorApplication.ExecuteMenuItem("Edit/Play");
+    }
+
     public static float exeTime;
     public static Dictionary<Vector3, GameObject> CleanMap;
-
-
 
     [MenuItem("編輯工具/場景整理 %9")]
     static void SetNavigationBake()
