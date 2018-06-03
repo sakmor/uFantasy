@@ -54,15 +54,21 @@ public class BiologyAI_Action
         //如果自己動作不能(石化、混亂...)則回傳false
 
         //朝目標前進
-        Biology.BiologyMovement.ActionMoveto(Target.transform.position);
+
 
         //fixme:測試用
         //測試用攻擊距離為1、
-        if (IsTargetTooFar(2.0f)) return false;
+        if (IsTargetTooFar(3.5f))
+        {
+            Biology.BiologyMovement.ActionMoveto(Target.transform.position);
+            return false;
+        }
+
 
         //測試用攻速為1
         if (current < 1f) { current += Time.deltaTime; return true; }
         current = 0;
+        Biology.BiologyMovement.Stop();
         Target.GetDamage(Biology.BiologyAttr.Atk);
         Biology.PlayAnimation(uFantasy.Enum.State.Attack_01);
 
