@@ -24,7 +24,7 @@ public class GameFlow_LoadScene : StateMachineBehaviour
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
 		Slider.Value = sceneAO.progress / 0.9f;
-
+		Debug.Log(Slider.Value);
 		if (!Slider.IsDone) return;
 		animator.Play(Scene);
 		GameFlow.LoadingMask.SetActive(false);
