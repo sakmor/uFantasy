@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/StartScene.unity
     guid: 497003f51105a004bbfa1fadc615e551
   - enabled: 1
+    path: Assets/Scene/Empty.unity
+    guid: 1f57e9d6103e6874bade86c8b5247d8a
+  - enabled: 1
     path: Assets/Scene/ExcapeScene.unity
     guid: f91fd43764342234ca3a2df55e444a8c
   - enabled: 1

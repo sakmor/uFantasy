@@ -31,32 +31,33 @@ public static class PlayStopScene
 			EditorApplication.isPlaying = true;
 		}
 	}
-}
-
-[ExecuteInEditMode]
-public class OpenPreviousScene : EditorWindow
-{
-	private float _time;
-
-	private void OnEnable()
+	[ExecuteInEditMode]
+	public class OpenPreviousScene : EditorWindow
 	{
-		_time = Time.realtimeSinceStartup;
-	}
+		private float _time;
 
-	private void Update()
-	{
-		if (_time - Time.realtimeSinceStartup > 1.0f)
+		private void OnEnable()
 		{
-			string openScene = PlayerPrefs.GetString("PreviousScene");
-			if (!string.IsNullOrEmpty(openScene))
+			_time = Time.realtimeSinceStartup;
+		}
+
+		private void Update()
+		{
+			if (_time - Time.realtimeSinceStartup > 1.0f)
 			{
-				Scene activeScene = EditorSceneManager.GetActiveScene();
-				if (activeScene.IsValid() && (activeScene.path != openScene))
+				string openScene = PlayerPrefs.GetString("PreviousScene");
+				if (!string.IsNullOrEmpty(openScene))
 				{
-					EditorSceneManager.OpenScene(openScene);
+					Scene activeScene = EditorSceneManager.GetActiveScene();
+					if (activeScene.IsValid() && (activeScene.path != openScene))
+					{
+						EditorSceneManager.OpenScene(openScene);
+					}
 				}
+				Close();
 			}
-			Close();
 		}
 	}
+
 }
+
