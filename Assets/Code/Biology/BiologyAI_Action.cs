@@ -71,6 +71,7 @@ public class BiologyAI_Action
         Biology.BiologyMovement.Stop();
         Target.GetDamage(Biology.BiologyAttr.Atk);
         Biology.PlayAnimation(uFantasy.Enum.State.Attack_01);
+        Biology.BiologyMovement.SetAvoidancePriority(100);
 
         return true;
     }

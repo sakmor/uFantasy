@@ -76,7 +76,7 @@ public class mainGame : MonoBehaviour
         InputStateUpdate();
 
 
-        ScreenEdgeMove(10f);
+        // ScreenEdgeMove(10f);
 
         InputNone();
         InputHold();

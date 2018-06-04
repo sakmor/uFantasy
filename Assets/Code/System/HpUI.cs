@@ -89,9 +89,10 @@ public class HpUI : MonoBehaviour
         HPHeader.rectTransform.anchoredPosition = new Vector2(posX, 0);
     }
 
-    internal void Hide()
+    internal void FadeOut()
     {
-        gameObject.SetActive(false);
+        GetComponent<Animator>().Play("UIFadeOut");
+        // gameObject.SetActive(false);
     }
 
     internal void Show()
