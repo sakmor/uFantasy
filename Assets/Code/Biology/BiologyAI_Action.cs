@@ -69,6 +69,7 @@ public class BiologyAI_Action
         if (current < 1f) { current += Time.deltaTime; return true; }
         current = 0;
         Biology.BiologyMovement.Stop();
+        Biology.BiologyMovement.FaceTarget(Target.transform);
         Target.GetDamage(Biology.BiologyAttr.Atk);
         Biology.PlayAnimation(uFantasy.Enum.State.Attack_01);
         Biology.BiologyMovement.SetAvoidancePriority(100);

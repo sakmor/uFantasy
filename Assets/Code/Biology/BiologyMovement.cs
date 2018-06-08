@@ -25,7 +25,13 @@ public class BiologyMovement
         Stop();
 
     }
-    public void Stop()
+
+    internal void FaceTarget(Transform TargetTransform)
+    {
+        Biology.transform.LookAt(TargetTransform, Vector3.up);
+    }
+
+    internal void Stop()
     {
         GoalPos = BiologyTransfrom.position;
         NavMeshAgent.isStopped = true;
