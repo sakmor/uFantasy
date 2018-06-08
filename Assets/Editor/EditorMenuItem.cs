@@ -12,6 +12,13 @@ using UnityEngine.SceneManagement;
 
 public static class EditorMenuItem
 {
+    [MenuItem("編輯工具/完整執行遊戲 _F2")]
+    private static void reloadDB()
+    {
+
+        AssetDatabase.Refresh();
+    }
+
     [MenuItem("編輯工具/完整執行遊戲 %`")]
     private static void PlayFromPrelaunchScene()
     {
