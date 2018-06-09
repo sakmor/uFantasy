@@ -48,32 +48,35 @@ public class BiologyAI_Action
     float current;
     private bool Attack(float n)
     {
+
         //如果攻擊目標是死人則回傳false
         if (IsTargetDead()) return false;
 
+        //如果目標超過我的 "追擊距離"
+        //fixme:測試用追擊距離設定為10f，實際需要依據武器做變化
+        if (Vector3.Distance(Target.transform.position, Biology.transform.position) > 10f) return false;
+
         //如果自己動作不能(石化、混亂...)則回傳false
-
-        //朝目標前進
-
-
-        //fixme:測試用
-        //測試用攻擊距離為1、
-        if (IsTargetTooFar(3.5f))
-        {
-            Biology.BiologyMovement.ActionMoveto(Target.transform.position);
-            return false;
-        }
+        if (IsTargetTooFar(3.5f)) { Biology.BiologyMovement.ActionMoveto(Target.transform.position); return false; }
 
 
+
+        return true;
+    }
+    private bool _Attack()
+    {
         //測試用攻速為1
-        if (current < 1f) { current += Time.deltaTime; return true; }
+        if (current < 1f) { current += Time.deltaTime; return false; }
         current = 0;
         Biology.BiologyMovement.Stop();
-        Biology.BiologyMovement.FaceTarget(Target.transform);
+        Biology.BiologyMovement.StartFaceTarget();
+
+        //測試是否正對目標
+        if (Biology.BiologyMovement.GetIsFaceTarget() == false) { Biology.BiologyMovement.StartFaceTarget(); return false; }
+
         Target.GetDamage(Biology.BiologyAttr.Atk);
         Biology.PlayAnimation(uFantasy.Enum.State.Attack_01);
         Biology.BiologyMovement.SetAvoidancePriority(100);
-
         return true;
     }
     private bool Magic_Heal(float n)

@@ -14,6 +14,8 @@ public class BiologyMovement
     private float Closest = 0.125f;
     internal enum MoveType { Run, Back, Stop }
     internal MoveType CurrentMoveType;
+    internal bool IsStartFaceTarget;
+    private Transform TargetTransform;
 
     public BiologyMovement(Biology biology)
     {
@@ -24,11 +26,6 @@ public class BiologyMovement
         NavMeshAgent.speed = Biology.Speed;
         Stop();
 
-    }
-
-    internal void FaceTarget(Transform TargetTransform)
-    {
-        Biology.transform.LookAt(TargetTransform, Vector3.up);
     }
 
     internal void Stop()
@@ -48,9 +45,47 @@ public class BiologyMovement
     public void Update()
     {
         UpdateBiologyState();
+        UpdateFaceTarget();
         Move();
     }
 
+    private void UpdateFaceTarget()
+    {
+        if (IsStartFaceTarget == false) return;
+        if (NavMeshAgent.enabled == true && NavMeshAgent.isStopped == false) return;
+        if (Biology.Target == null) return;
+        Quaternion targetRotation = Quaternion.LookRotation(Biology.Target.transform.position - Biology.transform.position);        //fixme：這段重複了，浪費效能運算了兩次
+        Biology.transform.rotation = Quaternion.Slerp(Biology.transform.rotation, targetRotation, 1 * Time.deltaTime);
+    }
+
+    internal float GetFaceTargetAngle()
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(Biology.Target.transform.position - Biology.transform.position);
+        float angle = Quaternion.Angle(Biology.transform.rotation, targetRotation);
+        return angle;
+    }
+    internal bool GetIsFaceTarget()
+    {
+        float angle = GetFaceTargetAngle();
+        Debug.Log(Biology.name + "：" + angle);
+        if (angle > 2.0f) return false;
+        return true;
+    }
+
+    internal void StartFaceTarget()
+    {
+        IsStartFaceTarget = true;
+    }
+
+    internal void UpdateTargetTransform()
+    {
+        TargetTransform = Biology.Target.transform;
+    }
+    internal void StopFaceTarget()
+    {
+        IsStartFaceTarget = false;
+        TargetTransform = null;
+    }
     private void UpdateBiologyState()
     {
         Biology.State = (uFantasy.Enum.State)Biology.Animator.GetInteger("State");

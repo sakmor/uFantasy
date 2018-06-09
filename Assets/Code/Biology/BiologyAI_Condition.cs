@@ -14,7 +14,7 @@ public class BiologyAI_Condition
     public void Condition(BiologyAI Ai)
     {
         BiologyAI = Ai;
-        BiologyAI.Parent.Target = null;
+
 
         for (int i = 0; i < Ai.ConditionList.Count; i++)
         {
@@ -22,8 +22,8 @@ public class BiologyAI_Condition
             Target = null;
             ActionName = null;
 
-            //如果生物已死則直接跳出
-            if (BiologyAI.Parent.BiologyAttr.Hp <= 0) return;
+            //如果我已經死則清空目標並跳出
+            if (BiologyAI.Parent.BiologyAttr.Hp <= 0) { BiologyAI.Parent.Target = null; return; }
 
             //如果資料庫無此策略跳下一個
             if (Conditions.ContainsKey(Ai.ConditionList[i]) == false) continue;
@@ -41,8 +41,9 @@ public class BiologyAI_Condition
             //檢查該行為是否可以執行
             if (BiologyAI_Action.Instance.CheckAction(this) == false) continue;
 
-            //設定生物目標
+            //設定生物目標，並對該目標執行動作
             BiologyAI.Parent.Target = Target;
+
 
             //持續思考(重頭)
             return;

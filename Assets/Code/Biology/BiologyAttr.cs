@@ -14,15 +14,9 @@ public class BiologyAttr : MonoBehaviour
 
     public int Hp
     {
-        get
-        {
-            return hp;
-        }
-
+        get { return hp; }
         set
         {
-            // if (hp == value) return;
-
             hp = value;
             CheckHpHpMax();
             UpdateHpUI();

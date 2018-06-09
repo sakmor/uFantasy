@@ -19,7 +19,7 @@ public class Biology : MonoBehaviour
     [Header("AI編號")] internal float Speed;
     [Header("生物模型")] private string ModelName;
     [Header("武器模型")] public GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
-
+    [SerializeField] [Header("目標生物")] internal Biology Target;
     private GameObject _model, Shadow; //fixme:這個有點壞設計
     private BezierLine BezierLine;
     internal Animator Animator;
@@ -31,7 +31,7 @@ public class Biology : MonoBehaviour
     internal CircleLine CircleLine;
     internal SelectUnit SelectUnit;
     internal CapsuleCollider CapsuleCollider;
-    public Biology Target;
+
     private GameObject MovtoProjector;
 
     [SerializeField] public uFantasy.Enum.State State;
@@ -383,7 +383,6 @@ public class Biology : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        Debug.Log("ha");
     }
 
     private void RunHitRun(Collider other)
