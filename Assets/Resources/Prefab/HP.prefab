@@ -73,10 +73,10 @@ GameObject:
   - component: {fileID: 224256937354004968}
   - component: {fileID: 222586719175477730}
   - component: {fileID: 114418314845825790}
-  - component: {fileID: 95004426887258780}
-  - component: {fileID: 225079556321432086}
+  - component: {fileID: 95181307825335004}
+  - component: {fileID: 225173618754317480}
   m_Layer: 0
-  m_Name: HP_R
+  m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,7 +116,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &95004426887258780
+--- !u!95 &95181307825335004
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
@@ -153,7 +153,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: e89f8d5c67c531c4894955ce570605b3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 18b7bcabc54ef8a4aa231be477cf92e1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -199,6 +199,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c76dae6f1e46542a60c49a41df1002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HPValue: {fileID: 114701664243552098}
+  HPRed: {fileID: 114596521291361712}
+  HPWhite: {fileID: 114742457529996906}
+  HPHeader: {fileID: 114347887694029372}
 --- !u!114 &114596521291361712
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -245,7 +249,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: a7ebccabec9e1fa43a8f792a0a079644, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0af3c1504e2ac2e4f81c8d13812b2c4b, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -401,7 +405,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -863, y: -351}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 69, y: 8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224260292078995438
@@ -441,7 +445,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 69, y: 8}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!225 &225079556321432086
+--- !u!225 &225173618754317480
 CanvasGroup:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

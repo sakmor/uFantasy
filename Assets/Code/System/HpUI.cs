@@ -5,20 +5,16 @@ using UnityEngine;
 
 public class HpUI : MonoBehaviour
 {
-    UnityEngine.UI.Image HPGreen, HPRed, HPWhite, HPHeader;
+    [SerializeField] internal UnityEngine.UI.Image HPValue, HPRed, HPWhite, HPHeader;
     private Biology Biology;
     private BiologyAttr biologyAttr;
-    private float HPRed_t, HPWhite_t, HPGreenWidth;
+    private float HPRed_t, HPWhite_t, HPValueWidth;
     private Transform M1;
 
     // Use this for initialization
     private void Awake()
     {
-        HPGreen = transform.Find("HPValue").GetComponent<UnityEngine.UI.Image>();
-        HPRed = transform.Find("HPWhite").GetComponent<UnityEngine.UI.Image>();
-        HPHeader = transform.Find("HPHeader").GetComponent<UnityEngine.UI.Image>();
-        HPWhite = transform.Find("HPValue/vHPWhite").GetComponent<UnityEngine.UI.Image>();
-        HPGreenWidth = HPGreen.rectTransform.sizeDelta.x;
+        HPValueWidth = HPValue.rectTransform.sizeDelta.x;
 
     }
     private void Start()
@@ -37,32 +33,32 @@ public class HpUI : MonoBehaviour
 
     private void HPRedAnimation()
     {
-        if (HPGreen.fillAmount < HPRed.fillAmount)
+        if (HPValue.fillAmount < HPRed.fillAmount)
         {
             ShowHPHeader();
             HideHPWhite();
             ShowHPRed();
-            HPRed.fillAmount = EasingFunction.EaseInExpo(HPRed.fillAmount, HPGreen.fillAmount, HPRed_t += Time.deltaTime / 0.25f);
+            HPRed.fillAmount = EasingFunction.EaseInExpo(HPRed.fillAmount, HPValue.fillAmount, HPRed_t += Time.deltaTime / 0.25f);
         }
         else
         {
             HideHPHeader();
-            HPRed.fillAmount = HPGreen.fillAmount;
+            HPRed.fillAmount = HPValue.fillAmount;
         }
     }
     private void HPWhiteAnimation()
     {
-        if (1 - HPGreen.fillAmount < HPWhite.fillAmount)
+        if (1 - HPValue.fillAmount < HPWhite.fillAmount)
         {
             ShowHPHeader();
             HideHPRed();
             ShowHPWhite();
-            HPWhite.fillAmount = EasingFunction.EaseInExpo(HPWhite.fillAmount, 1 - HPGreen.fillAmount, HPWhite_t += Time.deltaTime / 0.25f);
+            HPWhite.fillAmount = EasingFunction.EaseInExpo(HPWhite.fillAmount, 1 - HPValue.fillAmount, HPWhite_t += Time.deltaTime / 0.25f);
         }
         else
         {
             HideHPHeader();
-            HPWhite.fillAmount = 1 - HPGreen.fillAmount;
+            HPWhite.fillAmount = 1 - HPValue.fillAmount;
         }
     }
     private void ChangePos()
@@ -79,13 +75,13 @@ public class HpUI : MonoBehaviour
     public void ChangeHP()
     {
         HPRed_t = HPWhite_t = 0;
-        HPGreen.fillAmount = (float)biologyAttr.Hp / (float)biologyAttr.HpMax;
+        HPValue.fillAmount = (float)biologyAttr.Hp / (float)biologyAttr.HpMax;
         ChangeHPHeader();
     }
 
     internal void ChangeHPHeader()
     {
-        float posX = HPGreenWidth * (float)HPGreen.fillAmount;
+        float posX = HPValueWidth * (float)HPValue.fillAmount;
         HPHeader.rectTransform.anchoredPosition = new Vector2(posX, 0);
     }
 

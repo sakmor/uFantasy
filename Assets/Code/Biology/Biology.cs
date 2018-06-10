@@ -155,11 +155,13 @@ public class Biology : MonoBehaviour
     private void AddHpUI()
     {
         GameObject HP = null;
-        if (Type == uFantasy.Enum.BiologyType.Player) HP = Instantiate(Resources.Load("Prefab/HP_G", typeof(GameObject)) as GameObject);
-        if (Type != uFantasy.Enum.BiologyType.Player) HP = Instantiate(Resources.Load("Prefab/HP_R", typeof(GameObject)) as GameObject);
-        HP.transform.SetParent(GameObject.Find("Canvas/HP").transform);
-        HP.name = name + "HP";
+        HP = Instantiate(Resources.Load("Prefab/HP", typeof(GameObject)) as GameObject);
         HpUI = HP.GetComponent<HpUI>();
+        if (Type == uFantasy.Enum.BiologyType.Player) HpUI.HPValue.sprite = Resources.Load<Sprite>("UI/ui-assets/HpGreen");
+        if (Type != uFantasy.Enum.BiologyType.Player) HpUI.HPValue.sprite = Resources.Load<Sprite>("UI/ui-assets/HpRed");
+        HP.transform.SetParent(GameObject.Find("Canvas/HP").transform);//fixme:應該跟maingame要位置
+        HP.name = name + "HP";
+
         HpUI.SetBio(this);
         transform.Find("Model").GetComponent<BiologyAnimationEvent>().HpUI = HpUI;
     }

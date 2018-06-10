@@ -15,6 +15,7 @@ public class mainGame : MonoBehaviour
     public bool IsDrag;
     private float DragDist = 30, Depth;
     private CameraMovement CameraMovement;
+    [SerializeField] internal Transform Canvas_HP;
 
 
 
