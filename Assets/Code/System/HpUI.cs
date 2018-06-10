@@ -6,6 +6,7 @@ using UnityEngine;
 public class HpUI : MonoBehaviour
 {
     [SerializeField] internal UnityEngine.UI.Image HPValue, HPRed, HPWhite, HPHeader;
+    [SerializeField] internal UnityEngine.UI.Slider Slider;
     private Biology Biology;
     private BiologyAttr biologyAttr;
     private float HPRed_t, HPWhite_t, HPValueWidth;

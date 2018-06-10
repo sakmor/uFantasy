@@ -16,7 +16,8 @@ public class Biology : MonoBehaviour
     [Header("生物類型")] internal uFantasy.Enum.BiologyType Type;
     [Header("生物等級")] internal string Lv;
     [Header("AI編號")] private string Ai;
-    [Header("AI編號")] internal float Speed;
+    [SerializeField] [Header("人物移動速度")] internal float Speed = 1.0f;
+    [SerializeField] [Header("行動條進度")] internal float ActionProgressbarValue = 0.0f;
     [Header("生物模型")] private string ModelName;
     [Header("武器模型")] public GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
     [SerializeField] [Header("目標生物")] internal Biology Target;
@@ -64,8 +65,32 @@ public class Biology : MonoBehaviour
     {
         BiologyMovement.Update();
         BiologyAI.Update();
+        ActionProgressUpdate();
         Line2Target();//fixme:Debug用
     }
+
+    private void ActionProgressUpdate()
+    {
+        ActionRuning();
+        HpUiSliderValueRefresh();
+    }
+
+    private void HpUiSliderValueRefresh()
+    {
+        HpUI.Slider.value = ActionProgressbarValue;
+    }
+
+    private void ActionRuning()
+    {
+        ActionProgressbarValue += BiologyAttr.ASpeed * Time.deltaTime;
+        // ActionProgressbarValue = ActionProgressbarValue >= 1 ? 1 : ActionProgressbarValue;
+    }
+
+    private void ActionRestart()
+    {
+        ActionProgressbarValue = 0;
+    }
+
     private void Line2Target() //fixme:Debug用
     {
         if (Target == null) return;
