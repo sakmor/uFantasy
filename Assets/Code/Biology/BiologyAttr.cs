@@ -51,7 +51,7 @@ public class BiologyAttr : MonoBehaviour
         HpMax = GetHpMax();
         Def = GetDef();
         Atk = GetAtk();
-        ASpeed = GetASpeed() * 0.1f;
+        ASpeed = GetASpeed() * 1f; //fixme:測試用先不管表格
         MpMax = GetMpMax();
         MSpeed = GetMSpeed();
         Speed = GetSpeed(); ;

@@ -14,11 +14,13 @@ public class BiologyAI_Action
 
     private BiologyAI_Action()
     {
+        //fixme:灌資料應該有更好的地方，並且應該配合列舉
         Actions = new Dictionary<string, Command>();
         Actions.Add("Attack", new Command(Attack, 0.0f));
         Actions.Add("Magic:Heal", new Command(Magic_Heal, 0.0f));
         Actions.Add("Item:Phoenix Down", new Command(Item_PhoenixDown, 0.0f));
     }
+
     public bool CheckAction(BiologyAI_Condition BiologyAI_Condition)
     {
         if (BiologyAI_Condition.Target == null) return false; //如果目標不存在直接跳出

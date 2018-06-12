@@ -21,12 +21,14 @@ public class Biology : MonoBehaviour
     [Header("生物模型")] private string ModelName;
     [Header("武器模型")] public GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
     [SerializeField] [Header("目標生物")] internal Biology Target;
+
     private GameObject _model, Shadow; //fixme:這個有點壞設計
     private BezierLine BezierLine;
     internal Animator Animator;
     internal BiologyMovement BiologyMovement;
     internal BiologyAttr BiologyAttr;
     internal BiologyAI BiologyAI;
+    internal BiologyAction BiologyAction;
     internal Biology[] Biologys;
     internal HpUI HpUI;
     internal CircleLine CircleLine;
@@ -64,7 +66,7 @@ public class Biology : MonoBehaviour
     public void Update()
     {
         BiologyMovement.Update();
-        BiologyAI.Update();
+        BiologyAI.Update();//fixme:可以調整思考頻率
         ActionProgressUpdate();
         Line2Target();//fixme:Debug用
     }

@@ -1,5 +1,11 @@
 ﻿namespace uFantasy.Enum
 {
+    public enum BiologyActions
+    {
+        Attack = 1,
+        Magic_Heal = 2,
+        Item_PhoenixDown = 3,
+    }
     public enum BiologyType
     {
         Player = 1,

@@ -28,7 +28,7 @@ public class BiologyAI_Condition
             //如果資料庫無此策略跳下一個
             if (Conditions.ContainsKey(Ai.ConditionList[i]) == false) continue;
 
-            //如果此策略無法執行則跳下一個
+            //如果此策略找不到目標則跳下一個
             Func<float, bool> f = Conditions[Ai.ConditionList[i]].Func;
             float cp = Conditions[Ai.ConditionList[i]].p1;
             bool ConditionResult = f(cp);
