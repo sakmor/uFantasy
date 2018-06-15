@@ -39,7 +39,7 @@ public class BiologyAI_Condition
             ActionName = Ai.ActionList[i];
 
             //檢查該行為是否可以執行
-            if (BiologyAI_Action.Instance.CheckAction(this) == false) continue;
+            if (BiologyAI_Action.Instance.CheckAction(this, Target) == false) continue;
 
             //設定生物目標，並對該目標執行動作
             BiologyAI.Parent.Target = Target;

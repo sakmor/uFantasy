@@ -55,7 +55,7 @@ public class BiologyMovement
         if (NavMeshAgent.enabled == true && NavMeshAgent.isStopped == false) return;
         if (Biology.Target == null) return;
         Quaternion targetRotation = Quaternion.LookRotation(Biology.Target.transform.position - Biology.transform.position);        //fixme：這段重複了，浪費效能運算了兩次
-        Biology.transform.rotation = Quaternion.Slerp(Biology.transform.rotation, targetRotation, 1 * Time.deltaTime);
+        Biology.transform.rotation = Quaternion.Slerp(Biology.transform.rotation, targetRotation, 10.0f * Time.deltaTime);
     }
 
     internal float GetFaceTargetAngle()
@@ -77,10 +77,6 @@ public class BiologyMovement
         IsStartFaceTarget = true;
     }
 
-    internal void UpdateTargetTransform()
-    {
-        TargetTransform = Biology.Target.transform;
-    }
     internal void StopFaceTarget()
     {
         IsStartFaceTarget = false;
