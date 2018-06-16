@@ -73,9 +73,9 @@ public class BiologyAttr : MonoBehaviour
         return int.Parse(GameDB.Instance.Level[Lv][_Mp + TypeStep]);
     }
 
-    private int GetASpeed()
+    private float GetASpeed()
     {
-        return int.Parse(GameDB.Instance.Level[Lv][_ASpeed + TypeStep]);
+        return float.Parse(GameDB.Instance.Level[Lv][_ASpeed + TypeStep]);
     }
 
     private int GetAtk()

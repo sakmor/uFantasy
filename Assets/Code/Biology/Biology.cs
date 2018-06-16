@@ -85,7 +85,7 @@ public class Biology : MonoBehaviour
 
     private void ActionRuning()
     {
-        ActionProgressbarValue += BiologyAttr.ASpeed * Time.deltaTime;
+        ActionProgressbarValue += BiologyAttr.ASpeed * 0.25f * Time.deltaTime;
         // ActionProgressbarValue = ActionProgressbarValue >= 1 ? 1 : ActionProgressbarValue;
     }
 
