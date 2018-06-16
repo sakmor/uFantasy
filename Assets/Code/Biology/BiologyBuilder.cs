@@ -7,15 +7,16 @@ using System;
 public class BiologyBuilder//fixme:名字怪怪的
 {
 
-    private int _Name = 1, _DrawNum = 2, _Tpye = 3, _Lv = 4, _Ai = 5, _Speed = 6;
+    private int _Name = 1, _DrawNum = 2, _Tpye = 3, _Lv = 4, _Ai = 5, _Speed = 6, _Hp = 9, _ASpeed = 12;
 
     public string Name;
     public string DrawNum;
     public uFantasy.Enum.BiologyType Type;
     public string Lv;
     public string Ai;
+    public int Hp;
     private string BiologyNum;
-    internal float Speed;
+    internal float Speed, ASpeed;
 
     public BiologyBuilder(string BiologyNum)
     {
@@ -29,7 +30,15 @@ public class BiologyBuilder//fixme:名字怪怪的
         Type = GetBioType();
         Lv = GetBioLv();
         Ai = GetBioAi();
+        Hp = GetBioHp();
         Speed = GetBioSpeed();
+        ASpeed = GetBioASpeed();
+    }
+
+    private float GetBioASpeed()
+    {
+        float result = float.Parse(GameDB.Instance.BiologyDB[BiologyNum][_ASpeed]);
+        return result;
     }
 
     // 創造生物時必須提供 [圖號]
@@ -49,6 +58,11 @@ public class BiologyBuilder//fixme:名字怪怪的
     private string GetBioLv()
     {
         return GameDB.Instance.BiologyDB[BiologyNum][_Lv];
+    }
+
+    private int GetBioHp()
+    {
+        return int.Parse(GameDB.Instance.BiologyDB[BiologyNum][_Hp]);
     }
 
     private uFantasy.Enum.BiologyType GetBioType()

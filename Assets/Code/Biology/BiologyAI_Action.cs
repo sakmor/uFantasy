@@ -62,7 +62,7 @@ public class BiologyAI_Action
         //fixme:還沒寫
 
         //一切都沒問題，執行BiologyAction內的攻擊
-        Target.BiologyAction.Attack();
+        Biology.BiologyAction.Attack();
 
         return true;
     }

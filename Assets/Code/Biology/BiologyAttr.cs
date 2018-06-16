@@ -46,12 +46,13 @@ public class BiologyAttr : MonoBehaviour
 
     private void LoadDB()
     {
+        BiologyBuilder BiologyBuilder = new BiologyBuilder(Biology.BiologyNum);
         if (Lv == "" || GameDB.Instance.Level.ContainsKey(Lv) == false) return;
         TypeStep = ((int)Type - 1) * TypeStep;
-        HpMax = GetHpMax();
+        HpMax = GetHpMax() * BiologyBuilder.Hp;
         Def = GetDef();
         Atk = GetAtk();
-        ASpeed = GetASpeed() * 1f; //fixme:測試用先不管表格
+        ASpeed = GetASpeed() * BiologyBuilder.ASpeed;
         MpMax = GetMpMax();
         MSpeed = GetMSpeed();
         Speed = GetSpeed(); ;

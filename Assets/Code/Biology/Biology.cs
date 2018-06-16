@@ -351,6 +351,7 @@ public class Biology : MonoBehaviour
         Lv = BiologyBuilder.Lv;
         Ai = BiologyBuilder.Ai;
         Speed = BiologyBuilder.Speed;
+
     }
 
     private void SetBiologyDraw()
