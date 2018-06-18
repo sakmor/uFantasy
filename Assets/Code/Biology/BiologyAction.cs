@@ -13,8 +13,6 @@ public class BiologyAction
 
     internal bool Attack()
     {
-        //如果行動條依然在跑...
-        if (Biology.ActionProgressbarValue < 1f) return false;
 
         //如果與目標的距離不在攻擊範圍內...
         if (IsTargetTooFar(3.5f)) { Biology.BiologyMovement.ActionMoveto(Biology.Target.transform.position); return false; }
@@ -23,6 +21,9 @@ public class BiologyAction
 
         //如果與目標不在我的正前方...
         if (Biology.BiologyMovement.GetIsFaceTarget() == false) { Biology.BiologyMovement.StartFaceTarget(); return false; }
+
+        //如果行動條依然在跑...
+        if (Biology.ActionProgressbarValue < 1f) return false;
 
         //完成攻擊
         Biology.Target.GetDamage(Biology.BiologyAttr.Atk);

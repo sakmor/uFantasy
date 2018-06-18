@@ -18,8 +18,8 @@ public class BiologyAI_Condition
 
         for (int i = 0; i < Ai.ConditionList.Count; i++)
         {
-            //清空避免殘留
-            Target = null;
+            //清空上一個目標與上一個行為
+            BiologyAI.Parent.Target = null;
             ActionName = null;
 
             //如果我已經死則清空目標並跳出
@@ -40,10 +40,6 @@ public class BiologyAI_Condition
 
             //檢查該行為是否可以執行
             if (BiologyAI_Action.Instance.CheckAction(this, Target) == false) continue;
-
-            //設定生物目標，並對該目標執行動作
-            BiologyAI.Parent.Target = Target;
-
 
             //持續思考(重頭)
             return;

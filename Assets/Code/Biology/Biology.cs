@@ -21,7 +21,7 @@ public class Biology : MonoBehaviour
     [Header("生物模型")] private string ModelName;
     [Header("武器模型")] public GameObject Weapon;//fixme:暫代 應該改為讀取狀態資料
     [SerializeField] [Header("目標生物")] internal Biology Target;
-
+    [SerializeField] private bool IsDead;
     private GameObject _model, Shadow; //fixme:這個有點壞設計
     private BezierLine BezierLine;
     internal Animator Animator;
@@ -233,7 +233,13 @@ public class Biology : MonoBehaviour
 
     internal void CheckDead()
     {
-        if (BiologyAttr.Hp >= 0) return;
+        if (BiologyAttr.Hp >= 0)
+        {
+            IsDead = false;
+            return;
+        }
+
+        IsDead = true;
         PlayAnimation(uFantasy.Enum.State.Dead);
         SelectUnit.SelectBiologys.Remove(this);
         SelectUnit._SelectBiologysRemove(this);
@@ -258,6 +264,7 @@ public class Biology : MonoBehaviour
                 break;
             case uFantasy.Enum.State.Battle:
                 if (Animator.GetInteger("State") == 0) break;
+                if (Animator.GetInteger("State") == 101) break;
                 Animator.SetInteger("State", 0);
                 Animator.CrossFade("Battle", 0.25f);
                 break;

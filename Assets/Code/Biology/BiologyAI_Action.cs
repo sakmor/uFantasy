@@ -50,9 +50,12 @@ public class BiologyAI_Action
     float current;
     private bool Attack(float n)
     {
-
         //如果攻擊目標是死人則回傳false
-        if (IsTargetDead()) return false;
+        if (IsTargetDead())
+        {
+
+            return false;
+        }
 
         //如果目標超過我的 "追擊距離"
         //fixme:測試用追擊距離設定為10f，實際需要依據武器做變化
@@ -62,6 +65,8 @@ public class BiologyAI_Action
         //fixme:還沒寫
 
         //一切都沒問題，執行BiologyAction內的攻擊
+        //設定生物目標，並對該目標執行動作
+        Biology.Target = Target;
         Biology.BiologyAction.Attack();
 
         return true;
