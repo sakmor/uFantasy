@@ -13,6 +13,8 @@ public class BiologyAction
 
     internal bool Attack()
     {
+        //如果生物正在執行移動指令
+        if (Biology.BiologyMovement.IsInputMoving) return false;
 
         //如果與目標的距離不在攻擊範圍內...
         if (IsTargetTooFar(3.5f)) { Biology.BiologyMovement.ActionMoveto(Biology.Target.transform.position); return false; }

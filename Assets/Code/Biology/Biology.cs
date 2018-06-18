@@ -258,7 +258,6 @@ public class Biology : MonoBehaviour
                 Animator.Play("Deading");
                 break;
             case uFantasy.Enum.State.Run:
-                if (Animator.GetInteger("State") == 600) break;
                 Animator.SetInteger("State", 600);
                 Animator.CrossFade("Run", 0.25f);
                 break;

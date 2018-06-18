@@ -15,6 +15,7 @@ public class BiologyMovement
     internal enum MoveType { Run, Back, Stop }
     internal MoveType CurrentMoveType;
     internal bool IsStartFaceTarget;
+    internal bool IsInputMoving;
     private Transform TargetTransform;
 
     public BiologyMovement(Biology biology)
@@ -35,6 +36,7 @@ public class BiologyMovement
         Biology.PlayAnimation(uFantasy.Enum.State.Battle);
         SetMoveType_Stop();
         Biology.HideMovetoProjector();
+        IsInputMoving = false;
     }
 
     public void Dead()
@@ -99,28 +101,8 @@ public class BiologyMovement
         Biology.Animator.speed = 1 + NavMeshAgent.velocity.magnitude * 0.08f;
     }
 
-    //使用者叫生物移動
-    public bool InputMoveto(Vector3 pos)
-    {
-        if (IsPathReachDestination(pos) == false) return false;
-        SetGoalPos(pos);
-        SetGoalPosHitGround();
-        SetMoveType_MoveTo();
-        Biology.ActiveMovetoProjector();
-        Biology.SetMovetoProjectorPos(pos);
-        return MoveTo();
-    }
 
-    //生物的AI:Action叫生物移動
-    public bool ActionMoveto(Vector3 pos)
-    {
-        if (IsPathReachDestination(pos) == false) return false;
-        InputMoveto(pos);
-        Biology.DeactivateMovetoProjector();
-        return MoveTo();
-    }
 
-    //生物的AI:Action叫生物移動
     private void SetGoalPosHitGround()
     {
         float x, y, z;
@@ -131,25 +113,63 @@ public class BiologyMovement
         SetGoalPos(hit.point);
         Biology.DeactivateMovetoProjector();
     }
-
-    //生物被撞開返回原始位置
-    internal void ReturnPostMoveto()
+    //三種移動之一：AI叫生物移動
+    public void ActionMoveto(Vector3 pos)
     {
+        if (IsPathReachDestination(pos) == false) return;
+
+        IsInputMoving = false;
+
+        SetGoalPos(pos);
+        SetGoalPosHitGround();
+        SetMoveType_MoveTo();
+        Biology.ActiveMovetoProjector();
+        Biology.SetMovetoProjectorPos(pos);
         Biology.DeactivateMovetoProjector();
-        SetMoveType_ReturnPost();
+
         MoveTo();
     }
-    private void SetGoalPos(Vector3 pos)
+
+
+    //三種移動之二：玩家叫生物移動
+    public void InputMoveto(Vector3 pos)
     {
-        GoalPos = pos;
+        if (IsPathReachDestination(pos) == false) return;
+
+        IsInputMoving = true;
+
+        SetGoalPos(pos);
+        SetGoalPosHitGround();
+        SetMoveType_MoveTo();
+        Biology.ActiveMovetoProjector();
+        Biology.SetMovetoProjectorPos(pos);
+
+        MoveTo();
     }
 
-    public bool MoveTo()
+    //三種移動之三：被撞開的生物移動
+    internal void ReturnPostMoveto()
+    {
+        if (IsPathReachDestination(GoalPos) == false) return;
+
+        IsInputMoving = false;
+
+        Biology.DeactivateMovetoProjector();
+        SetMoveType_ReturnPost();
+
+        MoveTo();
+    }
+
+    public void MoveTo()
     {
         NavMeshAgent.SetDestination(GoalPos);
         NavMeshAgent.isStopped = false;
         Biology.PlayAnimation(uFantasy.Enum.State.Run);
-        return true;
+    }
+
+    private void SetGoalPos(Vector3 pos)
+    {
+        GoalPos = pos;
     }
 
     private bool IsPathReachDestination(Vector3 GoalPos)
