@@ -17,7 +17,7 @@ public class BiologyAction
         if (Biology.BiologyMovement.IsInputMoving) return false;
 
         //如果與目標的距離不在攻擊範圍內...
-        if (IsTargetTooFar(3.5f)) { Biology.BiologyMovement.ActionMoveto(Biology.Target.transform.position); return false; }
+        if (IsTargetTooFar(1.8f)) { Biology.BiologyMovement.ActionMoveto(Biology.Target.transform.position); return false; }
         Biology.BiologyMovement.Stop();
         Biology.BiologyMovement.StartFaceTarget();
 

@@ -37,7 +37,7 @@ public class Biology : MonoBehaviour
 
     private GameObject MovtoProjector;
 
-    [SerializeField] public uFantasy.Enum.State State;
+    [SerializeField] public uFantasy.Enum.State AnimationState;
 
     // Use this for initialization
     private void Awake()
@@ -250,7 +250,7 @@ public class Biology : MonoBehaviour
 
     internal void PlayAnimation(uFantasy.Enum.State state)
     {
-        State = state;
+        AnimationState = state;
         switch (state)
         {
             case uFantasy.Enum.State.Dead:

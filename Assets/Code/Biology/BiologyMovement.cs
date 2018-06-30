@@ -86,14 +86,17 @@ public class BiologyMovement
     }
     private void UpdateBiologyState()
     {
-        Biology.State = (uFantasy.Enum.State)Biology.Animator.GetInteger("State");
+        Biology.AnimationState = (uFantasy.Enum.State)Biology.Animator.GetInteger("State");
     }
 
     private void Move()
     {
         if (NavMeshAgent.enabled == false) return;
+        if (Vector3.Distance(BiologyTransfrom.position, GoalPos) < Closest) Stop();
+
+        if (NavMeshAgent.isStopped) return;
+        if (Biology.AnimationState == uFantasy.Enum.State.Battle) Biology.PlayAnimation(uFantasy.Enum.State.Run);
         RunFpsAdjustment();
-        if (NavMeshAgent.isStopped == false && Vector3.Distance(BiologyTransfrom.position, GoalPos) < Closest) Stop();
     }
 
     private void RunFpsAdjustment()
@@ -117,8 +120,6 @@ public class BiologyMovement
     public void ActionMoveto(Vector3 pos)
     {
         if (IsPathReachDestination(pos) == false) return;
-
-        IsInputMoving = false;
 
         SetGoalPos(pos);
         SetGoalPosHitGround();
@@ -152,8 +153,6 @@ public class BiologyMovement
     {
         if (IsPathReachDestination(GoalPos) == false) return;
 
-        IsInputMoving = false;
-
         Biology.DeactivateMovetoProjector();
         SetMoveType_ReturnPost();
 
@@ -164,7 +163,7 @@ public class BiologyMovement
     {
         NavMeshAgent.SetDestination(GoalPos);
         NavMeshAgent.isStopped = false;
-        Biology.PlayAnimation(uFantasy.Enum.State.Run);
+        // Biology.PlayAnimation(uFantasy.Enum.State.Run);
     }
 
     private void SetGoalPos(Vector3 pos)
