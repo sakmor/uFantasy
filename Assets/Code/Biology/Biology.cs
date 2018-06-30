@@ -382,7 +382,8 @@ public class Biology : MonoBehaviour
         _model.name = "Model";
 
         //掛上 BiologyAnimationEvent
-        _model.AddComponent<BiologyAnimationEvent>();
+        _model.AddComponent<BiologyAnimationEvent>().Biology = this;
+
 
         //載入縮放大小
         transform.localScale = Vector3.one * BiologyDraw.Scale;

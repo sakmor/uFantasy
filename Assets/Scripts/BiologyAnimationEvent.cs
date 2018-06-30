@@ -5,6 +5,7 @@ using UnityEngine;
 public class BiologyAnimationEvent : MonoBehaviour
 {
     public HpUI HpUI;
+    public Biology Biology;
 
     // Use this for initialization
     void Start()
@@ -21,5 +22,11 @@ public class BiologyAnimationEvent : MonoBehaviour
     internal void HideHPUI()
     {
         HpUI.FadeOut();
+    }
+
+    internal void Hit()
+    {
+        Biology.Target.GetDamage(Biology.BiologyAttr.Atk);
+        Debug.Log("hit");
     }
 }

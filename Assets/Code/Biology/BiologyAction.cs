@@ -28,7 +28,6 @@ public class BiologyAction
         if (Biology.ActionProgressbarValue < 1f) return false;
 
         //完成攻擊
-        Biology.Target.GetDamage(Biology.BiologyAttr.Atk);
         Biology.PlayAnimation(uFantasy.Enum.State.Attack_01);
         Biology.BiologyMovement.SetAvoidancePriority(100);
 
