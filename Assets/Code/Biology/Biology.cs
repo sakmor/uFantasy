@@ -54,6 +54,7 @@ public class Biology : MonoBehaviour
 	{
 		GetBiologys();
 		GetSelectUnit();
+		Debug.Log(UnityEditor.PrefabUtility.GetPrefabParent(this).name);
 	}
 
 	private void GetBiologys()
