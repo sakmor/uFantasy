@@ -17,7 +17,7 @@ public class BiologyAction
         if (Biology.BiologyMovement.IsInputMoving) return false;
 
         //如果與目標的距離不在攻擊範圍內...
-        if (IsTargetTooFar(1.8f)) { Biology.BiologyMovement.ActionMoveto(Biology.Target.transform.position); return false; }
+        if (IsTargetTooFar(1.5f)) { Biology.BiologyMovement.ActionMoveto(Biology.Target.transform.position); return false; }
         Biology.BiologyMovement.Stop();
         Biology.BiologyMovement.StartFaceTarget();
 
@@ -40,7 +40,9 @@ public class BiologyAction
 
     private bool IsTargetTooFar(float dist)
     {
-        float d = Vector3.Distance(Biology.Target.transform.position, Biology.transform.position);
+        Bounds b = Biology.Target.GetComponent<CapsuleCollider>().bounds;
+        Vector3 closestPoint = b.ClosestPoint(Biology.transform.position);
+        float d = Vector3.Distance(closestPoint, Biology.transform.position);
         if (d <= dist) return false;
         return true;
     }
