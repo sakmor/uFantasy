@@ -20,6 +20,7 @@ public class BiologyAI_Condition
         {
             //清空上一個目標與上一個行為
             BiologyAI.Parent.Target = null;
+            Target = null;
             ActionName = null;
 
             //如果我已經死則清空目標並跳出
@@ -29,6 +30,7 @@ public class BiologyAI_Condition
             if (Conditions.ContainsKey(Ai.ConditionList[i]) == false) continue;
 
             //如果此策略找不到目標則跳下一個
+            //在這裡決定 Target 是誰
             Func<float, bool> f = Conditions[Ai.ConditionList[i]].Func;
             float cp = Conditions[Ai.ConditionList[i]].p1;
             bool ConditionResult = f(cp);

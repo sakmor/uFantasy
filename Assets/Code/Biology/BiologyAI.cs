@@ -67,13 +67,14 @@ public class BiologyAI
     {
         List<Biology> Visible_Ally_Biologys = new List<Biology>();
         List<Biology> Visible_Foe_Biologys = new List<Biology>();
-        foreach (var t in Parent.Biologys)
-        {
-            //fixme: 超醜
-            if (Vector3.Distance(Parent.transform.position, t.transform.position) > Vision) continue;
 
-            if (Parent.Type == uFantasy.Enum.BiologyType.Player)
+
+        //fixme: 超醜
+        if (Parent.Type == uFantasy.Enum.BiologyType.Player)
+        {
+            foreach (var t in Parent.Biologys)
             {
+                if (Vector3.Distance(Parent.transform.position, t.transform.position) > Vision) continue;
                 if (t.Type == uFantasy.Enum.BiologyType.Item || t.Type == uFantasy.Enum.BiologyType.Npc) continue;
                 if (t.Type == uFantasy.Enum.BiologyType.Player)
                 {
@@ -84,8 +85,13 @@ public class BiologyAI
                     Visible_Foe_Biologys.Add(t.gameObject.GetComponent<Biology>());
                 }
             }
-            else
+        }
+
+        if (Parent.Type == uFantasy.Enum.BiologyType.Boss || Parent.Type == uFantasy.Enum.BiologyType.Elite || Parent.Type == uFantasy.Enum.BiologyType.Monster)
+        {
+            foreach (var t in Parent.Biologys)
             {
+                if (Vector3.Distance(Parent.transform.position, t.transform.position) > Vision) continue;
                 if (t.Type == uFantasy.Enum.BiologyType.Item || t.Type == uFantasy.Enum.BiologyType.Npc) continue;
                 if (t.Type == uFantasy.Enum.BiologyType.Player)
                 {

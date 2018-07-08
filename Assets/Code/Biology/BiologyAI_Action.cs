@@ -10,8 +10,8 @@ public class BiologyAI_Action
     public static BiologyAI_Action Instance { get { return _instance; } }
     private Dictionary<string, Command> Actions;
     private string Action;
-    private Biology Biology, Target;
-
+    private Biology Biology;
+    private Biology Target;
     private BiologyAI_Action()
     {
         //fixme:灌資料應該有更好的地方，並且應該配合列舉
