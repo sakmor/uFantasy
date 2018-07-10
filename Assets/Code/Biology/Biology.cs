@@ -37,6 +37,7 @@ public class Biology : MonoBehaviour
     internal CapsuleCollider CapsuleCollider;
     internal BiologyLook BiologyLook;
     internal BiologyAnimationEvent BiologyAnimationEvent;
+
     private GameObject MovtoProjector;
 
     [SerializeField] public uFantasy.Enum.State AnimationState;
@@ -44,6 +45,8 @@ public class Biology : MonoBehaviour
     // Use this for initialization
     private void Awake()
     {
+        CapsuleCollider = GetComponent<CapsuleCollider>();
+
         LoadDB();
         AddLine();
         AddHpUI();
@@ -55,7 +58,6 @@ public class Biology : MonoBehaviour
     {
         GetBiologys();
         GetSelectUnit();
-        Debug.Log(UnityEditor.PrefabUtility.GetPrefabParent(this).name);
     }
 
     private void GetBiologys()
@@ -228,7 +230,10 @@ public class Biology : MonoBehaviour
         int Def = BiologyAttr.Def;
         int fDamage = Damage - Def;
 
-        if (fDamage <= 0) return;
+        if (fDamage <= 0) fDamage = 1;
+        Debug.Log(Target.name + " 造成 " + this.name + " 傷害: " + fDamage);
+
+        // if (fDamage <= 0) return;
 
         BiologyAttr.Hp -= fDamage;
         PlayAnimation(uFantasy.Enum.State.Hurt);

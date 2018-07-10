@@ -235,7 +235,7 @@ Transform:
   m_GameObject: {fileID: 1851533849363166}
   m_LocalRotation: {x: 0.000000021855694, y: -0.00000004371139, z: 1.0165751e-15,
     w: 1}
-  m_LocalPosition: {x: 7.84, y: 0.5, z: 0.48}
+  m_LocalPosition: {x: 8.748, y: 0.5, z: -0.113}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4107837807103260}
@@ -376,7 +376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BiologyNum: 50002
+  BiologyNum: 50001
   Speed: 1
   ActionProgressbarValue: 0
   Weapon: {fileID: 0}

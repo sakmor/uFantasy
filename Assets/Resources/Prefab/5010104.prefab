@@ -341,7 +341,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WalkStep: 0.2
   Animator: {fileID: 95707663146865070}
-  Renderer: {fileID: 137053229111987970}
+  SkinnedMeshRenderer: {fileID: 137053229111987970}
   M1: {fileID: 4986962968602020}
 --- !u!114 &114706516942500962
 MonoBehaviour:
@@ -376,12 +376,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015dccd84a162f40a5ab5aa7aef81fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BiologyNum: 50005
+  BiologyNum: 50001
   Speed: 1
   ActionProgressbarValue: 0
   Weapon: {fileID: 0}
   Target: {fileID: 0}
   IsDead: 0
+  Materials: []
   AnimationState: 0
 --- !u!136 &136074153870120380
 CapsuleCollider:

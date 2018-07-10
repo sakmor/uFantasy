@@ -26,7 +26,8 @@ public class BiologyAnimationEvent : MonoBehaviour
 
     internal void Hit()
     {
+        if (Biology.Target == null) return;
         Biology.Target.GetDamage(Biology.BiologyAttr.Atk);
-        Debug.Log("hit");
+        Biology.Target.BiologyLook.HitFlash();
     }
 }

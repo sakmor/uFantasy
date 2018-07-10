@@ -1180,7 +1180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WalkStep: 0.03
   Animator: {fileID: 95822606200678016}
-  Renderer: {fileID: 137633337109205074}
+  SkinnedMeshRenderer: {fileID: 137633337109205074}
   M1: {fileID: 4074858192211902}
 --- !u!114 &114251788780667058
 MonoBehaviour:
@@ -1221,6 +1221,7 @@ MonoBehaviour:
   Weapon: {fileID: 0}
   Target: {fileID: 0}
   IsDead: 0
+  Materials: []
   AnimationState: 0
 --- !u!114 &114462571798206578
 MonoBehaviour:

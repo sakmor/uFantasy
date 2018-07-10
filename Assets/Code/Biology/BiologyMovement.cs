@@ -71,7 +71,6 @@ public class BiologyMovement
 	internal bool GetIsFaceTarget()
 	{
 		float angle = GetFaceTargetAngle();
-		Debug.Log(Biology.name + "：" + angle);
 		if (angle > 2.0f) return false;
 		return true;
 	}
