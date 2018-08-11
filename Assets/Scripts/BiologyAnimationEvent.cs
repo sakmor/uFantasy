@@ -29,6 +29,7 @@ public class BiologyAnimationEvent : MonoBehaviour
         if (Biology.Target == null) return;
         Biology.Target.GetDamage(Biology.BiologyAttr.Atk);
         Biology.BiologyLook.StartHitStop();
-        Biology.Target.BiologyLook.HitFlash();
+        Biology.Target.BiologyLook.StartHitFlash();
+        Biology.Target.BiologyLook.StartHitStop();
     }
 }
