@@ -30,6 +30,7 @@ public class BiologyAnimationEvent : MonoBehaviour
         Biology.Target.GetDamage(Biology.BiologyAttr.Atk);
         Biology.BiologyLook.StartHitStop();
         Biology.Target.BiologyLook.StartHitFlash();
+        Biology.Target.BiologyLook.StartHitShake();
         Biology.Target.BiologyLook.StartHitStop();
     }
 }
